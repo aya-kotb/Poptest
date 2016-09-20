@@ -1,0 +1,33 @@
+V1.04
+------------------------------------------------------------------------------
+- You can now specify a parent RectTransform for uDialog.NewDialog()
+- You can now specify that a uDialog should trigger it's Event_OnClick when 
+  the modal screen overlay is clicked with uDialog.SetTriggerOnClickEventWhenOverlayClicked()
+------------------------------------------------------------------------------
+
+V1.03
+------------------------------------------------------------------------------
+- Added uDialog_TaskBar
+- Added the ability to "Minimize" a uDialog (works best when paired with a uDialog_TaskBar)
+- Fixed a bug where notifications sometimes wouldn't scale properly when paired
+  with a Canvas Scaler
+- Fixed a bug where uDialog content wouldn't scale properly when paired with 
+  a Canvas Scaler
+- The example scene now uses a canvas scaler
+- Added uDialog_TaskBar to the example scene, and changed several of the example menus so that they can be minimized
+------------------------------------------------------------------------------
+
+V1.02
+------------------------------------------------------------------------------
+- Added Event_On_Click to uDialog.
+------------------------------------------------------------------------------
+
+V1.01
+------------------------------------------------------------------------------
+- Minor bug fix: uDialog.ForceButtonUpdate() should now work properly in playmode
+------------------------------------------------------------------------------
+
+V1.00
+------------------------------------------------------------------------------
+- Initial Release
+------------------------------------------------------------------------------

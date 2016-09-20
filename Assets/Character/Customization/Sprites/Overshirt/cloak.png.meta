@@ -1,0 +1,183 @@
+fileFormatVersion: 2
+guid: 487648b71cb6c6c4c8e43343739c881b
+timeCreated: 1468010381
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: cloak_FarArmUp
+    21300002: cloak_Torso
+    21300004: cloak_NearArmUp
+    21300006: cloak_FarArmDn
+    21300008: cloak_NearArmDn
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 400
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: cloak_FarArmUp
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 363
+        width: 54
+        height: 168
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 84}
+        - {x: -27, y: 67}
+        - {x: -27, y: -62}
+        - {x: -21, y: -84}
+        - {x: 27, y: -84}
+        - {x: 27, y: 82}
+        - {x: 23, y: 84}
+    - name: cloak_Torso
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 23
+        width: 307
+        height: 558
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 150.5, y: -165}
+        - {x: 143.5, y: -158}
+        - {x: 150.5, y: -18}
+        - {x: 150.5, y: 55}
+        - {x: 121.5, y: 176}
+        - {x: 93.5, y: 251}
+        - {x: 72.5, y: 275}
+        - {x: 16.5, y: 275}
+        - {x: -6.5, y: 270}
+        - {x: 35.5, y: 163}
+        - {x: 1.5, y: -61}
+        - {x: -12.5, y: -196}
+        - {x: -12.5, y: -239}
+        - {x: 40.5, y: -265}
+        - {x: 119.5, y: -265}
+        - {x: 135.5, y: -248}
+        - {x: 150.5, y: -231}
+      - - {x: -95.5, y: -111}
+        - {x: -109.5, y: -47}
+        - {x: -107.5, y: 127}
+        - {x: -71.5, y: 237}
+        - {x: -82.5, y: 240}
+        - {x: -84.5, y: 241}
+        - {x: -98.5, y: 241}
+        - {x: -111.5, y: 229}
+        - {x: -153.5, y: 67}
+        - {x: -153.5, y: -72}
+        - {x: -140.5, y: -153}
+        - {x: -135.5, y: -237}
+        - {x: -121.5, y: -241}
+        - {x: -76.5, y: -241}
+        - {x: -66.5, y: -217}
+        - {x: -66.5, y: -156}
+        - {x: -70.5, y: -140}
+    - name: cloak_NearArmUp
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 390
+        width: 65
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -32.5, y: 85}
+        - {x: -32.5, y: -61}
+        - {x: -29.5, y: -82}
+        - {x: -19.5, y: -85}
+        - {x: 32.5, y: -85}
+        - {x: 32.5, y: 36}
+        - {x: 16.5, y: 85}
+    - name: cloak_FarArmDn
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 172
+        width: 47
+        height: 161
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16.5, y: 80.5}
+        - {x: -19.5, y: 77.5}
+        - {x: -23.5, y: 20.5}
+        - {x: -23.5, y: -76.5}
+        - {x: -19.5, y: -80.5}
+        - {x: 9.5, y: -80.5}
+        - {x: 20.5, y: -77.5}
+        - {x: 23.5, y: -34.5}
+        - {x: 23.5, y: 79.5}
+        - {x: 19.5, y: 80.5}
+    - name: cloak_NearArmDn
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 187
+        width: 44
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 77.5}
+        - {x: -22, y: 75.5}
+        - {x: -22, y: -70.5}
+        - {x: -18, y: -77.5}
+        - {x: 15, y: -77.5}
+        - {x: 22, y: -73.5}
+        - {x: 22, y: 74.5}
+        - {x: 20, y: 77.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

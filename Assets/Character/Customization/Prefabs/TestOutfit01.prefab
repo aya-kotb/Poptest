@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &161910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 469512}
+  - 114: {fileID: 11459932}
+  m_Layer: 0
+  m_Name: TestOutfit01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &469512
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161910}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11459932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8989bbefba99e794d9bcbb6dac1a1f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayerOutfit: 0
+  skinColor: {r: 0.78676474, g: 0.6412213, b: 0.45701775, a: 1}
+  hairColor: {r: 0.15816192, g: 0.09207394, b: 0.9632353, a: 1}
+  reactiveEyelids: 0
+  eyes: {fileID: 11456776, guid: c246a7b0668ccd84797802be5f407197, type: 2}
+  mouth: {fileID: 0}
+  hair: {fileID: 11494654, guid: a99889d4ed2ac0c4098afb5f72dfc2cf, type: 2}
+  shirt: {fileID: 11474874, guid: a2bc2e12c1892a04daf90b2823a6f705, type: 2}
+  pants: {fileID: 11437276, guid: 9d49ba2415dd1c5428386450b6b0774a, type: 2}
+  shoes: {fileID: 11447776, guid: 31a04a4582618364cb26286416654b15, type: 2}
+  wristFront: {fileID: 11451690, guid: 657d23509ee800742b62a55ce2324c26, type: 2}
+  bangs: {fileID: 11459018, guid: ddc2719373448df48adcdc69af6c9176, type: 2}
+  helmet: {fileID: 0}
+  facial: {fileID: 0}
+  makeup: {fileID: 0}
+  marks: {fileID: 0}
+  overshirt: {fileID: 0}
+  overpants: {fileID: 11471904, guid: 48fe5f5711ab1ae4ea8aaa9b701a72b4, type: 2}
+  backhandItem: {fileID: 0}
+  hat: {fileID: 0}
+  pack: {fileID: 11480862, guid: e04ac8a79eadd6b4e8cbdbb68f2e8ffd, type: 2}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 161910}
+  m_IsPrefabParent: 1

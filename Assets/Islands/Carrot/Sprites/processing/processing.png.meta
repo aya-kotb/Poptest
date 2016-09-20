@@ -1,0 +1,287 @@
+fileFormatVersion: 2
+guid: 5ba96fd313f278643807b1e8562e2261
+timeCreated: 1461343921
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: bucket
+    21300002: carrot
+    21300004: frontPipes
+    21300006: pulley
+    21300008: exitPipes
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 40
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: bucket
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 4
+        width: 241
+        height: 232
+      alignment: 9
+      pivot: {x: 0.4979253, y: 0.21551724}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 121, y: 84}
+        - {x: 21, y: 182}
+        - {x: -19, y: 182}
+        - {x: -16, y: 80}
+        - {x: -120, y: 82}
+        - {x: -120, y: 41}
+        - {x: -96, y: -41}
+        - {x: -90, y: -50}
+        - {x: 91, y: -50}
+        - {x: 98, y: -39}
+        - {x: 118, y: 28}
+        - {x: 121, y: 51}
+    - name: carrot
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1125
+        width: 67
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: exitPipes
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 238
+        width: 395
+        height: 773
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 197.5, y: 386.5}
+        - {x: -8.5, y: 386.5}
+        - {x: -8.5, y: -149.5}
+        - {x: -17.5, y: -153.5}
+        - {x: -22.5, y: -156.5}
+        - {x: -29.5, y: -160.5}
+        - {x: -34.5, y: -163.5}
+        - {x: -41.5, y: -167.5}
+        - {x: -46.5, y: -170.5}
+        - {x: -53.5, y: -174.5}
+        - {x: -58.5, y: -177.5}
+        - {x: -65.5, y: -181.5}
+        - {x: -69.5, y: -184.5}
+        - {x: -75.5, y: -189.5}
+        - {x: -75.5, y: -241.5}
+        - {x: -80.5, y: -241.5}
+        - {x: -82.5, y: -243.5}
+        - {x: -83.5, y: -249.5}
+        - {x: -90.5, y: -255.5}
+        - {x: -95.5, y: -265.5}
+        - {x: -99.5, y: -265.5}
+        - {x: -111.5, y: -253.5}
+        - {x: -117.5, y: -251.5}
+        - {x: -130.5, y: -251.5}
+        - {x: -135.5, y: -252.5}
+        - {x: -145.5, y: -261.5}
+        - {x: -151.5, y: -268.5}
+        - {x: -155.5, y: -271.5}
+        - {x: -159.5, y: -277.5}
+        - {x: -163.5, y: -285.5}
+        - {x: -168.5, y: -284.5}
+        - {x: -176.5, y: -288.5}
+        - {x: -183.5, y: -294.5}
+        - {x: -188.5, y: -305.5}
+        - {x: -187.5, y: -316.5}
+        - {x: -184.5, y: -320.5}
+        - {x: -185.5, y: -324.5}
+        - {x: -179.5, y: -328.5}
+        - {x: -183.5, y: -339.5}
+        - {x: -183.5, y: -341.5}
+        - {x: -178.5, y: -344.5}
+        - {x: -188.5, y: -347.5}
+        - {x: -195.5, y: -350.5}
+        - {x: -197.5, y: -355.5}
+        - {x: -197.5, y: -360.5}
+        - {x: -196.5, y: -363.5}
+        - {x: -190.5, y: -371.5}
+        - {x: -184.5, y: -376.5}
+        - {x: -175.5, y: -381.5}
+        - {x: -169.5, y: -383.5}
+        - {x: -164.5, y: -384.5}
+        - {x: -154.5, y: -384.5}
+        - {x: -146.5, y: -383.5}
+        - {x: -142.5, y: -382.5}
+        - {x: -137.5, y: -376.5}
+        - {x: -137.5, y: -367.5}
+        - {x: -144.5, y: -361.5}
+        - {x: -145.5, y: -357.5}
+        - {x: -138.5, y: -357.5}
+        - {x: -129.5, y: -355.5}
+        - {x: -126.5, y: -350.5}
+        - {x: -123.5, y: -341.5}
+        - {x: -119.5, y: -331.5}
+        - {x: -118.5, y: -326.5}
+        - {x: -83.5, y: -329.5}
+        - {x: -81.5, y: -331.5}
+        - {x: -75.5, y: -331.5}
+        - {x: -75.5, y: -377.5}
+        - {x: -73.5, y: -379.5}
+        - {x: -65.5, y: -386.5}
+        - {x: 169.5, y: -386.5}
+        - {x: 170.5, y: -385.5}
+        - {x: 170.5, y: -379.5}
+        - {x: 197.5, y: -379.5}
+    - name: frontPipes
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1013
+        width: 313
+        height: 1034
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 153.5, y: -491}
+        - {x: 151.5, y: -489}
+        - {x: 147.5, y: -489}
+        - {x: 147.5, y: 488}
+        - {x: 146.5, y: 492}
+        - {x: 142.5, y: 501}
+        - {x: 140.5, y: 503}
+        - {x: 132.5, y: 512}
+        - {x: 121.5, y: 517}
+        - {x: -36.5, y: 517}
+        - {x: -36.5, y: -489}
+        - {x: -151.5, y: -489}
+        - {x: -153.5, y: -491}
+        - {x: -155.5, y: -500}
+        - {x: -156.5, y: -504}
+        - {x: -156.5, y: -517}
+        - {x: 156.5, y: -517}
+        - {x: 156.5, y: -504}
+      - - {x: -80.5, y: -469}
+        - {x: -77.5, y: -462}
+        - {x: -74.5, y: -456}
+        - {x: -74.5, y: -437}
+        - {x: -80.5, y: -424}
+        - {x: -94.5, y: -410}
+        - {x: -101.5, y: -407}
+        - {x: -106.5, y: -406}
+        - {x: -108.5, y: -404}
+        - {x: -125.5, y: -404}
+        - {x: -127.5, y: -406}
+        - {x: -132.5, y: -407}
+        - {x: -139.5, y: -410}
+        - {x: -141.5, y: -412}
+        - {x: -151.5, y: -421}
+        - {x: -156.5, y: -432}
+        - {x: -156.5, y: -461}
+        - {x: -151.5, y: -472}
+        - {x: -141.5, y: -481}
+        - {x: -139.5, y: -483}
+        - {x: -130.5, y: -487}
+        - {x: -126.5, y: -489}
+        - {x: -107.5, y: -489}
+        - {x: -94.5, y: -483}
+      - - {x: -86.5, y: -395}
+        - {x: -92.5, y: -387}
+        - {x: -93.5, y: -380}
+        - {x: -95.5, y: -375}
+        - {x: -98.5, y: -375}
+        - {x: -101.5, y: -377}
+        - {x: -103.5, y: -382}
+        - {x: -105.5, y: -382}
+        - {x: -109.5, y: -379}
+        - {x: -124.5, y: -379}
+        - {x: -125.5, y: -380}
+        - {x: -133.5, y: -380}
+        - {x: -134.5, y: -381}
+        - {x: -147.5, y: -382}
+        - {x: -153.5, y: -384}
+        - {x: -156.5, y: -386}
+        - {x: -156.5, y: -395}
+        - {x: -151.5, y: -397}
+        - {x: -145.5, y: -399}
+        - {x: -140.5, y: -400}
+        - {x: -128.5, y: -401}
+        - {x: -127.5, y: -402}
+        - {x: -119.5, y: -403}
+        - {x: -110.5, y: -403}
+        - {x: -106.5, y: -400}
+        - {x: -104.5, y: -402}
+        - {x: -105.5, y: -404}
+        - {x: -103.5, y: -406}
+        - {x: -100.5, y: -406}
+        - {x: -96.5, y: -402}
+        - {x: -88.5, y: -400}
+        - {x: -86.5, y: -398}
+    - name: pulley
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1044
+        width: 79
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 28.5, y: 38.5}
+        - {x: 24.5, y: 39.5}
+        - {x: -21.5, y: 39.5}
+        - {x: -39.5, y: 20.5}
+        - {x: -39.5, y: -35.5}
+        - {x: -25.5, y: -39.5}
+        - {x: 27.5, y: -39.5}
+        - {x: 38.5, y: -27.5}
+        - {x: 39.5, y: -18.5}
+        - {x: 39.5, y: 21.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

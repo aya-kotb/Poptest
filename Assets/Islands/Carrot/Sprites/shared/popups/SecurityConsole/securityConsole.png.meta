@@ -1,0 +1,418 @@
+fileFormatVersion: 2
+guid: f3932d4ab49e0e0448bb0096c570b073
+timeCreated: 1472489221
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: cuttersBack
+    21300002: cuttersFront
+    21300004: greenWire
+    21300006: greenWireCut
+    21300008: redWire
+    21300010: redWireCut
+    21300012: securityConsole
+    21300014: yellowWire
+    21300016: yellowWireCut
+    21300018: console
+    21300020: buttonGlow
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 40
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: buttonGlow
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 258
+        width: 90
+        height: 90
+      alignment: 9
+      pivot: {x: 1.5818031, y: -1.0644336}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -132.36227, y: 185.79901}
+        - {x: -142.36227, y: 171.79901}
+        - {x: -142.36227, y: 109.79901}
+        - {x: -120.362274, y: 95.79901}
+        - {x: -81.362274, y: 95.79901}
+        - {x: -64.362274, y: 100.79901}
+        - {x: -63.362274, y: 112.79901}
+        - {x: -63.362274, y: 173.79901}
+        - {x: -71.362274, y: 185.79901}
+    - name: console
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 360
+        width: 1483
+        height: 663
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -123.5, y: 331.5}
+        - {x: -123.5, y: 273.5}
+        - {x: -732.5, y: 273.5}
+        - {x: -734.5, y: 271.5}
+        - {x: -734.5, y: 258.5}
+        - {x: -741.5, y: 258.5}
+        - {x: -741.5, y: -279.5}
+        - {x: -123.5, y: -279.5}
+        - {x: -123.5, y: -331.5}
+        - {x: 741.5, y: -331.5}
+        - {x: 741.5, y: 331.5}
+    - name: cuttersBack
+      rect:
+        serializedVersion: 2
+        x: 1486
+        y: 868
+        width: 409
+        height: 155
+      alignment: 9
+      pivot: {x: 0.23103821, y: 0.609186}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 114.50537, y: -6.423828}
+        - {x: 16.505371, y: -6.423828}
+        - {x: -2.494629, y: -23.423828}
+        - {x: -2.494629, y: -56.42383}
+        - {x: 163.50537, y: -94.42383}
+        - {x: 314.50537, y: -94.42383}
+        - {x: 314.50537, y: -50.42383}
+        - {x: 311.50537, y: -43.42383}
+      - - {x: -50.49463, y: 60.57617}
+        - {x: -91.49463, y: 41.57617}
+        - {x: -94.49463, y: 33.57617}
+        - {x: -94.49463, y: 19.576172}
+        - {x: -29.494629, y: 9.576172}
+        - {x: -20.494629, y: 9.576172}
+        - {x: 23.505371, y: 45.57617}
+        - {x: 23.505371, y: 53.57617}
+        - {x: 4.505371, y: 60.57617}
+    - name: cuttersFront
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 197
+        width: 410
+        height: 158
+      alignment: 9
+      pivot: {x: 0.28611138, y: 0.3717779}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 101.694336, y: 99.259094}
+        - {x: -39.305664, y: 54.259094}
+        - {x: -117.305664, y: -19.740906}
+        - {x: -117.305664, y: -25.740906}
+        - {x: -111.305664, y: -31.740906}
+        - {x: -100.305664, y: -41.740906}
+        - {x: -77.305664, y: -54.740906}
+        - {x: -68.305664, y: -58.740906}
+        - {x: -9.305664, y: -58.740906}
+        - {x: -1.3056641, y: -57.740906}
+        - {x: 44.694336, y: -49.740906}
+        - {x: 292.69434, y: 49.259094}
+        - {x: 292.69434, y: 99.259094}
+    - name: greenWire
+      rect:
+        serializedVersion: 2
+        x: 1486
+        y: 787
+        width: 345
+        height: 79
+      alignment: 9
+      pivot: {x: 0.5173913, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 140.5, y: -4.5}
+        - {x: 101.5, y: -3.5}
+        - {x: 80.5, y: 0.5}
+        - {x: 62.5, y: 13.5}
+        - {x: 52.5, y: 20.5}
+        - {x: 85.5, y: 1.5}
+        - {x: 100.5, y: -2.5}
+        - {x: 116.5, y: -3.5}
+        - {x: 147.5, y: -3.5}
+        - {x: 165.5, y: -2.5}
+        - {x: 166.5, y: -1.5}
+        - {x: 166.5, y: 14.5}
+        - {x: 63.5, y: 39.5}
+        - {x: -25.5, y: 39.5}
+        - {x: -178.5, y: 18.5}
+        - {x: -178.5, y: -2.5}
+        - {x: -176.5, y: -2.5}
+        - {x: -160.5, y: -1.5}
+        - {x: -168.5, y: -2.5}
+        - {x: -170.5, y: -4.5}
+        - {x: -178.5, y: -13.5}
+        - {x: -178.5, y: -25.5}
+        - {x: -110.5, y: -39.5}
+        - {x: 62.5, y: -39.5}
+        - {x: 141.5, y: -20.5}
+        - {x: 142.5, y: -16.5}
+        - {x: 142.5, y: -6.5}
+    - name: greenWireCut
+      rect:
+        serializedVersion: 2
+        x: 1487
+        y: 705
+        width: 345
+        height: 79
+      alignment: 9
+      pivot: {x: 0.5173913, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8.5, y: 31.5}
+        - {x: 5.5, y: 30.5}
+        - {x: -131.5, y: 27.5}
+        - {x: -178.5, y: 15.5}
+        - {x: -178.5, y: -1.5}
+        - {x: -177.5, y: -2.5}
+        - {x: -178.5, y: -4.5}
+        - {x: -178.5, y: -22.5}
+        - {x: -86.5, y: -39.5}
+        - {x: -9.5, y: -39.5}
+        - {x: 18.5, y: -4.5}
+        - {x: 18.5, y: 25.5}
+        - {x: 16.5, y: 31.5}
+      - - {x: 80.5, y: 1.5}
+        - {x: 51.5, y: 20.5}
+        - {x: 84.5, y: 1.5}
+        - {x: 99.5, y: -2.5}
+        - {x: 115.5, y: -3.5}
+        - {x: 166.5, y: -5.5}
+        - {x: 166.5, y: 12.5}
+        - {x: 82.5, y: 39.5}
+        - {x: 22.5, y: 39.5}
+        - {x: 22.5, y: 13.5}
+        - {x: 26.5, y: 6.5}
+        - {x: 58.5, y: -19.5}
+        - {x: 154.5, y: -19.5}
+        - {x: 139.5, y: -4.5}
+        - {x: 100.5, y: -3.5}
+    - name: redWire
+      rect:
+        serializedVersion: 2
+        x: 1487
+        y: 565
+        width: 344
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 114, y: 17}
+        - {x: 17, y: 33}
+        - {x: -94, y: 33}
+        - {x: -172, y: 23}
+        - {x: -172, y: 4}
+        - {x: -171, y: 3}
+        - {x: -142, y: 3}
+        - {x: -128, y: 4}
+        - {x: -116, y: 5}
+        - {x: -108, y: 6}
+        - {x: -107, y: 7}
+        - {x: -102, y: 7}
+        - {x: -101, y: 8}
+        - {x: -97, y: 8}
+        - {x: -96, y: 9}
+        - {x: -95, y: 8}
+        - {x: -98, y: 8}
+        - {x: -99, y: 7}
+        - {x: -103, y: 7}
+        - {x: -107, y: 6}
+        - {x: -113, y: 5}
+        - {x: -163, y: 1}
+        - {x: -167, y: 0}
+        - {x: -164, y: -16}
+        - {x: -41, y: -33}
+        - {x: 107, y: -33}
+        - {x: 172, y: -4}
+        - {x: 172, y: 22}
+    - name: redWireCut
+      rect:
+        serializedVersion: 2
+        x: 1487
+        y: 636
+        width: 344
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 41, y: 20}
+        - {x: 3, y: 17}
+        - {x: 5, y: -8}
+        - {x: 16, y: -13}
+        - {x: 25, y: -16}
+        - {x: 33, y: -18}
+        - {x: 44, y: -20}
+        - {x: 23, y: -17}
+        - {x: 7, y: -10}
+        - {x: 2, y: -12}
+        - {x: 0, y: -23}
+        - {x: 0, y: -25}
+        - {x: 3, y: -32}
+        - {x: 12, y: -33}
+        - {x: 90, y: -33}
+        - {x: 150, y: -13}
+        - {x: 172, y: 0}
+        - {x: 172, y: 20}
+      - - {x: -41, y: 15}
+        - {x: -70, y: 15}
+        - {x: -71, y: 14}
+        - {x: -76, y: 14}
+        - {x: -80, y: 13}
+        - {x: -74, y: 14}
+        - {x: -73, y: 15}
+        - {x: -64, y: 15}
+        - {x: -40, y: 16}
+        - {x: -26, y: 14}
+        - {x: -16, y: 9}
+        - {x: -2, y: -4}
+        - {x: 3, y: 4}
+        - {x: 3, y: 20}
+        - {x: -18, y: 33}
+        - {x: -94, y: 33}
+        - {x: -172, y: 22}
+        - {x: -172, y: 3}
+        - {x: -142, y: 3}
+        - {x: -126, y: 4}
+        - {x: -114, y: 5}
+        - {x: -107, y: 6}
+        - {x: -106, y: 7}
+        - {x: -101, y: 7}
+        - {x: -100, y: 8}
+        - {x: -96, y: 8}
+        - {x: -95, y: 9}
+        - {x: -95, y: 8}
+        - {x: -98, y: 8}
+        - {x: -99, y: 7}
+        - {x: -103, y: 7}
+        - {x: -104, y: 6}
+        - {x: -107, y: 6}
+        - {x: -113, y: 5}
+        - {x: -163, y: 1}
+        - {x: -165, y: -1}
+        - {x: -165, y: -12}
+        - {x: -164, y: -14}
+        - {x: -130, y: -14}
+        - {x: -55, y: -20}
+        - {x: 2, y: -20}
+        - {x: -2, y: -5}
+        - {x: -14, y: 7}
+        - {x: -30, y: 14}
+    - name: yellowWire
+      rect:
+        serializedVersion: 2
+        x: 1487
+        y: 398
+        width: 344
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 140, y: -2.5}
+        - {x: 139, y: -1.5}
+        - {x: 141, y: -2.5}
+        - {x: 157, y: -2.5}
+        - {x: 158, y: -3.5}
+        - {x: 171, y: -3.5}
+        - {x: 172, y: -2.5}
+        - {x: 172, y: 14.5}
+        - {x: 137, y: 39.5}
+        - {x: -172, y: 39.5}
+        - {x: -172, y: -24.5}
+        - {x: -170, y: -28.5}
+        - {x: -15, y: -39.5}
+        - {x: 59, y: -39.5}
+        - {x: 154, y: -17.5}
+        - {x: 148, y: -4.5}
+        - {x: 146, y: -2.5}
+    - name: yellowWireCut
+      rect:
+        serializedVersion: 2
+        x: 1487
+        y: 481
+        width: 344
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 140, y: -2.5}
+        - {x: 139, y: -1.5}
+        - {x: 141, y: -2.5}
+        - {x: 157, y: -2.5}
+        - {x: 158, y: -3.5}
+        - {x: 171, y: -3.5}
+        - {x: 172, y: -2.5}
+        - {x: 172, y: 13.5}
+        - {x: 163, y: 14.5}
+        - {x: 82, y: 14.5}
+        - {x: 10, y: -11.5}
+        - {x: 10, y: -39.5}
+        - {x: 67, y: -39.5}
+        - {x: 152, y: -16.5}
+        - {x: 148, y: -4.5}
+        - {x: 146, y: -2.5}
+      - - {x: -32, y: 39.5}
+        - {x: -88, y: 39.5}
+        - {x: -172, y: 12.5}
+        - {x: -172, y: -4.5}
+        - {x: -164, y: -19.5}
+        - {x: -133, y: -20.5}
+        - {x: -9, y: -39.5}
+        - {x: 1, y: -39.5}
+        - {x: 5, y: -37.5}
+        - {x: 13, y: -18.5}
+        - {x: 13, y: -3.5}
+        - {x: -11, y: 35.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

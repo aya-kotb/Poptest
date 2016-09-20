@@ -1,0 +1,418 @@
+fileFormatVersion: 2
+guid: 3b334fb50cb983640b3819b5ab5fde56
+timeCreated: 1470246404
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: drinkMixerCupBack
+    21300002: drinkMixerCup
+    21300004: drinkMixerButton
+    21300006: drinkMixerFG
+    21300008: drinkmixerBG
+    21300010: drinkMixerHandle
+    21300012: drinkMixerSpout
+    21300014: drinkMixerDrop
+    21300016: bubble_particle
+    21300018: drinkMixerButtonDown
+    21300020: drinkMixerFluid
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 40
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: drinkMixerCupBack
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 219
+        width: 102
+        height: 125
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -51, y: 125}
+        - {x: -51, y: 22}
+        - {x: -36, y: 0}
+        - {x: 26, y: 0}
+        - {x: 51, y: 16}
+        - {x: 51, y: 125}
+    - name: drinkMixerCup
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 137
+        width: 138
+        height: 207
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 67, y: 103.5}
+        - {x: -65, y: 103.5}
+        - {x: -69, y: 101.5}
+        - {x: -69, y: 20.5}
+        - {x: -61, y: -103.5}
+        - {x: 69, y: -103.5}
+        - {x: 69, y: -101.5}
+        - {x: 49, y: -60.5}
+        - {x: 69, y: 42.5}
+        - {x: 69, y: 99.5}
+    - name: drinkMixerButton
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 273
+        width: 208
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -104, y: 35.5}
+        - {x: -104, y: -35.5}
+        - {x: 104, y: -35.5}
+        - {x: 104, y: 33.5}
+        - {x: 101, y: 35.5}
+    - name: drinkMixerFG
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1601
+        width: 960
+        height: 447
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 461, y: -34.5}
+        - {x: 463, y: -32.5}
+        - {x: 463, y: -22.5}
+        - {x: 461, y: -17.5}
+        - {x: 463, y: -15.5}
+        - {x: 463, y: -5.5}
+        - {x: 461, y: -0.5}
+        - {x: 463, y: 1.5}
+        - {x: 463, y: 42.5}
+        - {x: 459, y: 48.5}
+        - {x: 454, y: 49.5}
+        - {x: 454, y: 213.5}
+        - {x: 452, y: 218.5}
+        - {x: 448, y: 223.5}
+        - {x: 301, y: 223.5}
+        - {x: 298, y: 220.5}
+        - {x: 294, y: 212.5}
+        - {x: 295, y: 49.5}
+        - {x: 291, y: 48.5}
+        - {x: 287, y: 44.5}
+        - {x: 286, y: 41.5}
+        - {x: 286, y: -54.5}
+        - {x: 276, y: -54.5}
+        - {x: 276, y: -38.5}
+        - {x: 273, y: -35.5}
+        - {x: 276, y: -32.5}
+        - {x: 276, y: -21.5}
+        - {x: 273, y: -18.5}
+        - {x: 276, y: -15.5}
+        - {x: 276, y: -4.5}
+        - {x: 273, y: -1.5}
+        - {x: 276, y: 1.5}
+        - {x: 276, y: 40.5}
+        - {x: 274, y: 45.5}
+        - {x: 271, y: 48.5}
+        - {x: 267, y: 50.5}
+        - {x: 267, y: 211.5}
+        - {x: 266, y: 215.5}
+        - {x: 265, y: 218.5}
+        - {x: 259, y: 223.5}
+        - {x: 115, y: 223.5}
+        - {x: 109, y: 217.5}
+        - {x: 107, y: 210.5}
+        - {x: 107, y: 49.5}
+        - {x: 103, y: 48.5}
+        - {x: 98, y: 42.5}
+        - {x: 98, y: -54.5}
+        - {x: 88, y: -54.5}
+        - {x: 88, y: -38.5}
+        - {x: 85, y: -35.5}
+        - {x: 88, y: -32.5}
+        - {x: 88, y: -21.5}
+        - {x: 85, y: -18.5}
+        - {x: 88, y: -15.5}
+        - {x: 88, y: -4.5}
+        - {x: 85, y: -1.5}
+        - {x: 88, y: 1.5}
+        - {x: 88, y: 44.5}
+        - {x: 80, y: 50.5}
+        - {x: 79, y: 213.5}
+        - {x: 78, y: 216.5}
+        - {x: 73, y: 223.5}
+        - {x: -74, y: 223.5}
+        - {x: -78, y: 218.5}
+        - {x: -80, y: 213.5}
+        - {x: -80, y: 49.5}
+        - {x: -82, y: 49.5}
+        - {x: -87, y: 46.5}
+        - {x: -89, y: 41.5}
+        - {x: -89, y: 1.5}
+        - {x: -87, y: -3.5}
+        - {x: -89, y: -5.5}
+        - {x: -89, y: -15.5}
+        - {x: -87, y: -20.5}
+        - {x: -89, y: -22.5}
+        - {x: -89, y: -32.5}
+        - {x: -87, y: -37.5}
+        - {x: -89, y: -39.5}
+        - {x: -89, y: -54.5}
+        - {x: -100, y: -54.5}
+        - {x: -100, y: -39.5}
+        - {x: -102, y: -34.5}
+        - {x: -100, y: -32.5}
+        - {x: -100, y: -22.5}
+        - {x: -102, y: -17.5}
+        - {x: -100, y: -15.5}
+        - {x: -100, y: -5.5}
+        - {x: -102, y: -0.5}
+        - {x: -100, y: 1.5}
+        - {x: -100, y: 42.5}
+        - {x: -101, y: 45.5}
+        - {x: -104, y: 48.5}
+        - {x: -108, y: 50.5}
+        - {x: -108, y: 209.5}
+        - {x: -109, y: 214.5}
+        - {x: -111, y: 219.5}
+        - {x: -116, y: 223.5}
+        - {x: -261, y: 223.5}
+        - {x: -264, y: 220.5}
+        - {x: -267, y: 215.5}
+        - {x: -268, y: 211.5}
+        - {x: -268, y: 49.5}
+        - {x: -272, y: 48.5}
+        - {x: -276, y: 43.5}
+        - {x: -277, y: 40.5}
+        - {x: -277, y: -54.5}
+        - {x: -287, y: -54.5}
+        - {x: -287, y: -38.5}
+        - {x: -290, y: -35.5}
+        - {x: -287, y: -32.5}
+        - {x: -287, y: -21.5}
+        - {x: -290, y: -18.5}
+        - {x: -287, y: -15.5}
+        - {x: -287, y: -4.5}
+        - {x: -290, y: -1.5}
+        - {x: -287, y: 1.5}
+        - {x: -287, y: 40.5}
+        - {x: -288, y: 43.5}
+        - {x: -292, y: 48.5}
+        - {x: -296, y: 50.5}
+        - {x: -296, y: 216.5}
+        - {x: -302, y: 223.5}
+        - {x: -448, y: 223.5}
+        - {x: -453, y: 219.5}
+        - {x: -455, y: 214.5}
+        - {x: -455, y: 49.5}
+        - {x: -459, y: 48.5}
+        - {x: -463, y: 45.5}
+        - {x: -464, y: 42.5}
+        - {x: -464, y: 1.5}
+        - {x: -462, y: -3.5}
+        - {x: -464, y: -5.5}
+        - {x: -464, y: -15.5}
+        - {x: -462, y: -20.5}
+        - {x: -464, y: -22.5}
+        - {x: -464, y: -32.5}
+        - {x: -462, y: -37.5}
+        - {x: -464, y: -39.5}
+        - {x: -464, y: -54.5}
+        - {x: -480, y: -54.5}
+        - {x: -480, y: -223.5}
+        - {x: 480, y: -223.5}
+        - {x: 480, y: -54.5}
+        - {x: 463, y: -39.5}
+    - name: drinkmixerBG
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 484
+        width: 960
+        height: 540
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -480, y: 270}
+        - {x: -480, y: -270}
+        - {x: 480, y: -270}
+        - {x: 480, y: 270}
+    - name: drinkMixerHandle
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 286
+        width: 43
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -21.5, y: 29}
+        - {x: -21.5, y: -14}
+        - {x: -16.5, y: -29}
+        - {x: 17.5, y: -29}
+        - {x: 21.5, y: -17}
+        - {x: 21.5, y: 29}
+    - name: drinkMixerSpout
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 276
+        width: 51
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -25.5, y: 34}
+        - {x: -25.5, y: -10}
+        - {x: -16.5, y: -34}
+        - {x: 17.5, y: -34}
+        - {x: 25.5, y: -4}
+        - {x: 25.5, y: 34}
+    - name: drinkMixerDrop
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 304
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 19, y: 14}
+        - {x: 14, y: 19}
+        - {x: 11, y: 20}
+        - {x: -11, y: 20}
+        - {x: -20, y: 16}
+        - {x: -20, y: -16}
+        - {x: -19, y: -20}
+        - {x: 13, y: -20}
+        - {x: 19, y: -14}
+        - {x: 20, y: -11}
+        - {x: 20, y: 11}
+    - name: bubble_particle
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: drinkMixerButtonDown
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 273
+        width: 208
+        height: 71
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -104, y: 35.5}
+        - {x: -104, y: -35.5}
+        - {x: 104, y: -35.5}
+        - {x: 104, y: 33.5}
+        - {x: 101, y: 35.5}
+    - name: drinkMixerFluid
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 344
+        width: 874
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -437, y: 70}
+        - {x: -437, y: -70}
+        - {x: -316, y: -70}
+        - {x: -315, y: -69}
+        - {x: -314, y: -54}
+        - {x: -314, y: 70}
+      - - {x: -251, y: 70}
+        - {x: -251, y: -69}
+        - {x: -250, y: -70}
+        - {x: -127, y: -70}
+        - {x: -126, y: -69}
+        - {x: -125, y: -54}
+        - {x: -125, y: 70}
+      - - {x: -64, y: 70}
+        - {x: -64, y: -69}
+        - {x: -63, y: -70}
+        - {x: 61, y: -70}
+        - {x: 62, y: -69}
+        - {x: 62, y: 70}
+      - - {x: 123, y: 70}
+        - {x: 123, y: -54}
+        - {x: 124, y: -69}
+        - {x: 125, y: -70}
+        - {x: 249, y: -70}
+        - {x: 250, y: -69}
+        - {x: 250, y: 70}
+      - - {x: 311, y: 70}
+        - {x: 311, y: -54}
+        - {x: 312, y: -69}
+        - {x: 313, y: -70}
+        - {x: 437, y: -70}
+        - {x: 437, y: 70}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,177 @@
+fileFormatVersion: 2
+guid: 120e29f7dda7b394bb0a15238d6c95ed
+timeCreated: 1468009764
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: collaredshirt01_FarSleeveUp
+    21300002: collaredshirt01_Torso
+    21300004: collaredshirt01_NearSleeveUp
+    21300006: collaredshirt01_FarSleeveDown
+    21300008: collaredshirt01_NearSleeveDown
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 400
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: collaredshirt01_FarSleeveUp
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 177
+        width: 56
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 20, y: 65}
+        - {x: -28, y: 65}
+        - {x: -28, y: -61}
+        - {x: -21, y: -65}
+        - {x: 19, y: -65}
+        - {x: 28, y: -36}
+        - {x: 28, y: 40}
+        - {x: 25, y: 52}
+    - name: collaredshirt01_Torso
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 0
+        width: 310
+        height: 302
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 155, y: -87}
+        - {x: 155, y: -54}
+        - {x: 151, y: -19}
+        - {x: 147, y: 18}
+        - {x: 144, y: 31}
+        - {x: 115, y: 75}
+        - {x: 65, y: 111}
+        - {x: 62, y: 121}
+        - {x: 44, y: 151}
+        - {x: 25, y: 151}
+        - {x: 16, y: 150}
+        - {x: -50, y: 149}
+        - {x: -54, y: 151}
+        - {x: -88, y: 151}
+        - {x: -102, y: 131}
+        - {x: -104, y: 113}
+        - {x: -104, y: 98}
+        - {x: -134, y: 61}
+        - {x: -139, y: 50}
+        - {x: -153, y: -11}
+        - {x: -155, y: -21}
+        - {x: -155, y: -88}
+        - {x: -152, y: -121}
+        - {x: -140, y: -139}
+        - {x: -63, y: -149}
+        - {x: -43, y: -151}
+        - {x: 34, y: -151}
+        - {x: 95, y: -123}
+        - {x: 108, y: -120}
+        - {x: 145, y: -98}
+    - name: collaredshirt01_NearSleeveUp
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 195
+        width: 49
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14.5, y: 70.5}
+        - {x: -24.5, y: 65.5}
+        - {x: -24.5, y: -62.5}
+        - {x: -16.5, y: -70.5}
+        - {x: 16.5, y: -70.5}
+        - {x: 24.5, y: -62.5}
+        - {x: 24.5, y: 69.5}
+        - {x: 23.5, y: 70.5}
+    - name: collaredshirt01_FarSleeveDown
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 23
+        width: 63
+        height: 122
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -25.5, y: 61}
+        - {x: -31.5, y: 34}
+        - {x: -31.5, y: -61}
+        - {x: 28.5, y: -61}
+        - {x: 31.5, y: -59}
+        - {x: 31.5, y: 61}
+    - name: collaredshirt01_NearSleeveDown
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 39
+        width: 49
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 23.5, y: 66}
+        - {x: -14.5, y: 66}
+        - {x: -24.5, y: 61}
+        - {x: -24.5, y: -66}
+        - {x: 17.5, y: -66}
+        - {x: 22.5, y: -53}
+        - {x: 24.5, y: -31}
+        - {x: 24.5, y: 61}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

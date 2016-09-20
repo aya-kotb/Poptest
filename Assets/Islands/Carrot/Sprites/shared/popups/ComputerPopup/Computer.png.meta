@@ -1,0 +1,999 @@
+fileFormatVersion: 2
+guid: 558a0bdc817bf4e16bec738842611ae3
+timeCreated: 1470423311
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ComputerBackground
+    21300002: ComputerKeyboard
+    21300004: ComputerScreen
+    21300006: ComputerRabbotBack
+    21300008: ComputerRabbot
+    21300010: ComputerMessageBack
+    21300012: ComputerMessageLines
+    21300014: ComputerKeyboardClose
+    21300016: ComputerEnterKey_Down
+    21300018: ComputerEnterKey
+    21300020: ComputerSpaceKey_Down
+    21300022: ComputerSpaceKey
+    21300024: ComputerStick
+    21300026: ComputerDeleteKey_Down
+    21300028: ComputerDeleteKey
+    21300030: ComputerKey_Down
+    21300032: ComputerKey
+    21300034: ComputerAsteroid
+    21300036: ComputerRabbotGame
+    21300038: ComputerDot
+    21300040: ComputerHair1
+    21300042: ComputerHare2
+    21300044: ComputerQ
+    21300046: ComputerW
+    21300048: ComputerE
+    21300050: ComputerR
+    21300052: ComputerT
+    21300054: ComputerY
+    21300056: ComputerU
+    21300058: ComputerI
+    21300060: ComputerO
+    21300062: ComputerP
+    21300064: ComputerL
+    21300066: ComputerK
+    21300068: ComputerJ
+    21300070: ComputerH
+    21300072: ComputerG
+    21300074: ComputerF
+    21300076: ComputerD
+    21300078: ComputerS
+    21300080: ComputerA
+    21300082: ComputerZ
+    21300084: ComputerX
+    21300086: ComputerC
+    21300088: ComputerV
+    21300090: ComputerB
+    21300092: ComputerN
+    21300094: ComputerM
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 40
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: ComputerBackground
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1508
+        width: 960
+        height: 540
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -480, y: 270}
+        - {x: -480, y: -270}
+        - {x: 480, y: -270}
+        - {x: 480, y: 270}
+      - - {x: 74, y: -88}
+        - {x: 75, y: -87}
+        - {x: 91, y: -87}
+        - {x: 92, y: -86}
+        - {x: 120, y: -85}
+        - {x: 121, y: -84}
+        - {x: 131, y: -84}
+        - {x: 132, y: -83}
+        - {x: 140, y: -83}
+        - {x: 146, y: -82}
+        - {x: 149, y: -81}
+        - {x: 155, y: -76}
+        - {x: 155, y: -71}
+        - {x: 153, y: -68}
+        - {x: 148, y: -66}
+        - {x: 145, y: -65}
+        - {x: 137, y: -63}
+        - {x: 132, y: -62}
+        - {x: 72, y: -62}
+        - {x: 71, y: -61}
+        - {x: 63, y: -61}
+        - {x: 62, y: -60}
+        - {x: 50, y: -59}
+        - {x: 49, y: -58}
+        - {x: 44, y: -57}
+        - {x: 32, y: -54}
+        - {x: 17, y: -50}
+        - {x: 14, y: -48}
+        - {x: 9, y: -47}
+        - {x: -1, y: -42}
+        - {x: -15, y: -36}
+        - {x: -20, y: -34}
+        - {x: -22, y: -34}
+        - {x: -30, y: -30}
+        - {x: -46, y: -24}
+        - {x: -49, y: -23}
+        - {x: -60, y: -20}
+        - {x: -63, y: -18}
+        - {x: -87, y: -10}
+        - {x: -95, y: -8}
+        - {x: -103, y: -4}
+        - {x: -110, y: -1}
+        - {x: -116, y: 3}
+        - {x: -120, y: 6}
+        - {x: -120, y: 7}
+        - {x: -129, y: 20}
+        - {x: -135, y: 31}
+        - {x: -135, y: 33}
+        - {x: -151, y: 64}
+        - {x: -151, y: 67}
+        - {x: -153, y: 73}
+        - {x: -155, y: 78}
+        - {x: -163, y: 102}
+        - {x: -166, y: 110}
+        - {x: -168, y: 115}
+        - {x: -173, y: 126}
+        - {x: -177, y: 132}
+        - {x: -180, y: 135}
+        - {x: -187, y: 138}
+        - {x: -191, y: 138}
+        - {x: -194, y: 137}
+        - {x: -201, y: 132}
+        - {x: -204, y: 125}
+        - {x: -204, y: 113}
+        - {x: -205, y: 112}
+        - {x: -205, y: 30}
+        - {x: -204, y: 29}
+        - {x: -204, y: -10}
+        - {x: -203, y: -11}
+        - {x: -203, y: -33}
+        - {x: -202, y: -34}
+        - {x: -202, y: -44}
+        - {x: -201, y: -52}
+        - {x: -200, y: -58}
+        - {x: -198, y: -65}
+        - {x: -196, y: -70}
+        - {x: -191, y: -75}
+        - {x: -186, y: -77}
+        - {x: -181, y: -78}
+        - {x: -167, y: -79}
+        - {x: -166, y: -80}
+        - {x: -157, y: -80}
+        - {x: -156, y: -81}
+        - {x: -132, y: -82}
+        - {x: -131, y: -83}
+        - {x: -118, y: -83}
+        - {x: -117, y: -84}
+        - {x: -102, y: -84}
+        - {x: -101, y: -85}
+        - {x: -86, y: -85}
+        - {x: -85, y: -86}
+        - {x: -70, y: -86}
+        - {x: -69, y: -87}
+        - {x: -54, y: -87}
+        - {x: -53, y: -88}
+        - {x: -25, y: -89}
+        - {x: -24, y: -90}
+        - {x: 22, y: -90}
+        - {x: 23, y: -89}
+        - {x: 52, y: -89}
+        - {x: 53, y: -88}
+      - - {x: 206, y: 60}
+        - {x: 207, y: 67}
+        - {x: 207, y: 95}
+        - {x: 206, y: 105}
+        - {x: 205, y: 113}
+        - {x: 204, y: 120}
+        - {x: 203, y: 126}
+        - {x: 202, y: 133}
+        - {x: 201, y: 138}
+        - {x: 200, y: 144}
+        - {x: 196, y: 164}
+        - {x: 192, y: 180}
+        - {x: 189, y: 193}
+        - {x: 181, y: 199}
+        - {x: 172, y: 200}
+        - {x: 160, y: 201}
+        - {x: 159, y: 202}
+        - {x: 151, y: 203}
+        - {x: 141, y: 204}
+        - {x: 130, y: 205}
+        - {x: 119, y: 205}
+        - {x: 118, y: 206}
+        - {x: 104, y: 206}
+        - {x: 103, y: 207}
+        - {x: 87, y: 207}
+        - {x: 86, y: 208}
+        - {x: 66, y: 208}
+        - {x: 65, y: 209}
+        - {x: 36, y: 209}
+        - {x: 35, y: 210}
+        - {x: -19, y: 210}
+        - {x: -20, y: 209}
+        - {x: -49, y: 209}
+        - {x: -50, y: 208}
+        - {x: -70, y: 208}
+        - {x: -71, y: 207}
+        - {x: -88, y: 207}
+        - {x: -89, y: 206}
+        - {x: -104, y: 206}
+        - {x: -105, y: 205}
+        - {x: -118, y: 205}
+        - {x: -119, y: 204}
+        - {x: -131, y: 204}
+        - {x: -142, y: 203}
+        - {x: -152, y: 202}
+        - {x: -161, y: 201}
+        - {x: -175, y: 199}
+        - {x: -180, y: 198}
+        - {x: -187, y: 196}
+        - {x: -191, y: 192}
+        - {x: -191, y: 186}
+        - {x: -188, y: 182}
+        - {x: -179, y: 178}
+        - {x: -169, y: 177}
+        - {x: -154, y: 177}
+        - {x: -153, y: 176}
+        - {x: -142, y: 175}
+        - {x: -125, y: 174}
+        - {x: -124, y: 173}
+        - {x: -92, y: 169}
+        - {x: -74, y: 167}
+        - {x: -64, y: 167}
+        - {x: -63, y: 166}
+        - {x: -50, y: 166}
+        - {x: -49, y: 165}
+        - {x: -30, y: 165}
+        - {x: -29, y: 164}
+        - {x: -16, y: 164}
+        - {x: -15, y: 163}
+        - {x: -2, y: 163}
+        - {x: -1, y: 162}
+        - {x: 17, y: 162}
+        - {x: 18, y: 161}
+        - {x: 43, y: 161}
+        - {x: 44, y: 160}
+        - {x: 50, y: 159}
+        - {x: 59, y: 157}
+        - {x: 72, y: 150}
+        - {x: 80, y: 147}
+        - {x: 85, y: 146}
+        - {x: 107, y: 146}
+        - {x: 108, y: 145}
+        - {x: 115, y: 144}
+        - {x: 121, y: 143}
+        - {x: 127, y: 139}
+        - {x: 136, y: 128}
+        - {x: 140, y: 119}
+        - {x: 147, y: 111}
+        - {x: 148, y: 111}
+        - {x: 158, y: 101}
+        - {x: 158, y: 100}
+        - {x: 162, y: 95}
+        - {x: 167, y: 88}
+        - {x: 177, y: 69}
+        - {x: 177, y: 67}
+        - {x: 180, y: 59}
+        - {x: 182, y: 52}
+        - {x: 183, y: 45}
+        - {x: 185, y: 40}
+        - {x: 188, y: 38}
+        - {x: 191, y: 37}
+        - {x: 196, y: 37}
+        - {x: 199, y: 39}
+        - {x: 203, y: 48}
+        - {x: 205, y: 55}
+    - name: ComputerKeyboard
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1202
+        width: 960
+        height: 306
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -480, y: 153}
+        - {x: -480, y: -153}
+        - {x: 480, y: -153}
+        - {x: 480, y: 153}
+    - name: ComputerScreen
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 887
+        width: 429
+        height: 314
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 214.5, y: -151}
+        - {x: 214.5, y: 119}
+        - {x: 209.5, y: 120}
+        - {x: 214.5, y: 120}
+        - {x: 214.5, y: 152}
+        - {x: 170.5, y: 152}
+        - {x: 214.5, y: 152}
+        - {x: 214.5, y: 157}
+        - {x: -214.5, y: 157}
+        - {x: -214.5, y: 152}
+        - {x: -171.5, y: 152}
+        - {x: -214.5, y: 152}
+        - {x: -214.5, y: 120}
+        - {x: -210.5, y: 119}
+        - {x: -214.5, y: 119}
+        - {x: -214.5, y: -151}
+        - {x: -176.5, y: -151}
+        - {x: -214.5, y: -151}
+        - {x: -214.5, y: -157}
+        - {x: 214.5, y: -157}
+        - {x: 214.5, y: -151}
+        - {x: 175.5, y: -151}
+    - name: ComputerRabbotBack
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 753
+        width: 236
+        height: 449
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -118, y: 224.5}
+        - {x: -118, y: -224.5}
+        - {x: 118, y: -224.5}
+        - {x: 118, y: 224.5}
+    - name: ComputerRabbot
+      rect:
+        serializedVersion: 2
+        x: 668
+        y: 879
+        width: 183
+        height: 323
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 74.5, y: 134.5}
+        - {x: 51.5, y: 161.5}
+        - {x: 38.5, y: 161.5}
+        - {x: 29.5, y: 143.5}
+        - {x: -5.5, y: 83.5}
+        - {x: -38.5, y: 161.5}
+        - {x: -50.5, y: 161.5}
+        - {x: -73.5, y: 134.5}
+        - {x: -91.5, y: -35.5}
+        - {x: -91.5, y: -58.5}
+        - {x: -66.5, y: -74.5}
+        - {x: -91.5, y: -79.5}
+        - {x: -91.5, y: -161.5}
+        - {x: 91.5, y: -161.5}
+        - {x: 91.5, y: 9.5}
+        - {x: 74.5, y: 73.5}
+    - name: ComputerMessageBack
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 647
+        width: 405
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -202.5, y: 53}
+        - {x: -202.5, y: -53}
+        - {x: 201.5, y: -53}
+        - {x: 202.5, y: -52}
+        - {x: 202.5, y: 52}
+        - {x: 201.5, y: 53}
+    - name: ComputerMessageLines
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 647
+        width: 405
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -202.5, y: 53}
+        - {x: -202.5, y: -53}
+        - {x: 201.5, y: -53}
+        - {x: 202.5, y: -52}
+        - {x: 202.5, y: 52}
+        - {x: 201.5, y: 53}
+    - name: ComputerKeyboardClose
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 569
+        width: 221
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -44.5, y: 38.5}
+        - {x: -110.5, y: -6.5}
+        - {x: -110.5, y: -38.5}
+        - {x: 110.5, y: -38.5}
+        - {x: 110.5, y: -28.5}
+        - {x: 83.5, y: 38.5}
+    - name: ComputerEnterKey_Down
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 562
+        width: 113
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -56.5, y: 39.5}
+        - {x: -56.5, y: -42.5}
+        - {x: 56.5, y: -42.5}
+        - {x: 56.5, y: 34.5}
+        - {x: 47.5, y: 39.5}
+    - name: ComputerEnterKey
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 562
+        width: 113
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -56.5, y: 42.5}
+        - {x: -56.5, y: -42.5}
+        - {x: 56.5, y: -42.5}
+        - {x: 56.5, y: 42.5}
+    - name: ComputerSpaceKey_Down
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 562
+        width: 112
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -56, y: 39.5}
+        - {x: -56, y: -42.5}
+        - {x: 56, y: -42.5}
+        - {x: 56, y: 39.5}
+    - name: ComputerSpaceKey
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 562
+        width: 112
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -49, y: 42.5}
+        - {x: -53, y: 38.5}
+        - {x: -56, y: 34.5}
+        - {x: -56, y: -42.5}
+        - {x: 56, y: -42.5}
+        - {x: 56, y: 36.5}
+        - {x: 50, y: 42.5}
+    - name: ComputerStick
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 401
+        width: 63
+        height: 132
+      alignment: 9
+      pivot: {x: 0.5, y: -0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -19.5, y: 171.6}
+        - {x: -31.5, y: 161.6}
+        - {x: -31.5, y: 82.600006}
+        - {x: -16.5, y: 39.600006}
+        - {x: 15.5, y: 39.600006}
+        - {x: 20.5, y: 50.600006}
+        - {x: 31.5, y: 89.600006}
+        - {x: 31.5, y: 171.6}
+    - name: ComputerDeleteKey_Down
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 448
+        width: 91
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -39.5, y: 39.5}
+        - {x: -45.5, y: 32.5}
+        - {x: -45.5, y: -40.5}
+        - {x: -43.5, y: -42.5}
+        - {x: 43.5, y: -42.5}
+        - {x: 45.5, y: -40.5}
+        - {x: 45.5, y: 30.5}
+        - {x: 40.5, y: 39.5}
+    - name: ComputerDeleteKey
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 448
+        width: 91
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -40.5, y: 42.5}
+        - {x: -45.5, y: 36.5}
+        - {x: -45.5, y: -42.5}
+        - {x: 45.5, y: -42.5}
+        - {x: 45.5, y: 38.5}
+        - {x: 41.5, y: 42.5}
+    - name: ComputerKey_Down
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 448
+        width: 91
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -45.5, y: 38.5}
+        - {x: -45.5, y: -42.5}
+        - {x: 45.5, y: -42.5}
+        - {x: 45.5, y: 34.5}
+        - {x: 40.5, y: 38.5}
+    - name: ComputerKey
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 448
+        width: 91
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -45.5, y: 42.5}
+        - {x: -45.5, y: -42.5}
+        - {x: 45.5, y: -42.5}
+        - {x: 45.5, y: 42.5}
+    - name: ComputerAsteroid
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 479
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -26, y: 27}
+        - {x: -27, y: 25}
+        - {x: -27, y: -26}
+        - {x: -25, y: -27}
+        - {x: 27, y: -27}
+        - {x: 27, y: 27}
+    - name: ComputerRabbotGame
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 466
+        width: 40
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 20, y: -14.5}
+        - {x: 20, y: 8.5}
+        - {x: 14, y: 33.5}
+        - {x: -18, y: 33.5}
+        - {x: -20, y: 21.5}
+        - {x: -20, y: -14.5}
+        - {x: -12, y: -14.5}
+        - {x: -10, y: -12.5}
+        - {x: -10, y: -14.5}
+        - {x: -16, y: -14.5}
+        - {x: -18, y: -16.5}
+        - {x: -18, y: -33.5}
+        - {x: 18, y: -33.5}
+        - {x: 19, y: -15.5}
+        - {x: 16, y: -14.5}
+    - name: ComputerDot
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 501
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 16}
+        - {x: -16, y: 11}
+        - {x: -16, y: -13}
+        - {x: -15, y: -16}
+        - {x: 13, y: -16}
+        - {x: 16, y: -15}
+        - {x: 16, y: 11}
+        - {x: 11, y: 16}
+    - name: ComputerHair1
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 505
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerHare2
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 505
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerQ
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 613
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16.5, y: 16.5}
+        - {x: -16.5, y: -16.5}
+        - {x: 16.5, y: -16.5}
+        - {x: 16.5, y: 14.5}
+        - {x: 15.5, y: 16.5}
+    - name: ComputerW
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 614
+        width: 39
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerE
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 616
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerR
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 614
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerT
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 615
+        width: 24
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerY
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 613
+        width: 27
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerU
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 615
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerI
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 614
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerO
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 614
+        width: 33
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14.5, y: 16}
+        - {x: -16.5, y: 11}
+        - {x: -16.5, y: -16}
+        - {x: 15.5, y: -16}
+        - {x: 16.5, y: -13}
+        - {x: 16.5, y: 14}
+        - {x: 13.5, y: 16}
+    - name: ComputerP
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 615
+        width: 25
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerL
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 577
+        width: 22
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerK
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 575
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerJ
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 575
+        width: 24
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerH
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 576
+        width: 25
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerG
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 575
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerF
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 578
+        width: 18
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerD
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 575
+        width: 26
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerS
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 574
+        width: 28
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerA
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 578
+        width: 26
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerZ
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 537
+        width: 23
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerX
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 537
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerC
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 537
+        width: 28
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerV
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 534
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerB
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 534
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerN
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 533
+        width: 24
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ComputerM
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 536
+        width: 36
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
