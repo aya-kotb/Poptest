@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - DoorButton
+  - InControl
+  - PrimaryPlayerCollider
+  - Settings
+  - Pupil
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Characters
+  - Environment
+  - Platforms
+  - FX
+  - Ragdoll
+  - Background
+  - CharacterBody
+  - NPCBody
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Backdrop
+    uniqueID: 1986060483
+    locked: 0
+  - name: Background
+    uniqueID: 3902705019
+    locked: 0
+  - name: Interactive
+    uniqueID: 3676826969
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 4294417437
+    locked: 0
+  - name: Popup
+    uniqueID: 3171597815
+    locked: 0
