@@ -11,10 +11,6 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
 	public class IslandInformationPanel : MonoBehaviour {
 
-		public Button playButton;
-		public Button restartButton;
-		public Button videoTrailerButton;
-		public Button closeButton;
 		public Toggle[] difficultyToggle;
 		public Image progressBarImage;
 		public Text progressText;
@@ -36,13 +32,12 @@ namespace Poptropica2.IslandSystem
 		// Use this for initialization
 		void Start () {
             islandSystemManager = SAMApplication.mainInstance.GetService<IslandSystemManager>();
-			AssignButtonListener ();
 			ShowPanel ();
 		}
 		
 		public void InitalizeIslandInformation ()
 		{
-            MapHandler.IslandDetail islandDetail = islandSystemManager.mapHandler.currentItem.itemDetail as MapHandler.IslandDetail;
+            MapHandler.IslandDetail islandDetail = islandSystemManager.mapHandler.currentItem.itemInfo as MapHandler.IslandDetail;
 			ProgressBarTransaction (islandDetail.progress);
 			DifficultyTransaction (islandDetail.difficulty);
 			trophyText.text = islandDetail.trophy.ToString ();
@@ -67,37 +62,37 @@ namespace Poptropica2.IslandSystem
 			ShowTransaction ();
 		}
 
-		#region Button Click Events
-
-		void AssignButtonListener ()
-		{
-			playButton.onClick.AddListener (OnClickPlayButton);
-			restartButton.onClick.AddListener (OnClickRestartButton);
-			videoTrailerButton.onClick.AddListener (OnClickVideoTrailerButton);
-			closeButton.onClick.AddListener (OnClickClosePanelButton);
-		}
-
-		void OnClickPlayButton ()
+        /// <summary>
+        /// Raises the click play button event.
+        /// </summary>
+		public void OnClickPlayButton ()
 		{
             islandSystemManager.VisitIsland();
 		}
 
-		void OnClickRestartButton ()
+        /// <summary>
+        /// Raises the click restart button event.
+        /// </summary>
+		public void OnClickRestartButton ()
 		{
 			Debug.Log ("On Click Restart Button.");
         }
 
-        void OnClickVideoTrailerButton ()
+        /// <summary>
+        /// Raises the click video trailer button event.
+        /// </summary>
+        public void OnClickVideoTrailerButton ()
         {
             islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.VideoTrailer);
 		}
 
-		void OnClickClosePanelButton ()
+        /// <summary>
+        /// Raises the click close panel button event.
+        /// </summary>
+		public void OnClickClosePanelButton ()
 		{
 			HideTransaction ();
 		}
-
-		#endregion
 
 		#region UI Transaction
 

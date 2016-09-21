@@ -20,6 +20,9 @@ namespace Poptropica2.IslandSystem
 			InitializeComponent ();
 		}
 		
+        /// <summary>
+        /// This method used for Initialising the variables and properties.
+        /// </summary>
 		public override void InitializeComponent ()
 		{
             if (canSelect)
@@ -38,7 +41,10 @@ namespace Poptropica2.IslandSystem
 			base.InitializeComponent ();
 		}
 
-		public override void OnClickItem ()
+        /// <summary>
+        /// This method is called when cloud is selected.
+        /// </summary>
+        public override void OnClickItem ()
 		{
 			if (canSelect == false)
 			{
@@ -48,9 +54,14 @@ namespace Poptropica2.IslandSystem
 			UnluckArea ();
 		}
 
-		public override void InitializeMapItem (object id)
+        /// <summary>
+        /// Initializes the map item.
+        /// This method is used for storing the information or details of item
+        /// </summary>
+        /// <param name="info">Pass the Information of item.</param>
+		public override void InitializeMapItem (object info)
 		{
-			base.InitializeMapItem (id);
+			base.InitializeMapItem (info);
 		}
 
 		/// <summary>

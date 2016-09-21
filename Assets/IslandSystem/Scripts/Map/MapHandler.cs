@@ -34,6 +34,8 @@ namespace Poptropica2.IslandSystem
 			public float progress;	// Progress made in the island.
 		}
 
+        #region Getting DUMMY information
+
 		/// <summary>
 		/// Initialize map items.
 		/// The following is used for initializing all the variables 
@@ -70,5 +72,7 @@ namespace Poptropica2.IslandSystem
 
 			return null;
 		}
+
+        #endregion Getting DUMMY information
 	}
 }

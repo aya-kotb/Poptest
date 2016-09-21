@@ -10,8 +10,6 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
 	public class ClearAreaPanel : MonoBehaviour {
 
-		public Button yesButton;
-		public Button noButton;
 		public Text coinValueText;
 		public RectTransform childPanel;
 		public RectTransform semiTransparentScreen;
@@ -25,7 +23,6 @@ namespace Poptropica2.IslandSystem
 
             Cloud cloud = islandSystemManager.mapHandler.currentItem as Cloud;
             InitializeClearArea(cloud.itemValue);
-			AssignButtonListener ();
 			ShowTransaction ();
 		}
 
@@ -39,14 +36,6 @@ namespace Poptropica2.IslandSystem
 			coinValueText.text = coinValue.ToString ();
 		}
 
-		#region Button Click Events
-
-		void AssignButtonListener ()
-		{
-			yesButton.onClick.AddListener (OnClickYesButton);
-			noButton.onClick.AddListener (OnClickNoButton);
-		}
-		
 		/// <summary>
 		/// When Yes button is pressed for Clear Area this function is called.
 		/// Unlock the area from map and reduce the coin.
@@ -67,8 +56,6 @@ namespace Poptropica2.IslandSystem
 			HideTransaction (false);
 		}
 
-		#endregion
-
 		/// <summary>
 		/// Show the Clear Area Panel with transaction effect.
 		/// </summary>
@@ -88,7 +75,7 @@ namespace Poptropica2.IslandSystem
 			LeanTween.scale (childPanel, Vector3.zero, 0.5f).setOnComplete(OnCompleteTransaction).setOnCompleteParam(canClear);
 		}
 
-		void OnCompleteTransaction (object canClear)
+        void OnCompleteTransaction (object canClear)
 		{
 			if ((bool)canClear)
 			{

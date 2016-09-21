@@ -9,16 +9,6 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
 	public class IslandSystemUIHandler : MonoBehaviour {
 
-        /*public static IslandSystemUIHandler Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}*/
-
-//		static IslandSystemUIHandler instance;
-
 		public enum PanelState
 		{
 			None,
@@ -32,18 +22,6 @@ namespace Poptropica2.IslandSystem
 		public GameObject clearMapAreaObject;
         public GameObject mapSpecialObject;
         public GameObject videoTrailerPanel;
-
-		void Awake ()
-		{
-//			if (instance == null)
-//			{
-//				instance = this;
-//			}
-//			else
-//			{
-//				DestroyImmediate (this);
-//			}
-		}
 
 		// Use this for initialization
 		void Start () {

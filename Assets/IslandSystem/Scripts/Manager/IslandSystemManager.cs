@@ -9,16 +9,6 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
     public class IslandSystemManager : MonoBehaviour, IService
 	{
-        /*public static IslandSystemManager Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}*/
-
-//		static IslandSystemManager instance;
-
 		public Camera mapCamera;
 		public IslandSystemUIHandler islandSystemUI;
 		public MapHandler mapHandler;
@@ -29,15 +19,6 @@ namespace Poptropica2.IslandSystem
 		void Awake ()
 		{
             SAMApplication.mainInstance.AddService("IslandSystemManager", this);
-
-//			if (instance == null)
-//			{
-//				instance = this;
-//			}
-//			else
-//			{
-//				DestroyImmediate (this);
-//			}
 		}
 		
 		// Use this for initialization
@@ -56,7 +37,6 @@ namespace Poptropica2.IslandSystem
 		{
 			string sceneName = SceneName(mapHandler.currentItem.GetItemDetail<MapHandler.IslandDetail>().name);
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-//            SceneLoadManager.LoadScene(sceneName);
 		}
 
         /// <summary>

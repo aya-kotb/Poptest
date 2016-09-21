@@ -18,16 +18,21 @@ namespace Poptropica2.IslandSystem
 		public bool canSelect = false;
 		protected int itemID;
         protected IslandSystemManager islandSystemManager;
-		public object itemDetail;
+		public object itemInfo;
 
 		// Use this for initialization
 		void Start () {
 			
 		}
 
-		public virtual void InitializeMapItem (object detail)
+        /// <summary>
+        /// Initializes the map item.
+        /// This method is used for storing the information or details of item
+        /// </summary>
+        /// <param name="info">Pass the Information of item.</param>
+		public virtual void InitializeMapItem (object info)
 		{
-			itemDetail = detail;
+			itemInfo = info;
 		}
 
 		/// <summary>
@@ -45,11 +50,12 @@ namespace Poptropica2.IslandSystem
 				gameObject.AddComponent<Utility.IgnoreImageAlpha> ();
 			}
 		}
-		
+
 		/// <summary>
 		/// Raises the click item event.
+        /// This method is called when Map item is selected.
 		/// </summary>
-		public virtual void OnClickItem ()
+        public virtual void OnClickItem ()
 		{
             
 		}
@@ -62,7 +68,7 @@ namespace Poptropica2.IslandSystem
 		/// <typeparam name="T">Can be any class like IslandDetail.</typeparam>
 		public T GetItemDetail<T> () where T : class
 		{
-			return itemDetail as T;
+			return itemInfo as T;
 		}
 	}
 }

@@ -22,11 +22,17 @@ namespace Poptropica2.IslandSystem
 			InitializeComponent ();
 		}
 
+        /// <summary>
+        /// This method used for Initialising the variables and properties.
+        /// </summary>
 		public override void InitializeComponent ()
 		{
 			base.InitializeComponent ();
 		}
 
+        /// <summary>
+        /// This method is called when island is selected.
+        /// </summary>
 		public override void OnClickItem ()
 		{
 			if (canSelect == false)
@@ -37,6 +43,11 @@ namespace Poptropica2.IslandSystem
             MoveBlimp ();
 		}
 
+        /// <summary>
+        /// Initializes the map item.
+        /// This method is used for storing the information or details of item
+        /// </summary>
+        /// <param name="info">Pass the Information of item.</param>
 		public override void InitializeMapItem (object islandDetail)
 		{
 			this.islandDetail = islandDetail as MapHandler.IslandDetail;
@@ -54,6 +65,9 @@ namespace Poptropica2.IslandSystem
             islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.IslandInformation);
 		}
 
+        /// <summary>
+        /// Moves the blimp to the selected island position.
+        /// </summary>
         void MoveBlimp ()
         {
             islandSystemManager.mapHandler.blimp.MoveBlimp(transform, ViewIsland);

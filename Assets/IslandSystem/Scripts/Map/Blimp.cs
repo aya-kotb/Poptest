@@ -8,6 +8,7 @@ namespace Poptropica2.IslandSystem
     /// Blimp.
     /// This Blimp class controls the Blimp object.
     /// It moves the Blimp object towards the position where mouse is clicked.
+    /// And towards the given target
     /// </summary>
     public class Blimp : MonoBehaviour {
 
@@ -22,16 +23,6 @@ namespace Poptropica2.IslandSystem
             image = GetComponent<Image>();
         }
         
-        // Update is called once per frame
-        void Update () {
-            /*if (Input.GetMouseButtonUp(0))
-            {
-                Vector3 mousePos = MapCamera.Instance.mapCamera.ScreenToWorldPoint(CheckForBoundary(Input.mousePosition));
-                mousePos.z = this.transform.position.z;
-                LeanTween.move(gameObject, mousePos, 10f).setEase(leanTweentype).setSpeed(speed);
-            }*/
-        }
-
         /// <summary>
         /// Moves the blimp.
         /// This method command the blimp to move
