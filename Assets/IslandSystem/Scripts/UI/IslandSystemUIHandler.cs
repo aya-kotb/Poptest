@@ -9,38 +9,40 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
 	public class IslandSystemUIHandler : MonoBehaviour {
 
-		public static IslandSystemUIHandler Instance
+        /*public static IslandSystemUIHandler Instance
 		{
 			get
 			{
 				return instance;
 			}
-		}
+		}*/
 
-		static IslandSystemUIHandler instance;
+//		static IslandSystemUIHandler instance;
 
 		public enum PanelState
 		{
 			None,
 			IslandInformation,
-			ClearArea
+			ClearArea,
+            MapSpecial,
+            VideoTrailer
 		}
 
 		public GameObject islandInformationObject;
 		public GameObject clearMapAreaObject;
-
-		PanelState currentPanelState;
+        public GameObject mapSpecialObject;
+        public GameObject videoTrailerPanel;
 
 		void Awake ()
 		{
-			if (instance == null)
-			{
-				instance = this;
-			}
-			else
-			{
-				DestroyImmediate (this);
-			}
+//			if (instance == null)
+//			{
+//				instance = this;
+//			}
+//			else
+//			{
+//				DestroyImmediate (this);
+//			}
 		}
 
 		// Use this for initialization
@@ -48,6 +50,11 @@ namespace Poptropica2.IslandSystem
 			
 		}
 		
+        /// <summary>
+        /// Open the user interface panel.
+        /// This method instatiate the panel and show in the screen.
+        /// </summary>
+        /// <param name="state">enum panel state (IslandSystemUIHandler.PanelState).</param>
 		public void SwitchUIPanel (PanelState state)
 		{
 			//Disable the map camera control.
@@ -70,9 +77,22 @@ namespace Poptropica2.IslandSystem
 						go.SetActive (true);
 					}
 					break;
-			}
 
-			currentPanelState = state;
+                case PanelState.MapSpecial:
+                    {
+                        GameObject go = Instantiate (mapSpecialObject);
+                        go.transform.SetParent (this.transform, false);
+                        go.SetActive (true);
+                    }
+                    break;
+                case PanelState.VideoTrailer:
+                    {
+                        GameObject go = Instantiate (videoTrailerPanel);
+                        go.transform.SetParent (this.transform, false);
+                        go.SetActive (true);
+                    }
+                    break;
+			}
 		}
 	}
 }

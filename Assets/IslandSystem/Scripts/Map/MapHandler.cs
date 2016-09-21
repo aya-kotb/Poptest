@@ -15,8 +15,9 @@ namespace Poptropica2.IslandSystem
 		public Cloud[] cloud;
 		public TreasureChest[] chest;
 
-		public MapItem currentItem;
+        [HideInInspector] public MapItem currentItem;
 		public MapItem homeIsland;
+        public Blimp blimp;
 
 		// Use this for initialization
 		void Start () {
@@ -33,28 +34,14 @@ namespace Poptropica2.IslandSystem
 			public float progress;	// Progress made in the island.
 		}
 
-		public class CloudDetail
-		{
-			public int id;			// Cloud ID
-			public int value;		// Coin value to clear the area.
-			public bool canClear;	// Whether the cloud can be cleared by using coins.
-		}
-
-		public class TreasureChestDetail
-		{
-			public enum ChestType
-			{
-				Ads,
-				Treasure,
-				Quest
-			}
-
-			public int id;			// Chest ID
-			public ChestType type;	// Type of rewards inside chest.
-		}
-
+		/// <summary>
+		/// Initialize map items.
+		/// The following is used for initializing all the variables 
+		/// and items which comes under map.
+		/// </summary>
 		public void InitializeMapItems ()
 		{
+			// gettting dummy island details...
 			List<IslandDetail> islandDetailList = MapDetails.GetAvailableIslands ();
 			for (int i = 0; i < islandDetailList.Count; i++)
 			{
@@ -65,6 +52,12 @@ namespace Poptropica2.IslandSystem
 			}
 		}
 
+		/// <summary>
+		/// Gets the island by island id.
+		/// in map Island ID is predefined in gameobject
+		/// </summary>
+		/// <returns>The island in map.</returns>
+		/// <param name="id">pass Island Identifier.</param>
 		Island GetIsland (int id)
 		{
 			for (int i = 0; i < island.Length; i++)
@@ -77,10 +70,5 @@ namespace Poptropica2.IslandSystem
 
 			return null;
 		}
-
-//		Cloud GetCloud (int id)
-//		{
-//			
-//		}
 	}
 }

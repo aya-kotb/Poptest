@@ -15,5 +15,15 @@ EditorBuildSettings:
     path: Assets/SFXModule/Scenes/IslandScoreTestScene2.unity
   - enabled: 0
     path: Assets/SFXModule/Scenes/SFXModuleScene.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Islands/Scenes/MainScene.unity
+  - enabled: 1
+    path: Assets/IslandSystem/Scenes/IslandSystem.unity
+  - enabled: 1
+    path: Assets/IslandSystem/Example/Scenes/24Carrot.unity
+  - enabled: 1
+    path: Assets/IslandSystem/Example/Scenes/CrisisCaverns.unity
+  - enabled: 1
+    path: Assets/IslandSystem/Example/Scenes/HomeIsland.unity
+  - enabled: 1
+    path: Assets/IslandSystem/Example/Scenes/LostPirates.unity

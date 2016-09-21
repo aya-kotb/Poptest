@@ -15,7 +15,6 @@ namespace Poptropica2.IslandSystem
 		// Use this for initialization
 		void Start () {
 			InitializeComponent ();
-			itemID = chestID;
 		}
 		
 		public override void InitializeComponent ()
@@ -43,7 +42,8 @@ namespace Poptropica2.IslandSystem
 		/// </summary>
 		void OpenChest ()
 		{
-			Debug.Log ("Open Chest");
+            islandSystemManager.mapHandler.currentItem = this;
+            islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.MapSpecial);
 		}
 	}
 }

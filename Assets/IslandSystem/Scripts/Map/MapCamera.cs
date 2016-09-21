@@ -29,7 +29,7 @@ namespace Poptropica2.IslandSystem
 			{
 				if (this.camera == null)
 				{
-					this.camera = IslandSystemManager.Instance.mapCamera;
+                    this.camera = SAMApplication.mainInstance.GetService<IslandSystemManager>().mapCamera;
 				}
 				return this.camera;
 			}
@@ -46,62 +46,18 @@ namespace Poptropica2.IslandSystem
 		
 		static MapCamera instance;
 		Camera camera;
-		Transform previousMapItem;
-		Vector2 previousCameraPosition;
-		float previousCameraOrtho;
-		
+
 		// Use this for initialization
 		void Start () {
+			
 		}
 
 		/// <summary>
-		/// Zooms the camera.
-		/// Camera orthographics will resized to focus on selected target.
-		/// </summary>
-		/// <param name="target">Selected Target</param>
-		public void ZoomIn (Transform target)
-		{
-			previousCameraPosition = new Vector2 (mapCamera.transform.position.x, mapCamera.transform.position.y);
-			previousCameraOrtho = mapCamera.orthographicSize;
-
-			// Keeping previous target for zooming out
-			previousMapItem = target;
-
-			// Zoom in camera
-			float orthoSize = Instance.mapCamera.orthographicSize;
-			orthoSize -= 2.5f;
-			// Sending negative value for Zooming In. Positive value for Zooming Out.
-			orthoSize *= -1f;
-			CameraContoller.Zoom (orthoSize, 0.5f, EaseType.EaseOut);
-
-			// Move camera to target position
-			Vector2 cameraPosition = new Vector2 (previousMapItem.position.x, previousMapItem.position.y);
-			CameraContoller.MoveCameraInstantlyToPosition (cameraPosition);
-
-			ToggleCameraControl (false);
-		}
-
-		public void ZoomOut ()
-		{
-			ToggleCameraControl (true);
-
-			// Move camera to target position
-//			Vector2 cameraPosition = new Vector2 (previousMapItem.position.x, previousMapItem.position.y);
-//			Vector2 cameraPosition = new Vector2 (0, 0);
-			CameraContoller.MoveCameraInstantlyToPosition (previousCameraPosition);
-//			CameraContoller.MoveCameraInstantlyToPosition (CameraContoller.CameraTargetPosition);
-
-			// Zoom out camera to previous position.
-			float orthoSize = Instance.mapCamera.orthographicSize;
-			orthoSize = previousCameraOrtho - orthoSize;
-			CameraContoller.Zoom (orthoSize, 0.5f, EaseType.EaseOut);
-		}
-
-		/// <summary>
-		/// Toogles the camera movement.
-		/// Can stop the camera Zooming and Movement when Popup UI is enabled
+		/// Toogles the camera contol. This function is called to
+		/// toggle the map camera control like zooming and panning.
 		/// </summary>
 		/// <param name="enable">If set to <c>true</c> enable camera zooming and panning.</param>
+		/// <param name="enable">If set to <c>false</c> disable camera zooming and panning.</param>
 		public void ToggleCameraControl (bool enable)
 		{
 			CameraContoller.enabled = enable;

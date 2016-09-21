@@ -9,17 +9,32 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
 	public class Cloud : MapItem {
 
-		public int cloudID;
+        public int itemValue;
 		public MapItem lockedItem;
+
+        public GameObject displayCoin;
+        public Text coinText;
 
 		// Use this for initialization
 		void Start () {
 			InitializeComponent ();
-			itemID = cloudID;
 		}
 		
 		public override void InitializeComponent ()
 		{
+            if (canSelect)
+            {
+                displayCoin.SetActive(true);
+                coinText.text = itemValue.ToString();
+            }
+            else
+            {
+                if (displayCoin != null)
+                {
+                    displayCoin.SetActive(false);
+                }
+            }
+
 			base.InitializeComponent ();
 		}
 
@@ -44,10 +59,8 @@ namespace Poptropica2.IslandSystem
 		void UnluckArea ()
 		{
 			// Only some of the cloud/area can be cleared.
-			IslandSystemManager.Instance.mapHandler.currentItem = this;
-			IslandSystemUIHandler.Instance.SwitchUIPanel (IslandSystemUIHandler.PanelState.ClearArea);
+            islandSystemManager.mapHandler.currentItem = this;
+            islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.ClearArea);
 		}
-
-
 	}
 }

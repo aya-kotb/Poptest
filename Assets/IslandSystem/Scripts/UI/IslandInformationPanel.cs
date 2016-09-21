@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 namespace Poptropica2.IslandSystem
 {
@@ -24,6 +25,7 @@ namespace Poptropica2.IslandSystem
 
 		public float transactionTime = 1f;
 
+        IslandSystemManager islandSystemManager;
 		RectTransform selectedIsland;
 		Vector3 previousIslandPosition;
 		Vector3 previousIslandScale;
@@ -33,13 +35,14 @@ namespace Poptropica2.IslandSystem
 
 		// Use this for initialization
 		void Start () {
+            islandSystemManager = SAMApplication.mainInstance.GetService<IslandSystemManager>();
 			AssignButtonListener ();
 			ShowPanel ();
 		}
 		
 		public void InitalizeIslandInformation ()
 		{
-			MapHandler.IslandDetail islandDetail = IslandSystemManager.Instance.mapHandler.currentItem.itemDetail as MapHandler.IslandDetail;
+            MapHandler.IslandDetail islandDetail = islandSystemManager.mapHandler.currentItem.itemDetail as MapHandler.IslandDetail;
 			ProgressBarTransaction (islandDetail.progress);
 			DifficultyTransaction (islandDetail.difficulty);
 			trophyText.text = islandDetail.trophy.ToString ();
@@ -47,7 +50,7 @@ namespace Poptropica2.IslandSystem
 
 		void ShowPanel ()
 		{
-			GameObject go = Instantiate (IslandSystemManager.Instance.mapHandler.currentItem.gameObject);
+            GameObject go = Instantiate (islandSystemManager.mapHandler.currentItem.gameObject);
 			selectedIsland = go.GetComponent<RectTransform> ();
 
 			previousIslandPosition = selectedIsland.anchoredPosition3D;
@@ -76,23 +79,21 @@ namespace Poptropica2.IslandSystem
 
 		void OnClickPlayButton ()
 		{
-			Debug.Log ("On Click Play Button.");
+            islandSystemManager.VisitIsland();
 		}
 
 		void OnClickRestartButton ()
 		{
 			Debug.Log ("On Click Restart Button.");
-		}
+        }
 
-		void OnClickVideoTrailerButton ()
-		{
-			Debug.Log ("On Click Video railer Button.");
+        void OnClickVideoTrailerButton ()
+        {
+            islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.VideoTrailer);
 		}
 
 		void OnClickClosePanelButton ()
 		{
-			Debug.Log ("On Click Close Panel Button");
-
 			HideTransaction ();
 		}
 

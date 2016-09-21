@@ -16,10 +16,15 @@ namespace Poptropica2.IslandSystem
 		public RectTransform childPanel;
 		public RectTransform semiTransparentScreen;
 
-		int lockID;
+        IslandSystemManager islandSystemManager;
 
 		// Use this for initialization
 		void Start () {
+
+            islandSystemManager = SAMApplication.mainInstance.GetService<IslandSystemManager>();
+
+            Cloud cloud = islandSystemManager.mapHandler.currentItem as Cloud;
+            InitializeClearArea(cloud.itemValue);
 			AssignButtonListener ();
 			ShowTransaction ();
 		}
@@ -29,10 +34,9 @@ namespace Poptropica2.IslandSystem
 		/// </summary>
 		/// <param name="coinValue">Coin value.</param>
 		/// <param name="lockerId">Locker/Cloud ID.</param>
-		public void InitializeClearArea (int coinValue, int lockId)
+		public void InitializeClearArea (int coinValue)
 		{
 			coinValueText.text = coinValue.ToString ();
-			lockID = lockId;
 		}
 
 		#region Button Click Events
@@ -70,6 +74,7 @@ namespace Poptropica2.IslandSystem
 		/// </summary>
 		void ShowTransaction ()
 		{
+            childPanel.transform.localScale = Vector3.zero;
 			LeanTween.alpha (semiTransparentScreen, 0.5f, 0.5f);
 			LeanTween.scale (childPanel, Vector3.one, 0.5f);
 		}
@@ -87,7 +92,7 @@ namespace Poptropica2.IslandSystem
 		{
 			if ((bool)canClear)
 			{
-				Cloud cloud = IslandSystemManager.Instance.mapHandler.currentItem as Cloud;
+                Cloud cloud = islandSystemManager.mapHandler.currentItem as Cloud;
 				// if not null the selected map item is cloud
 				if (cloud != null)
 				{
@@ -96,7 +101,7 @@ namespace Poptropica2.IslandSystem
 				}
 
 				// Remove cloud area from map.
-				Destroy (IslandSystemManager.Instance.mapHandler.currentItem.gameObject);
+                Destroy (islandSystemManager.mapHandler.currentItem.gameObject);
 			}
 
 			Destroy (gameObject);

@@ -12,7 +12,7 @@ namespace Poptropica2.IslandSystem
 		public int islandID;
 		public Text islandNameText;
 		public MapHandler.IslandDetail islandDetail;
-
+	
 		void Awake () {
 			itemID = islandID;
 		}
@@ -34,7 +34,7 @@ namespace Poptropica2.IslandSystem
 				return;
 			}
 
-			ViewIsland ();
+            MoveBlimp ();
 		}
 
 		public override void InitializeMapItem (object islandDetail)
@@ -50,28 +50,13 @@ namespace Poptropica2.IslandSystem
 		/// </summary>
 		void ViewIsland ()
 		{
-			IslandSystemManager.Instance.mapHandler.currentItem = this;
-			IslandSystemUIHandler.Instance.SwitchUIPanel (IslandSystemUIHandler.PanelState.IslandInformation);
+            islandSystemManager.mapHandler.currentItem = this;
+            islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.IslandInformation);
 		}
 
-		/// <summary>
-		/// Get Character ID is a dummy function for getting character id
-		/// which we need while calling Island api.
-		/// </summary>
-		void GetCharacterID ()
-		{
-			GameSparksManager.Instance ().Authenticate ("sujil_01", "12345", HandleonAuthSuccess, HandleonAuthFailed);
-		}
-
-		void HandleonAuthSuccess (AuthResponse authResponse)
-		{
-//			GameSparksManager.Instance ().CreateCharacter ("")
-		}
-
-		void HandleonAuthFailed (AuthFailed error)
-		{
-			
-		}
-
+        void MoveBlimp ()
+        {
+            islandSystemManager.mapHandler.blimp.MoveBlimp(transform, ViewIsland);
+        }
 	}
 }
