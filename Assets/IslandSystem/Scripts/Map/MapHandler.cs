@@ -27,7 +27,7 @@ namespace Poptropica2.IslandSystem
 		[System.Serializable]
 		public class IslandDetail
 		{
-			public int id;			// Island ID
+            public string id;			// Island ID
 			public int difficulty;	// Number od difficulty.
 			public int trophy;		// Total trophy achieved.
 			public string name;		// Name of the island.
@@ -60,7 +60,7 @@ namespace Poptropica2.IslandSystem
 		/// </summary>
 		/// <returns>The island in map.</returns>
 		/// <param name="id">pass Island Identifier.</param>
-		Island GetIsland (int id)
+        Island GetIsland (string id)
 		{
 			for (int i = 0; i < island.Length; i++)
 			{

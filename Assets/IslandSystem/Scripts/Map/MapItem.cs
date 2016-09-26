@@ -10,13 +10,13 @@ namespace Poptropica2.IslandSystem
     /// </summary>
 	public class MapItem : MonoBehaviour {
 
-		public int ID
+        public string ID
 		{
 			get {return itemID;}
 		}
 
 		public bool canSelect = false;
-		protected int itemID;
+		protected string itemID;
         protected IslandSystemManager islandSystemManager;
 		public object itemInfo;
 

@@ -53,7 +53,7 @@ namespace Poptropica2.IslandSystem
                 HandleonRequestFailed);
         }
 
-        void HandleonIslandVisited (int island_id)
+        void HandleonIslandVisited (string island_id)
         {
             Debug.Log("Handle on Island Visited: " + island_id);
             LoadIsland();

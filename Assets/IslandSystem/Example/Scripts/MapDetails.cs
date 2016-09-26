@@ -17,7 +17,7 @@ namespace Poptropica2.IslandSystem
 			for (int i = 0; i < 4; i++)
 			{
 				MapHandler.IslandDetail islandDetail = new MapHandler.IslandDetail ();
-				islandDetail.id = (i + 1);
+                islandDetail.id = (i + 1).ToString();
 				islandDetail.name = GetIslandName (islandDetail.id);
 				islandDetail.difficulty = (3 - i);
 				islandDetail.trophy = Random.Range (0, 10);
@@ -30,17 +30,17 @@ namespace Poptropica2.IslandSystem
 			return islandDetailList;
 		}
 
-		static string GetIslandName (int id)
+        static string GetIslandName (string id)
 		{
 			switch (id)
 			{
-				case 1:
+				case "1":
 					return "Home Island";
-				case 2:
+				case "2":
 					return "24 Carrot";
-				case 3:
+				case "3":
 					return "Crisis Caverns";
-				case 4:
+				case "4":
 					return "Lost Pirates";
 				default:
 					return "";

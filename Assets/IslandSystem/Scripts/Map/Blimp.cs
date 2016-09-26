@@ -14,8 +14,11 @@ namespace Poptropica2.IslandSystem
 
         public float speed = 10f;
         public LeanTweenType leanTweentype = LeanTweenType.easeInExpo;
+
+        MapItem targetItem;
         RectTransform rectTransform;
         Image image;
+        int leanTweenUniqueID = 0;
 
         // Use this for initialization
         void Start () {
@@ -25,14 +28,27 @@ namespace Poptropica2.IslandSystem
         
         /// <summary>
         /// Moves the blimp.
-        /// This method command the blimp to move
-        /// towards given given and Triggers callback after reaching target position.
+        /// This method command the blimp to move towards given target.
         /// </summary>
         /// <param name="target">Target for Blimp to reach.</param>
-        /// <param name="onCompleteCallback">On complete callback Handles after reaching target.</param>
-        public void MoveBlimp (Transform target, System.Action onCompleteCallback)
+        public void MoveBlimp (MapItem target)
         {
-            LeanTween.move(gameObject, target.position, 10f).setEase(leanTweentype).setSpeed(speed).setOnComplete(onCompleteCallback);
+            if (leanTweenUniqueID != 0)
+            {
+                LeanTween.cancel(leanTweenUniqueID);
+            }
+
+            this.targetItem = target;
+            leanTweenUniqueID = LeanTween.move(gameObject, target.transform.position, 10f).setEase(leanTweentype).setSpeed(speed).setOnComplete(OnCompleteMovement).uniqueId;
+        }
+
+        void OnCompleteMovement ()
+        {
+            Debug.Log(targetItem.gameObject.name);
+            Island targetIsland = targetItem as Island;
+            targetIsland.ViewIsland();
+            targetItem = null;
+            leanTweenUniqueID = 0;
         }
 
         /// <summary>

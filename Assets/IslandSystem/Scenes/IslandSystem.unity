@@ -671,7 +671,7 @@ MonoBehaviour:
   islandID: 4
   islandNameText: {fileID: 842048478}
   islandDetail:
-    id: 0
+    id: 
     difficulty: 0
     trophy: 0
     name: 
@@ -1385,7 +1385,7 @@ MonoBehaviour:
   islandID: 1
   islandNameText: {fileID: 2122695831}
   islandDetail:
-    id: 0
+    id: 
     difficulty: 0
     trophy: 0
     name: 
@@ -1831,7 +1831,7 @@ MonoBehaviour:
   islandID: 3
   islandNameText: {fileID: 1226612455}
   islandDetail:
-    id: 0
+    id: 
     difficulty: 0
     trophy: 0
     name: 
@@ -3359,7 +3359,7 @@ MonoBehaviour:
   islandID: 2
   islandNameText: {fileID: 1111099807}
   islandDetail:
-    id: 0
+    id: 
     difficulty: 0
     trophy: 0
     name: 

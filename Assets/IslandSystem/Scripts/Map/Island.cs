@@ -9,7 +9,7 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
 	public class Island : MapItem {
 
-		public int islandID;
+        public string islandID;
 		public Text islandNameText;
 		public MapHandler.IslandDetail islandDetail;
 	
@@ -59,7 +59,7 @@ namespace Poptropica2.IslandSystem
 		/// Views the detail information of island.
 		/// Create the transaction.
 		/// </summary>
-		void ViewIsland ()
+		public void ViewIsland ()
 		{
             islandSystemManager.mapHandler.currentItem = this;
             islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.IslandInformation);
@@ -70,7 +70,7 @@ namespace Poptropica2.IslandSystem
         /// </summary>
         void MoveBlimp ()
         {
-            islandSystemManager.mapHandler.blimp.MoveBlimp(transform, ViewIsland);
+            islandSystemManager.mapHandler.blimp.MoveBlimp(this);
         }
 	}
 }
