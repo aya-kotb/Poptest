@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace Poptropica2.IslandSystem
 {
 	/// <summary>
-	/// Map Handler.
 	/// This class will handle all objects belongs to map
 	/// and keep the information of all items in map.
 	/// </summary>
@@ -19,15 +18,15 @@ namespace Poptropica2.IslandSystem
 		public MapItem homeIsland;
         public Blimp blimp;
 
-		// Use this for initialization
-		void Start () {
+		void Start ()
+        {
 			InitializeMapItems ();
 		}
 
 		[System.Serializable]
 		public class IslandDetail
 		{
-            public string id;			// Island ID
+            public string id;		// Island ID
 			public int difficulty;	// Number od difficulty.
 			public int trophy;		// Total trophy achieved.
 			public string name;		// Name of the island.
@@ -38,7 +37,7 @@ namespace Poptropica2.IslandSystem
 
 		/// <summary>
 		/// Initialize map items.
-		/// The following is used for initializing all the variables 
+		/// The following method is used for initializing all the variables 
 		/// and items which comes under map.
 		/// </summary>
 		public void InitializeMapItems ()
@@ -58,8 +57,8 @@ namespace Poptropica2.IslandSystem
 		/// Gets the island by island id.
 		/// in map Island ID is predefined in gameobject
 		/// </summary>
-		/// <returns>The island in map.</returns>
-		/// <param name="id">pass Island Identifier.</param>
+		/// <returns>Island The island which is present in map.</returns>
+		/// <param name="id">string pass Island ID.</param>
         Island GetIsland (string id)
 		{
 			for (int i = 0; i < island.Length; i++)

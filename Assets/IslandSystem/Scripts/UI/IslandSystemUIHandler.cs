@@ -23,21 +23,13 @@ namespace Poptropica2.IslandSystem
         public GameObject mapSpecialObject;
         public GameObject videoTrailerPanel;
 
-		// Use this for initialization
-		void Start () {
-			
-		}
-		
         /// <summary>
         /// Open the user interface panel.
-        /// This method instatiate the panel and show in the screen.
+        /// This method instatiate the given input panel and display.
         /// </summary>
         /// <param name="state">enum panel state (IslandSystemUIHandler.PanelState).</param>
 		public void SwitchUIPanel (PanelState state)
 		{
-			//Disable the map camera control.
-			MapCamera.Instance.ToggleCameraControl (false);
-
 			switch (state)
 			{
 				case PanelState.IslandInformation:

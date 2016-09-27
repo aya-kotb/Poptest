@@ -5,7 +5,8 @@ using System.Collections;
 namespace Poptropica2.IslandSystem
 {
 	/// <summary>
-	/// Cloud class will unlock the area.
+    /// Cloud class used to hold the details of the hidden map. 
+    /// It handles unlocking of island too.
 	/// </summary>
 	public class Cloud : MapItem {
 
@@ -15,13 +16,15 @@ namespace Poptropica2.IslandSystem
         public GameObject displayCoin;
         public Text coinText;
 
-		// Use this for initialization
-		void Start () {
+		void Start ()
+        {
 			InitializeComponent ();
 		}
 		
         /// <summary>
-        /// This method used for Initialising the variables and properties.
+        /// This method is used for Initialising the variables and properties related to cloud.
+        /// Initialises the component attached within this gameobject.
+        /// Can initalise the cloud value cost for clearing.
         /// </summary>
 		public override void InitializeComponent ()
 		{
@@ -42,7 +45,7 @@ namespace Poptropica2.IslandSystem
 		}
 
         /// <summary>
-        /// This method is called when cloud is selected.
+        /// This method is triggered when cloud is selected.
         /// </summary>
         public override void OnClickItem ()
 		{
@@ -58,18 +61,17 @@ namespace Poptropica2.IslandSystem
         /// Initializes the map item.
         /// This method is used for storing the information or details of item
         /// </summary>
-        /// <param name="info">Pass the Information of item.</param>
+        /// <param name="info">object Pass the Information of item if any details has to be stored in Map item.</param>
 		public override void InitializeMapItem (object info)
 		{
 			base.InitializeMapItem (info);
 		}
 
 		/// <summary>
-		/// Unluck the selected area.
+		/// This method will call UI handler to Popup the message for Unlocing/Clearing the area.
 		/// </summary>
 		void UnluckArea ()
 		{
-			// Only some of the cloud/area can be cleared.
             islandSystemManager.mapHandler.currentItem = this;
             islandSystemManager.islandSystemUI.SwitchUIPanel (IslandSystemUIHandler.PanelState.ClearArea);
 		}

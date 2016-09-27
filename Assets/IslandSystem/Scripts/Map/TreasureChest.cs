@@ -13,12 +13,14 @@ namespace Poptropica2.IslandSystem
 		public int chestID;
 
 		// Use this for initialization
-		void Start () {
+		void Start ()
+        {
 			InitializeComponent ();
 		}
 		
         /// <summary>
         /// This method used for Initialising the variables and properties.
+        /// Initialises the component attached within this gameobject.
         /// </summary>
 		public override void InitializeComponent ()
 		{
@@ -26,7 +28,7 @@ namespace Poptropica2.IslandSystem
 		}
 
         /// <summary>
-        /// This method is called when chest is selected.
+        /// This method is triggered when chest is selected.
         /// </summary>
 		public override void OnClickItem ()
 		{
@@ -42,14 +44,14 @@ namespace Poptropica2.IslandSystem
         /// Initializes the map item.
         /// This method is used for storing the information or details of item
         /// </summary>
-        /// <param name="info">Pass the Information of item.</param>
+        /// <param name="info">object Pass the Information of item if any details has to be stored in Map item.</param>
 		public override void InitializeMapItem (object id)
 		{
 			base.InitializeMapItem (id);
 		}
 
 		/// <summary>
-		/// Opens the treasures chest.
+        /// This method will call UI handler to Popup the message for Displaying the inforamtion of treasures.
 		/// </summary>
 		void OpenChest ()
 		{

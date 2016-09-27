@@ -6,51 +6,30 @@ namespace Poptropica2.IslandSystem
     /// <summary>
     /// Video trailer panel is a UI class
     /// which contain video screen to play video.
-    /// Video implemantation is in Hold...
     /// </summary>
-    public class VideoTrailerPanel : MonoBehaviour {
-        
-        public RectTransform childPanel;
-        public RectTransform semiTransparentScreen;
-        
+    public class VideoTrailerPanel : PanelTransition
+    {
         // Use this for initialization
         void Start () {
-            ShowTransaction();
+            //UI Animation for displaying panel
+            AlphaTween(semiTransparentScreen, alpha);
+            ScaleOne(childPanel);
         }
 
         /// <summary>
-        /// Raises the click close button event.
+        /// Triggers the close button event.
         /// </summary>
         public void OnClickCloseButton ()
         {
-            HideTransaction();
+            //UI Animation for hiding panel
+            AlphaTween(semiTransparentScreen, 0);
+            ScaleZero(childPanel, this.OnCompleteTransition);
         }
 
         /// <summary>
-        /// Show the Video Panel with transaction effect.
+        /// Callback after completing UI transition effect.
         /// </summary>
-        void ShowTransaction ()
-        {
-            childPanel.transform.localScale = Vector3.zero;
-            LeanTween.alpha (semiTransparentScreen, 0.8f, 0.5f);
-            LeanTween.scale(childPanel, Vector3.one, 0.5f).setOnComplete(OnCompleteShowTransaction);
-        }
-
-        /// <summary>
-        /// Hide the Video Panel with transaction effect.
-        /// </summary>
-        void HideTransaction ()
-        {
-            LeanTween.alpha (semiTransparentScreen, 0.0f, 0.5f);
-            LeanTween.scale (childPanel, Vector3.zero, 0.5f).setOnComplete(OnCompleteHideTransaction);
-        }
-
-        void OnCompleteShowTransaction ()
-        {
-            Debug.Log("Play Video");
-        }
-
-        void OnCompleteHideTransaction ()
+        void OnCompleteTransition ()
         {
             Destroy (gameObject);
         }

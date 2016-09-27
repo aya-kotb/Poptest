@@ -7,44 +7,29 @@ namespace Poptropica2.IslandSystem
     /// Map special panel will show the speacil items achieved
     /// The UI view is dummy.
     /// </summary>
-    public class MapSpecialPanel : MonoBehaviour {
-        
-        public RectTransform childPanel;
-        public RectTransform semiTransparentScreen;
+    public class MapSpecialPanel : PanelTransition {
         
         // Use this for initialization
         void Start () {
-            ShowTransaction();
+            //UI Animation for displaying panel
+            AlphaTween(semiTransparentScreen, alpha);
+            ScaleOne(childPanel);
         }
         
         /// <summary>
-        /// Raises the click close button event.
+        /// Triggers the close button event.
         /// </summary>
         public void OnClickCloseButton ()
         {
-            HideTransaction();
+            //UI Animation for hiding panel
+            AlphaTween(semiTransparentScreen, alpha);
+            ScaleZero(childPanel, this.OnCompleteTransition);
         }
-        
+
         /// <summary>
-        /// Show the Map Special item panel with transaction effect.
+        /// Callback after completing UI transition effect.
         /// </summary>
-        void ShowTransaction ()
-        {
-            childPanel.transform.localScale = Vector3.zero;
-            LeanTween.alpha (semiTransparentScreen, 0.5f, 0.5f);
-            LeanTween.scale (childPanel, Vector3.one, 0.5f);
-        }
-        
-        /// <summary>
-        /// Hide the Map Special item panel with transaction effect.
-        /// </summary>
-        void HideTransaction ()
-        {
-            LeanTween.alpha (semiTransparentScreen, 0.0f, 0.5f);
-            LeanTween.scale (childPanel, Vector3.zero, 0.5f).setOnComplete(OnCompleteTransaction);
-        }
-        
-        void OnCompleteTransaction ()
+        void OnCompleteTransition ()
         {
             Destroy (gameObject);
         }

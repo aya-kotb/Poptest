@@ -241,8 +241,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b3bc7174a21493ab247b0febde4292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  childPanel: {fileID: 22469680}
+  scaleTime: 0.5
+  alpha: 0.8
+  alphaTransTime: 0.5
   semiTransparentScreen: {fileID: 22456678}
+  childPanel: {fileID: 22469680}
+  canvasGroup: {fileID: 0}
 --- !u!222 &22213458
 CanvasRenderer:
   m_ObjectHideFlags: 1

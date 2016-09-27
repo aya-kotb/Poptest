@@ -15,15 +15,20 @@ namespace Poptropica2.IslandSystem
 			get {return itemID;}
 		}
 
+        /// <summary>
+        /// If its true we can able to select or click particular map item.
+        /// </summary>
 		public bool canSelect = false;
+        /// <summary>
+        /// Map Item ID
+        /// </summary>
 		protected string itemID;
         protected IslandSystemManager islandSystemManager;
+        /// <summary>
+        /// The item info holds the information of the particular item.
+        /// the inforamtion can be any type Island inforamtion, Cloud Inormation, Treasures etc..
+        /// </summary>
 		public object itemInfo;
-
-		// Use this for initialization
-		void Start () {
-			
-		}
 
         /// <summary>
         /// Initializes the map item.
@@ -52,12 +57,11 @@ namespace Poptropica2.IslandSystem
 		}
 
 		/// <summary>
-		/// Raises the click item event.
+		/// Triggers the item event.
         /// This method is called when Map item is selected.
 		/// </summary>
         public virtual void OnClickItem ()
 		{
-            
 		}
 
 		/// <summary>

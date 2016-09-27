@@ -6,28 +6,26 @@ using UnityEngine.SceneManagement;
 namespace Poptropica2.IslandSystem
 {
 	/// <summary>
-	/// Island information panel. A panel which shows the detail information
-	/// of selected island.
+	/// Island information panel.
+    /// Panel which shows the detailed information of selected island.
 	/// </summary>
-	public class IslandInformationPanel : MonoBehaviour {
+    public class IslandInformationPanel : PanelTransition {
 
+        [Header("IslandInformation Variables")]
 		public Toggle[] difficultyToggle;
-		public Image progressBarImage;
+        public Slider progressBarSlider;
 		public Text progressText;
 		public Text trophyText;
 
-		public RectTransform lowerPanel;
-		public RectTransform semiBlackScreen;
+        [SerializeField] private float progressFillTime = 1f;
+        [SerializeField] private float lowerPanelOffsets = 120f;
 
-		public float transactionTime = 1f;
-
+        MapItem item;
         IslandSystemManager islandSystemManager;
-		RectTransform selectedIsland;
-		Vector3 previousIslandPosition;
-		Vector3 previousIslandScale;
-		Vector3 lowerPanelPosition;
-
-		MapItem item;
+        RectTransform selectedIsland;
+        Vector3 previousIslandPosition;
+        Vector3 previousIslandScale;
+        Vector3 lowerPanelPosition;
 
 		// Use this for initialization
 		void Start () {
@@ -35,14 +33,21 @@ namespace Poptropica2.IslandSystem
 			ShowPanel ();
 		}
 		
-		public void InitalizeIslandInformation ()
+        /// <summary>
+        /// Initalizes the island information.
+        /// Insert all the island details into UI 
+        /// </summary>
+		void InitalizeIslandInformation ()
 		{
             MapHandler.IslandDetail islandDetail = islandSystemManager.mapHandler.currentItem.itemInfo as MapHandler.IslandDetail;
-			ProgressBarTransaction (islandDetail.progress);
-			DifficultyTransaction (islandDetail.difficulty);
+			ProgressBarTransition (islandDetail.progress);
+			DifficultyTransition (islandDetail.difficulty);
 			trophyText.text = islandDetail.trophy.ToString ();
 		}
 
+        /// <summary>
+        /// Displays the panel with transition effect.
+        /// </summary>
 		void ShowPanel ()
 		{
             GameObject go = Instantiate (islandSystemManager.mapHandler.currentItem.gameObject);
@@ -54,16 +59,25 @@ namespace Poptropica2.IslandSystem
 			selectedIsland.transform.SetParent (transform, false);
 			selectedIsland.SetAsFirstSibling ();
 
-			lowerPanelPosition = lowerPanel.anchoredPosition3D;
+            lowerPanelPosition = childPanel.anchoredPosition3D;
 			Vector3 position = lowerPanelPosition;
-			position.y -= 120f;
-			lowerPanel.anchoredPosition3D = position;
+            position.y -= lowerPanelOffsets;
+            childPanel.anchoredPosition3D = position;
 
-			ShowTransaction ();
+            Vector3 targetPosition = new Vector3 (0, 0, selectedIsland.anchoredPosition3D.z);
+            canvasGroup.alpha = 0;
+
+            //UI Animation for displaying panel
+            MoveTween(selectedIsland, targetPosition, moveTime);
+            ScaleTo(selectedIsland, targetPosition);
+            AlphaTween(semiTransparentScreen, alpha);
+            CanvasGroupTween(canvasGroup);
+            MoveTween(childPanel, lowerPanelPosition, moveTime, InitalizeIslandInformation);
+
 		}
 
         /// <summary>
-        /// Raises the click play button event.
+        /// Triggers the play button event.
         /// </summary>
 		public void OnClickPlayButton ()
 		{
@@ -71,7 +85,7 @@ namespace Poptropica2.IslandSystem
 		}
 
         /// <summary>
-        /// Raises the click restart button event.
+        /// Triggers the restart button event.
         /// </summary>
 		public void OnClickRestartButton ()
 		{
@@ -79,7 +93,7 @@ namespace Poptropica2.IslandSystem
         }
 
         /// <summary>
-        /// Raises the click video trailer button event.
+        /// Triggers the video trailer button event.
         /// </summary>
         public void OnClickVideoTrailerButton ()
         {
@@ -87,72 +101,50 @@ namespace Poptropica2.IslandSystem
 		}
 
         /// <summary>
-        /// Raises the click close panel button event.
+        /// Triggers the close panel button event.
         /// </summary>
 		public void OnClickClosePanelButton ()
 		{
-			HideTransaction ();
+            //UI Animation for hiding panel
+            MoveTween(selectedIsland, previousIslandPosition, moveTime);
+            ScaleTo(selectedIsland, previousIslandScale);
+            AlphaTween(semiTransparentScreen, 0f);
+            CanvasGroupTween(canvasGroup, 0f);
+            Vector3 position = lowerPanelPosition;
+            position.y -= lowerPanelOffsets;
+            MoveTween(childPanel, position, moveTime, OnCompleteTransition);
 		}
 
-		#region UI Transaction
-
+        #region UI Transition
+		
 		/// <summary>
-		/// Show the Information Panel with transaction effect.
+		/// Showing transition in progress bar from 0 to ggive percantage.
+        /// And showing incremental transcation in percentage text.
 		/// </summary>
-		void ShowTransaction ()
+		/// <param name="percentage">float Island progress percentage.</param>
+		void ProgressBarTransition (float percentage)
 		{
-			Vector3 targetPosition = new Vector3 (0, 0, selectedIsland.anchoredPosition3D.z);
-
-			LeanTween.move (selectedIsland, targetPosition, transactionTime);
-			LeanTween.scale (selectedIsland, new Vector3 (2f, 2f, 1f), transactionTime);
-			LeanTween.alpha (semiBlackScreen, 1f, transactionTime);
-			LeanTween.alphaCanvas (lowerPanel.GetComponent<CanvasGroup> (), 1f, transactionTime);
-			LeanTween.move (lowerPanel, lowerPanelPosition, transactionTime).setOnComplete(InitalizeIslandInformation);
-		}
-
-		/// <summary>
-		/// Hide the Information Panel with transaction effect.
-		/// </summary>
-		void HideTransaction ()
-		{
-			LeanTween.move (selectedIsland, previousIslandPosition, transactionTime);
-			LeanTween.scale (selectedIsland, previousIslandScale, transactionTime);
-			LeanTween.alpha (semiBlackScreen, 0f, transactionTime);
-			LeanTween.alphaCanvas (lowerPanel.GetComponent<CanvasGroup> (), 0f, transactionTime);
-
-			Vector3 position = lowerPanelPosition;
-			position.y -= 120f;
-			LeanTween.move (lowerPanel, position, transactionTime).setOnComplete(OnCompleteTransaction);
-		}
-		/// <summary>
-		/// Giving transaction in progress bar.
-		/// And increasing transcation in percentage text
-		/// </summary>
-		/// <param name="percentage">Island progress percentage.</param>
-		void ProgressBarTransaction (float percentage)
-		{
-			float fillAmount = percentage / 100f;
-			if (fillAmount > 0)
+            if (percentage > 0)
 			{
-				LeanTween.value (gameObject, 0, fillAmount, (transactionTime * 2f)).setOnUpdate (
+                LeanTween.value (gameObject, 0, percentage, progressFillTime).setOnUpdate (
 					(float value) => {
-						progressBarImage.fillAmount = value;
+                        progressBarSlider.value = value;
 						progressText.text = (Mathf.RoundToInt(value * 100f)).ToString () + " %";
 					}
 				);
 			}
 			else 
 			{
-				progressBarImage.fillAmount = fillAmount;
+                progressBarSlider.value = percentage;
 				progressText.text = (Mathf.RoundToInt (percentage)).ToString () + " %";
 			}
 		}
 
 		/// <summary>
-		/// Showing transaction while showing difficulty icon.
+		/// Shows transition while showing difficulty icon.
 		/// </summary>
-		/// <param name="difficulty">Total Island Difficulty.</param>
-		void DifficultyTransaction (int difficulty)
+		/// <param name="difficulty">int Total Island Difficulty.</param>
+		void DifficultyTransition (int difficulty)
 		{
 			float delayTime = 0;
 			for (int i = 0; i < difficulty; i++)
@@ -161,15 +153,18 @@ namespace Poptropica2.IslandSystem
 				LeanTween.scale (
 					difficultyToggle [i].graphic.GetComponent<RectTransform> (),
 					Vector3.one,
-					transactionTime).setDelay (delayTime);
+					progressFillTime).setDelay (delayTime);
 
 				delayTime += 0.1f;
 			}
 		}
 
-		#endregion UI Transaction
+        #endregion UI Transition
 
-		void OnCompleteTransaction ()
+        /// <summary>
+        /// Callback after completing UI transition effect.
+        /// </summary>
+		void OnCompleteTransition ()
 		{
 			Destroy (selectedIsland.gameObject);
 			Destroy (gameObject);

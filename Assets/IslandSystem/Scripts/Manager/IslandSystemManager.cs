@@ -9,7 +9,6 @@ namespace Poptropica2.IslandSystem
 	/// </summary>
     public class IslandSystemManager : MonoBehaviour, IService
 	{
-		public Camera mapCamera;
 		public IslandSystemUIHandler islandSystemUI;
 		public MapHandler mapHandler;
 
@@ -22,11 +21,9 @@ namespace Poptropica2.IslandSystem
 		}
 		
 		// Use this for initialization
-		void Start () {
+		void Start ()
+        {
 			characterInfo = new CharacterInfo ();
-
-			//As we are using static map for now we can disable the camera control.
-			MapCamera.Instance.ToggleCameraControl (false);
 		}
 
 		/// <summary>
@@ -53,15 +50,33 @@ namespace Poptropica2.IslandSystem
                 HandleonRequestFailed);
         }
 
+        /// <summary>
+        /// This method handles by receiveing the id of the island visited
+        /// from GameSparks API.
+        /// </summary>
+        /// <param name="island_id">Island identifier.</param>
         void HandleonIslandVisited (string island_id)
         {
             Debug.Log("Handle on Island Visited: " + island_id);
             LoadIsland();
         }
 
+        /// <summary>
+        /// receives, GameSparksError, a class which contains a GameSparksErrorMessage, Enum
+        /// invalid_username, invalid_password, request_failed, request_timeout
+        /// </summary>
+        /// <param name="error">Error GameSparksError.</param>
         void HandleonRequestFailed (GameSparksError error)
         {
             Debug.LogError("Handle on Request Failed: " + error.errorMessage);
+        }
+
+        /// <summary>
+        /// ShowInspectorUI: This is the implemenation method for the IService interface
+        /// </summary>
+        public void ShowInspectorUI()
+        {
+
         }
 
 		string SceneName (string islandName)
@@ -81,13 +96,5 @@ namespace Poptropica2.IslandSystem
 					return "";
 			}
 		}
-
-        /// <summary>
-        /// ShowInspectorUI: This is the implemenation method for the IService interface
-        /// </summary>
-        public void ShowInspectorUI()
-        {
-
-        }
 	}
 }

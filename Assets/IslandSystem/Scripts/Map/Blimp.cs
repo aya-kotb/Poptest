@@ -5,30 +5,29 @@ using System.Collections;
 namespace Poptropica2.IslandSystem
 {
     /// <summary>
-    /// Blimp.
     /// This Blimp class controls the Blimp object.
     /// It moves the Blimp object towards the position where mouse is clicked.
-    /// And towards the given target
+    /// Or towards the given target
     /// </summary>
     public class Blimp : MonoBehaviour {
 
         public float speed = 10f;
         public LeanTweenType leanTweentype = LeanTweenType.easeInExpo;
-
         MapItem targetItem;
         RectTransform rectTransform;
         Image image;
         int leanTweenUniqueID = 0;
 
         // Use this for initialization
-        void Start () {
+        void Start ()
+        {
             rectTransform = GetComponent<RectTransform>();
             image = GetComponent<Image>();
         }
         
         /// <summary>
         /// Moves the blimp.
-        /// This method command the blimp to move towards given target.
+        /// It will move towards given target and Triggers callback after reaching target position.
         /// </summary>
         /// <param name="target">Target for Blimp to reach.</param>
         public void MoveBlimp (MapItem target)
@@ -42,9 +41,11 @@ namespace Poptropica2.IslandSystem
             leanTweenUniqueID = LeanTween.move(gameObject, target.transform.position, 10f).setEase(leanTweentype).setSpeed(speed).setOnComplete(OnCompleteMovement).uniqueId;
         }
 
+        /// <summary>
+        /// Triggers this method when Blimp reach the given target..
+        /// </summary>
         void OnCompleteMovement ()
         {
-            Debug.Log(targetItem.gameObject.name);
             Island targetIsland = targetItem as Island;
             targetIsland.ViewIsland();
             targetItem = null;
@@ -55,18 +56,18 @@ namespace Poptropica2.IslandSystem
         /// Moves the blimp.
         /// It will move the blimp towards the mouse position;
         /// </summary>
-        public void MoveBlimpOnMouse ()
+        public void MoveBlimpToMousePos ()
         {
-            Vector3 mousePos = MapCamera.Instance.mapCamera.ScreenToWorldPoint(CheckForBoundary(Input.mousePosition));
+            Vector3 mousePos = Camera.current.ScreenToWorldPoint(CheckForBoundary(Input.mousePosition));
             mousePos.z = this.transform.position.z;
             LeanTween.move(gameObject, mousePos, 10f).setEase(leanTweentype).setSpeed(speed);
         }
 
         /// <summary>
         /// Checks for boundary screen boundary where mouse is clicked.
-        /// Blimp should not cross the screen boundary
+        /// Since Blimp should not cross the screen boundary
         /// </summary>
-        /// <returns>The calculation of new postion.</returns>
+        /// <returns>Return the calculated new postion.</returns>
         /// <param name="mousePosition">position of Mouse click.</param>
         Vector3 CheckForBoundary (Vector3 mousePosition)
         {

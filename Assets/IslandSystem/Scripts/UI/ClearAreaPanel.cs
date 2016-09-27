@@ -6,13 +6,11 @@ namespace Poptropica2.IslandSystem
 {
 	/// <summary>
 	/// Clear area panel. A panel which show coin value for a selected Unlocked area.
-	/// Can use a coin to unlock/clear area
+	/// Can use a coin to unlock/clear area.
 	/// </summary>
-	public class ClearAreaPanel : MonoBehaviour {
+    public class ClearAreaPanel : PanelTransition {
 
 		public Text coinValueText;
-		public RectTransform childPanel;
-		public RectTransform semiTransparentScreen;
 
         IslandSystemManager islandSystemManager;
 
@@ -23,7 +21,10 @@ namespace Poptropica2.IslandSystem
 
             Cloud cloud = islandSystemManager.mapHandler.currentItem as Cloud;
             InitializeClearArea(cloud.itemValue);
-			ShowTransaction ();
+			
+            //UI Animation for displaying panel
+            AlphaTween(semiTransparentScreen, alpha);
+            ScaleOne(childPanel);
 		}
 
 		/// <summary>
@@ -42,8 +43,9 @@ namespace Poptropica2.IslandSystem
 		/// </summary>
 		public void OnClickYesButton ()
 		{
-			Debug.Log ("Clicked Yes Button");
-			HideTransaction (true);
+            //UI Animation for hiding panel
+            AlphaTween(semiTransparentScreen, 0);
+            ScaleZero(childPanel, this.OnCompleteTransitionYesButton);
 		}
 
 		/// <summary>
@@ -52,46 +54,35 @@ namespace Poptropica2.IslandSystem
 		/// </summary>
 		public void OnClickNoButton ()
 		{
-			Debug.Log ("Clicked No Button");
-			HideTransaction (false);
+            //UI Animation for hiding panel
+            AlphaTween(semiTransparentScreen, 0);
+            ScaleZero(childPanel, this.OnCompleteTransitionNoButton);
 		}
 
-		/// <summary>
-		/// Show the Clear Area Panel with transaction effect.
-		/// </summary>
-		void ShowTransaction ()
-		{
-            childPanel.transform.localScale = Vector3.zero;
-			LeanTween.alpha (semiTransparentScreen, 0.5f, 0.5f);
-			LeanTween.scale (childPanel, Vector3.one, 0.5f);
-		}
+        /// <summary>
+        /// Callback after completing UI transition effect when Yes button pressed.
+        /// </summary>
+        void OnCompleteTransitionYesButton ()
+        {
+            Cloud cloud = islandSystemManager.mapHandler.currentItem as Cloud;
+            // if not null the selected map item is cloud
+            if (cloud != null)
+            {
+                //Unlock the item which is under the cloud area.
+                cloud.lockedItem.canSelect = true;
+            }
+            
+            // Remove cloud area from map.
+            Destroy (islandSystemManager.mapHandler.currentItem.gameObject);
+            Destroy (gameObject);
+        }
 
-		/// <summary>
-		/// Hide the Clear Area Panel with transaction effect.
-		/// </summary>
-		void HideTransaction (bool canClear)
-		{
-			LeanTween.alpha (semiTransparentScreen, 0.0f, 0.5f);
-			LeanTween.scale (childPanel, Vector3.zero, 0.5f).setOnComplete(OnCompleteTransaction).setOnCompleteParam(canClear);
-		}
-
-        void OnCompleteTransaction (object canClear)
-		{
-			if ((bool)canClear)
-			{
-                Cloud cloud = islandSystemManager.mapHandler.currentItem as Cloud;
-				// if not null the selected map item is cloud
-				if (cloud != null)
-				{
-					//Unlock the item which is under the cloud area.
-					cloud.lockedItem.canSelect = true;
-				}
-
-				// Remove cloud area from map.
-                Destroy (islandSystemManager.mapHandler.currentItem.gameObject);
-			}
-
-			Destroy (gameObject);
-		}
+        /// <summary>
+        /// Callback after completing UI transition effect when No button is pressed.
+        /// </summary>
+        void OnCompleteTransitionNoButton ()
+        {
+            Destroy (gameObject);
+        }
 	}
 }
