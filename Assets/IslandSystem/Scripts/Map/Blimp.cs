@@ -13,7 +13,7 @@ namespace Poptropica2.IslandSystem
 
         public float speed = 10f;
         public LeanTweenType leanTweentype = LeanTweenType.easeInExpo;
-        MapItem targetItem;
+        public MapItem targetItem;
         RectTransform rectTransform;
         Image image;
         int leanTweenUniqueID = 0;
@@ -32,13 +32,16 @@ namespace Poptropica2.IslandSystem
         /// <param name="target">Target for Blimp to reach.</param>
         public void MoveBlimp (MapItem target)
         {
-            if (leanTweenUniqueID != 0)
+            if (this.targetItem != target)
             {
-                LeanTween.cancel(leanTweenUniqueID);
+                if (leanTweenUniqueID != 0)
+                {
+                    LeanTween.cancel(leanTweenUniqueID);
+                }
+                
+                this.targetItem = target;
+                leanTweenUniqueID = LeanTween.move(gameObject, target.transform.position, 10f).setEase(leanTweentype).setSpeed(speed).setOnComplete(OnCompleteMovement).uniqueId;
             }
-
-            this.targetItem = target;
-            leanTweenUniqueID = LeanTween.move(gameObject, target.transform.position, 10f).setEase(leanTweentype).setSpeed(speed).setOnComplete(OnCompleteMovement).uniqueId;
         }
 
         /// <summary>

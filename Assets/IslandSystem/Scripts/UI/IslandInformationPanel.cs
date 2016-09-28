@@ -69,7 +69,7 @@ namespace Poptropica2.IslandSystem
 
             //UI Animation for displaying panel
             MoveTween(selectedIsland, targetPosition, moveTime);
-            ScaleTo(selectedIsland, targetPosition);
+            ScaleTo(selectedIsland, (Vector3.one * 2f));
             AlphaTween(semiTransparentScreen, alpha);
             CanvasGroupTween(canvasGroup);
             MoveTween(childPanel, lowerPanelPosition, moveTime, InitalizeIslandInformation);
@@ -129,7 +129,7 @@ namespace Poptropica2.IslandSystem
                 LeanTween.value (gameObject, 0, percentage, progressFillTime).setOnUpdate (
 					(float value) => {
                         progressBarSlider.value = value;
-						progressText.text = (Mathf.RoundToInt(value * 100f)).ToString () + " %";
+						progressText.text = (Mathf.RoundToInt(value)).ToString () + " %";
 					}
 				);
 			}
