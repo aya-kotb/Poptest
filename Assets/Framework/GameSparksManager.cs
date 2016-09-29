@@ -89,26 +89,32 @@ public class GameSparksManager : MonoBehaviour
             }
         });
         // These callbacks will send the message-received events back to the class they are being called from
-        GameSparks.Api.Messages.ScriptMessage_privateUserMessage.Listener += (message) =>
+        GameSparks.Api.Messages.PrivateUserMessage.Listener += (message) =>
         {
             if (OnNewPrivateMessage != null)
             {
-                OnNewPrivateMessage(new InboxMessage(message.MessageId, message.Data.GetString("sender-name"), message.Data.GetString("from"), message.Data.GetString("header"), message.Data.GetString("body"), message.Data.GetGSData("payload")));
+                    OnNewPrivateMessage(new InboxMessage(message.Data, message.MessageId));
             }
         };
-        GameSparks.Api.Messages.ScriptMessage_globalUserMessage.Listener += (message) =>
+        GameSparks.Api.Messages.GlobalUserMessage.Listener += (message) =>
         {
             if (OnNewGlobalMessage != null)
             {
-                OnNewGlobalMessage(new InboxMessage(message.MessageId, "Poptropica", "Poptropica", message.Data.GetString("header"), message.Data.GetString("body"), message.Data.GetGSData("payload")));
+                    OnNewGlobalMessage(new InboxMessage(message.Data, message.MessageId));
             }
         };
         GameSparks.Api.Messages.SessionTerminatedMessage.Listener += (message) =>
         {
             if (OnSessionTerminated != null)
             {
-                        
                 OnSessionTerminated();
+            }
+        };
+        GameSparks.Api.Messages.ServerVersionUpdateMessage.Listener += (message) =>
+        {
+            if(OnServerVersionMessage != null)
+            {
+                OnServerVersionMessage(new ServerVersionResponse(message.Data.GetGSData("data")));
             }
         };
     }
@@ -146,6 +152,17 @@ public class GameSparksManager : MonoBehaviour
     /// connected with the same credientals on another device.
     /// </summary>
     public event MessageEvent OnSessionTerminated;
+
+    /// <summary>
+    /// Occurs when on server version message hits the SDK.
+    /// </summary>
+    public event ServerVersionMessageEvent OnServerVersionMessage;
+
+    /// <summary>
+    /// This event is raised when gamesparks manager receives a script message marked as a server version message.
+    /// It requires construction of the ServerVersionResponse .
+    /// </summary>
+    public delegate void ServerVersionMessageEvent(ServerVersionResponse serverMessage);
 
     #endregion
 
@@ -1364,7 +1381,7 @@ public class GameSparksManager : MonoBehaviour
             {
                 if (!response.HasErrors)
                 {
-                    onGetServerVersion(new ServerVersionResponse(response.ScriptData));
+                    onGetServerVersion(new ServerVersionResponse(response.ScriptData.GetGSData("server_version")));
                 }
                 else
                 {
@@ -1406,13 +1423,13 @@ public class GameSparksManager : MonoBehaviour
             {
                 if (!response.HasErrors)
                 {
-                    Debug.Log("GSM| Retrieved Messages....");
+                    Debug.LogWarning(response.ScriptData.JSON);
                     if (onGetMessages != null)
                     {
                         List<InboxMessage> messageList = new List<InboxMessage>();
                         foreach (GSData message  in response.ScriptData.GetGSDataList("messages"))
                         {
-                            messageList.Add(new InboxMessage(message.GetString("messageId"), message.GetGSData("data").GetString("sender-name"), message.GetGSData("data").GetString("from"), message.GetGSData("data").GetString("header"), message.GetGSData("data").GetString("body"), message.GetGSData("data").GetGSData("payload")));
+                            messageList.Add(new InboxMessage(message.GetGSData("data"), message.GetString("messageId")));
                         }
                         onGetMessages(messageList.ToArray());
                     }
@@ -1513,14 +1530,13 @@ public class GameSparksManager : MonoBehaviour
     /// <param name="onRequestFailed">On request failed. Receives GameSparksError, contains enum & string errorString</param>
     public void DeleteMessage(string messageID, onRequestSuccess onRequestSuccess, onRequestFailed onRequestFailed)
     {
-        Debug.Log("GSM| Deleting Message " + messageID);
+        Debug.Log("GSM| Deleting Message, " + messageID);
         new GameSparks.Api.Requests.LogEventRequest().SetEventKey("deleteMessage")
             .SetEventAttribute("message_id", messageID)
             .Send((response) =>
             {
                 if (!response.HasErrors)
                 {
-                    Debug.Log("GSM| Message Deleted....");
                     if (onRequestSuccess != null)
                     {
                         onRequestSuccess();
@@ -1536,22 +1552,28 @@ public class GameSparksManager : MonoBehaviour
             });
     }
 
-    public void ReadMessage(string messageID)
+    public void ReadMessage(string messageID, onRequestSuccess onRequestSuccess, onRequestFailed onRequestFailed)
     {
-
-        // THIS IS YET TO BE IMPLEMENTED //
-
-
-//      Debug.Log ("GSM| Deleting Message "+messageID);
-//      new GameSparks.Api.Requests.LogEventRequest().SetEventKey("deleteMessage")
-//          .SetEventAttribute("message_id", messageID)
-//          .Send ((response) => {
-//              if (!response.HasErrors) {
-//                  Debug.Log("GSM| Message Deleted....");
-//              } else {
-//                  Debug.LogError("GSM| Message Not Deleted");
-//              }
-//          });
+      Debug.Log ("GSM| Setting Message As Read, "+messageID);
+        new GameSparks.Api.Requests.LogEventRequest().SetEventKey("readMessage")
+            .SetEventAttribute("message_id", messageID)
+            .Send((response) =>
+                {
+                    if (!response.HasErrors)
+                    {
+                        if (onRequestSuccess != null)
+                        {
+                            onRequestSuccess();
+                        }
+                    }
+                    else
+                    {
+                        if (onRequestFailed != null)
+                        {
+                            onRequestFailed(new GameSparksError(ProcessGSErrors(response.Errors)));
+                        }
+                    }
+                });
     }
 
     #endregion
@@ -2531,27 +2553,23 @@ public class GameSparksManager : MonoBehaviour
 }
 
 
-namespace GameSparks.Api.Messages
-{
+namespace GameSparks.Api.Messages {
 
-    public class ScriptMessage_globalUserMessage : ScriptMessage
-    {
+    public class GlobalUserMessage : ScriptMessage {
 
-        public new static Action<ScriptMessage_globalUserMessage> Listener;
+        public new static Action<GlobalUserMessage> Listener;
 
-        public ScriptMessage_globalUserMessage(GSData data) : base(data)
+        public GlobalUserMessage(GSData data) : base(data){}
+
+        private static GlobalUserMessage Create(GSData data)
         {
-        }
-
-        private static ScriptMessage_globalUserMessage Create(GSData data)
-        {
-            ScriptMessage_globalUserMessage message = new ScriptMessage_globalUserMessage(data);
+            GlobalUserMessage message = new GlobalUserMessage (data);
             return message;
         }
 
-        static ScriptMessage_globalUserMessage()
+        static GlobalUserMessage()
         {
-            handlers.Add(".ScriptMessage_globalUserMessage", Create);
+            handlers.Add (".ScriptMessage_globalUserMessage", Create);
 
         }
 
@@ -2559,30 +2577,25 @@ namespace GameSparks.Api.Messages
         {
             if (Listener != null)
             {
-                Listener(this);
+                Listener (this);
             }
         }
     }
+    public class PrivateUserMessage : ScriptMessage {
 
-    public class ScriptMessage_privateUserMessage : ScriptMessage
-    {
+        public new static Action<PrivateUserMessage> Listener;
 
-        public new static Action<ScriptMessage_privateUserMessage> Listener;
+        public PrivateUserMessage(GSData data) : base(data){}
 
-        public ScriptMessage_privateUserMessage(GSData data)
-            : base(data)
+        private static PrivateUserMessage Create(GSData data)
         {
-        }
-
-        private static ScriptMessage_privateUserMessage Create(GSData data)
-        {
-            ScriptMessage_privateUserMessage message = new ScriptMessage_privateUserMessage(data);
+            PrivateUserMessage message = new PrivateUserMessage (data);
             return message;
         }
 
-        static ScriptMessage_privateUserMessage()
+        static PrivateUserMessage()
         {
-            handlers.Add(".ScriptMessage_privateUserMessage", Create);
+            handlers.Add (".ScriptMessage_privateUserMessage", Create);
 
         }
 
@@ -2590,7 +2603,33 @@ namespace GameSparks.Api.Messages
         {
             if (Listener != null)
             {
-                Listener(this);
+                Listener (this);
+            }
+        }
+    }
+    public class ServerVersionUpdateMessage : ScriptMessage {
+
+        public new static Action<ServerVersionUpdateMessage> Listener;
+
+        public ServerVersionUpdateMessage(GSData data) : base(data){}
+
+        private static ServerVersionUpdateMessage Create(GSData data)
+        {
+            ServerVersionUpdateMessage message = new ServerVersionUpdateMessage (data);
+            return message;
+        }
+
+        static ServerVersionUpdateMessage()
+        {
+            handlers.Add (".ScriptMessage_serverUpdateVersionMessage", Create);
+
+        }
+
+        override public void NotifyListeners()
+        {
+            if (Listener != null)
+            {
+                Listener (this);
             }
         }
     }
@@ -2730,6 +2769,96 @@ public class AuthFailed : GameSparksError
     }
 }
 
+public class InboxMessage
+{
+    public string message_id;
+    public string global_message_id;
+
+    public bool read;
+    public bool responded;
+
+    public DateTime creation_time;
+    public DateTime delete_time;
+
+    public string message_type;
+
+    public string subject;
+    public string text;
+
+    public string asset_bundle_id;
+    public string prefab_name;
+
+    public GSData metadata;
+
+    public InboxMessage(GSData gsData, string message_id)
+    {
+        this.message_id = message_id;
+
+        if(gsData.GetString("message_type") != null)
+        {
+            this.message_type = gsData.GetString("message_type");
+            if(message_type == "global" && gsData.GetString("global_message_id") != null)
+            {
+                this.global_message_id = gsData.GetString("global_message_id");
+            }
+        }
+        if(gsData.GetNumber("creation_time").HasValue)
+        {
+            this.creation_time = UnixTimeStampToDateTime(gsData.GetNumber("creation_time").Value);
+        }
+        if(gsData.GetNumber("delete_time").HasValue)
+        {
+            this.delete_time = UnixTimeStampToDateTime(gsData.GetNumber("delete_time").Value);
+        }
+        if(gsData.GetBoolean("read").HasValue)
+        {
+            this.read = gsData.GetBoolean("read").Value;
+        }
+        if(gsData.GetBoolean("responded").HasValue)
+        {
+            this.read = gsData.GetBoolean("responded").Value;
+        }
+        if(gsData.GetString("subject") != null)
+        {
+            this.subject = gsData.GetString("subject");
+        }
+        if(gsData.GetString("text") != null)
+        {
+            this.text = gsData.GetString("text");
+        }
+        if(gsData.GetString("asset_bundle_id") != null)
+        {
+            this.asset_bundle_id = gsData.GetString("asset_bundle_id");
+        }
+        if(gsData.GetString("prefab_name") != null)
+        {
+            this.prefab_name = gsData.GetString("prefab_name");
+        }
+        if(gsData.GetGSData("metadata") != null)
+        {
+            this.metadata = gsData.GetGSData("metadata");
+        }
+
+    }
+
+    private DateTime UnixTimeStampToDateTime(long unixDate)
+    {
+        DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        DateTime date = start.AddMilliseconds(unixDate).ToLocalTime();
+        return date;
+    }
+
+    public void Print()
+    {
+        Debug.Log("Message ID: " + message_id + ", subject:"+subject+", text:"+text);
+        Debug.Log("Global ID:"+global_message_id);
+        Debug.Log("Message Type: " + message_type);
+        Debug.Log("Read: " + read + ", responded:"+responded);
+        Debug.Log("Created:"+creation_time.ToString()+", Deleted:"+delete_time.ToString());
+        Debug.Log("MetaData:"+metadata.JSON);
+    }
+}
+
 
 public class AuthResponse
 {
@@ -2809,6 +2938,10 @@ public class CheckUsernameResponse
 
 }
 
+
+/// <summary>
+/// Used to cpntain information about the latest server version
+/// </summary>
 public class ServerVersionResponse
 {
     public int currentVersion;
@@ -2816,16 +2949,18 @@ public class ServerVersionResponse
     public int maxVersion;
     public DateTime published;
     public DateTime created;
+    public string status;
+    public string message;
 
     public ServerVersionResponse(GSData gsData)
     {
-        if(gsData.GetDate("created") != null)
+        if(gsData.GetNumber("created").HasValue)
         {
-            this.created = gsData.GetDate("created").Value;
+            this.created = UnixTimeStampToDateTime(gsData.GetNumber("created").Value);
         }
-        if(gsData.GetDate("published") != null)
+        if(gsData.GetNumber("published") != null)
         {
-            this.published = gsData.GetDate("published").Value;
+            this.published = UnixTimeStampToDateTime(gsData.GetNumber("published").Value);
         }
         if(gsData.GetNumber("current_version").HasValue)
         {
@@ -2839,6 +2974,26 @@ public class ServerVersionResponse
         {
             this.minVersion = (int)gsData.GetNumber("min_version").Value;
         }
+        if(gsData.GetString("status") != null)
+        {
+            this.status = gsData.GetString("status");
+        }
+        if(gsData.GetString("message") != null)
+        {
+            this.message = gsData.GetString("message");
+        }
+    }
+
+    private DateTime UnixTimeStampToDateTime(long unixDate)
+    {
+        DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        DateTime date = start.AddMilliseconds(unixDate).ToLocalTime();
+        return date;
+    }
+
+    public void Print()
+    {
+        Debug.Log("Curr:"+currentVersion+", Max:"+maxVersion+", Min:"+minVersion);
     }
 }
 
@@ -3241,7 +3396,6 @@ public class GameSparksSerialiser
                     else if(field.FieldType.IsArray)
                     {
                         GSRequestData newData = new GSRequestData();
-//                        newData.AddString("array_type", field.FieldType.ToString());
                         IListToGSDataList(ref newData, field.Name, field.GetValue(obj) as IList);
                         gsData.AddObject(field.Name, newData);
                     }

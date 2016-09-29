@@ -471,44 +471,7 @@ public class Character
 }
 
 
-public class InboxMessage
-{
-    public string messageId;
-    public string senderName;
-    public DateTime creationtime;
-    public bool read;
-    public bool responded;
-    public DateTime deleteTime;
-    public string messageType;
-    public string globalMessageId;
-    public string subject;
-    public string text;
-    public string assetBundleID;
 
-    public string senderID, header, body;
-    public GSData payload;
-
-    public InboxMessage(GSData gsData)
-    {
-        
-    }
-
-
-    public InboxMessage(string _messageId, string _senderName, string _senderID, string _header, string _body, GSData _payload)
-    {
-        this.messageId = _messageId;
-        this.senderName = _senderName;
-        this.senderID = _senderID;
-        this.header = _header;
-        this.body = _body;
-        this.payload = _payload;
-    }
-
-    public void Print()
-    {
-        Debug.Log("Message ID: " + messageId + ", Header: " + header + ", Body: " + body + ", Sender ID: " + senderID + ", Sender Name: " + senderName + ", Payload:" + payload.JSON);
-    }
-}
 
 [Serializable()]
 public class QuestData
