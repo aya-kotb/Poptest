@@ -75,8 +75,6 @@ public class GameSparksManager : MonoBehaviour
         }
     }
 
-
-
     // Use this for initialization
     void Start()
     {
@@ -318,7 +316,7 @@ public class GameSparksManager : MonoBehaviour
     /// <summary>
     /// receives an array of suggested usernames.
     /// </summary>
-    public delegate void onCheckUsername(string[] suggestedNames, string availableName);
+    public delegate void onCheckUsername(CheckUsernameResponse checkUsernameResponse);
 
     /// <summary>
     /// Checks the name request.
@@ -347,7 +345,7 @@ public class GameSparksManager : MonoBehaviour
             }
             else if(onCheckUsername != null && respData.GetGSData("@checkUsername") != null)
             {
-                onCheckUsername(respData.GetGSData("@checkUsername").GetStringList("suggested_names").ToArray(), respData.GetGSData("@checkUsername").GetString("available_name"));
+                onCheckUsername(new CheckUsernameResponse(respData.GetGSData("@checkUsername").GetStringList("suggested_names").ToArray(), respData.GetGSData("@checkUsername").GetString("available_name"), respData.GetGSData("@checkUsername").GetBoolean("isPop1Player").Value, respData.GetGSData("@checkUsername").GetBoolean("isPop2Player").Value));
             }
         }
     }
@@ -390,6 +388,51 @@ public class GameSparksManager : MonoBehaviour
                         if (onRequestFailed != null)
                         {
                             onRequestFailed(new GameSparksError(ProcessGSErrors(response.BaseData)));
+                        }
+                    }
+                });
+    }
+
+    /// <summary>
+    /// This is called when registering a test account failed due to the password being incorrect.
+    /// in this case it returns suggested usernames and details about the player being pop1 or pop2
+    /// </summary>
+    public delegate void onRegisterTestAccountFailed(GameSparksError error, CheckUsernameResponse checkUsernameResp);
+
+    /// <summary>
+    /// Registers a test-account or clears a player account to create a new account.
+    /// </summary>
+    /// <param name="userName">User name.</param>
+    /// <param name="displayName">Display name.</param>
+    /// <param name="password">Password.</param>
+    /// <param name="age">Age.</param>
+    /// <param name="gender">Gender.</param>
+    /// <param name="onRequestSuccess">On request success.</param>
+    /// <param name="onRegisterTestAccountFailed">On request failed. Receives GameSparksError object: enum, String</param>
+    public void RegisterTestAccount(string userName, string displayName, string password, int age, string gender, onRequestSuccess onRequestSuccess, onRegisterTestAccountFailed onRegisterTestAccountFailed)
+    {
+        Debug.Log("GSM| Converting To Test Account...");
+        new GameSparks.Api.Requests.LogEventRequest().SetEventKey("registerTestAccount")
+            .SetEventAttribute("userName", userName)
+            .SetEventAttribute("displayName", displayName)
+            .SetEventAttribute("password", password)
+            .SetEventAttribute("age", age)
+            .SetEventAttribute("gender", gender)
+            .SetDurable(false)
+            .Send((response) =>
+                {
+                    if (!response.HasErrors && response.ScriptData == null)
+                    {
+                        if (onRequestSuccess != null)
+                        {
+                            onRequestSuccess();
+                        }
+                    }
+                    else
+                    {
+                        if (onRegisterTestAccountFailed != null && response.ScriptData != null)
+                        {
+                            onRegisterTestAccountFailed(new GameSparksError(ProcessGSErrors(response.Errors)), new CheckUsernameResponse(response.ScriptData.GetGSData("@checkUsername").GetStringList("suggested_names").ToArray(),response.ScriptData.GetGSData("@checkUsername").GetString("available_name"), response.ScriptData.GetGSData("@checkUsername").GetBoolean("isPop1Player").Value, response.ScriptData.GetGSData("@checkUsername").GetBoolean("isPop2Player").Value ));
                         }
                     }
                 });
@@ -686,9 +729,11 @@ public class GameSparksManager : MonoBehaviour
                 if (!response.HasErrors)
                 {
                     Debug.LogWarning("GSM| Scenes Retrieved...");
+                        Debug.LogWarning(response.ScriptData.JSON);
                     if (onSceneStateFound != null && response.ScriptData.GetGSData("state") != null)
                     {
-                        onSceneStateFound(GSResponseToSceneState(response.ScriptData.GetGSData("state").GetGSData("scene_state")));
+                        onSceneStateFound((SceneState)GameSparksSerialiser.GSDataToObject(response.ScriptData.GetGSData("state")));
+//                      onSceneStateFound(GSResponseToSceneState(response.ScriptData.GetGSData("state").GetGSData("scene_state")));
                     }
                 }
                 else
@@ -701,89 +746,89 @@ public class GameSparksManager : MonoBehaviour
             });
     }
 
-    public object GSDataToObject(GSData data, Type objType)
-    {
-        object obj = Activator.CreateInstance(objType);
-        foreach(var typeField in objType.GetFields())
-        {
-            Debug.Log(typeField.FieldType.ToString());
-            if(!typeField.IsNotSerialized && typeField.FieldType == typeof(string))
-            {
-                typeField.SetValue(obj, data.GetString(typeField.Name));
-            }
-            else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(int))
-            {
-                typeField.SetValue(obj, (int)data.GetNumber(typeField.Name).Value);    
-            }
-            else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(bool))
-            {
-                typeField.SetValue(obj, data.GetBoolean(typeField.Name));    
-            }
-            else if(!typeField.IsNotSerialized && ( typeField.FieldType == typeof(List<string>) || typeField.FieldType == typeof(string[]) ))
-            {
-                typeField.SetValue(obj, (typeField.FieldType == typeof(List<string>)) ? (object)data.GetStringList(typeField.Name) : data.GetStringList(typeField.Name).ToArray());  
-            }
-            else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<int>) || typeField.FieldType == typeof(int[])) )
-            {
-                typeField.SetValue(obj, (typeField.FieldType == typeof(List<int>)) ? (object)data.GetIntList(typeField.Name) : data.GetIntList(typeField.Name).ToArray());    
-            }
-            else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<float>) || typeField.FieldType == typeof(float[])) )
-            {
-                typeField.SetValue(obj, (typeField.FieldType == typeof(List<float>)) ? (object)data.GetFloatList(typeField.Name) : data.GetFloatList(typeField.Name).ToArray());    
-            }
-            else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<double>) || typeField.FieldType == typeof(double[])) )
-            {
-                typeField.SetValue(obj, (typeField.FieldType == typeof(List<double>)) ? (object)data.GetDoubleList(typeField.Name) : data.GetDoubleList(typeField.Name).ToArray());    
-            }
-        }
-        return obj;
-    }
+//    public object GSDataToObject(GSData data, Type objType)
+//    {
+//        object obj = Activator.CreateInstance(objType);
+//        foreach(var typeField in objType.GetFields())
+//        {
+//            Debug.Log(typeField.FieldType.ToString());
+//            if(!typeField.IsNotSerialized && typeField.FieldType == typeof(string))
+//            {
+//                typeField.SetValue(obj, data.GetString(typeField.Name));
+//            }
+//            else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(int))
+//            {
+//                typeField.SetValue(obj, (int)data.GetNumber(typeField.Name).Value);    
+//            }
+//            else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(bool))
+//            {
+//                typeField.SetValue(obj, data.GetBoolean(typeField.Name));    
+//            }
+//            else if(!typeField.IsNotSerialized && ( typeField.FieldType == typeof(List<string>) || typeField.FieldType == typeof(string[]) ))
+//            {
+//                typeField.SetValue(obj, (typeField.FieldType == typeof(List<string>)) ? (object)data.GetStringList(typeField.Name) : data.GetStringList(typeField.Name).ToArray());  
+//            }
+//            else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<int>) || typeField.FieldType == typeof(int[])) )
+//            {
+//                typeField.SetValue(obj, (typeField.FieldType == typeof(List<int>)) ? (object)data.GetIntList(typeField.Name) : data.GetIntList(typeField.Name).ToArray());    
+//            }
+//            else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<float>) || typeField.FieldType == typeof(float[])) )
+//            {
+//                typeField.SetValue(obj, (typeField.FieldType == typeof(List<float>)) ? (object)data.GetFloatList(typeField.Name) : data.GetFloatList(typeField.Name).ToArray());    
+//            }
+//            else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<double>) || typeField.FieldType == typeof(double[])) )
+//            {
+//                typeField.SetValue(obj, (typeField.FieldType == typeof(List<double>)) ? (object)data.GetDoubleList(typeField.Name) : data.GetDoubleList(typeField.Name).ToArray());    
+//            }
+//        }
+//        return obj;
+//    }
 
-    public SceneState GSResponseToSceneState(GSData sceneData)
-    {
-        Debug.LogWarning(sceneData.JSON);
-        SceneState newScene = new SceneState();
-        foreach(var sceneField in typeof(SceneState).GetFields())
-        {
-            if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(string))
-            {
-                sceneField.SetValue(newScene, sceneData.GetString(sceneField.Name));
-            }
-            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(int))
-            {
-                sceneField.SetValue(newScene, (int)sceneData.GetNumber(sceneField.Name).Value);    
-            }
-            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(bool))
-            {
-                sceneField.SetValue(newScene, sceneData.GetBoolean(sceneField.Name));    
-            }
-            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(float))
-            {
-                sceneField.SetValue(newScene, sceneData.GetFloat(sceneField.Name));    
-            }
-            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(Dictionary<string, object>))
-            {
-                Dictionary<string, object> newDic = new Dictionary<string, object>();
-                GSData dataList = sceneData.GetGSData("states");
-                foreach(var elem in dataList.BaseData)
-                {
-                    if(sceneData.GetGSData("states").GetGSData(elem.Key) != null)
-                    {
-                        GSData stateGSData = sceneData.GetGSData("states").GetGSData(elem.Key);
-                        newDic.Add(elem.Key, GSDataToObject(sceneData.GetGSData("states").GetGSData(elem.Key), Type.GetType(stateGSData.GetString("type"))));
-                    }
-                    else
-                    {
-                        newDic.Add(elem.Key, elem.Value);
-                    }
-                }
-                newScene.states = newDic;
-            }   
-        }
-        newScene.Print();
-
-        return newScene;
-    }
+//    public SceneState GSResponseToSceneState(GSData sceneData)
+//    {
+//        Debug.LogWarning(sceneData.JSON);
+//        SceneState newScene = new SceneState();
+//        foreach(var sceneField in typeof(SceneState).GetFields())
+//        {
+//            if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(string))
+//            {
+//                sceneField.SetValue(newScene, sceneData.GetString(sceneField.Name));
+//            }
+//            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(int))
+//            {
+//                sceneField.SetValue(newScene, (int)sceneData.GetNumber(sceneField.Name).Value);    
+//            }
+//            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(bool))
+//            {
+//                sceneField.SetValue(newScene, sceneData.GetBoolean(sceneField.Name));    
+//            }
+//            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(float))
+//            {
+//                sceneField.SetValue(newScene, sceneData.GetFloat(sceneField.Name));    
+//            }
+//            else if(!sceneField.IsNotSerialized && sceneField.FieldType == typeof(Dictionary<string, object>))
+//            {
+//                Dictionary<string, object> newDic = new Dictionary<string, object>();
+//                GSData dataList = sceneData.GetGSData("states");
+//                foreach(var elem in dataList.BaseData)
+//                {
+//                    if(sceneData.GetGSData("states").GetGSData(elem.Key) != null)
+//                    {
+//                        GSData stateGSData = sceneData.GetGSData("states").GetGSData(elem.Key);
+//                        newDic.Add(elem.Key, GSDataToObject(sceneData.GetGSData("states").GetGSData(elem.Key), Type.GetType(stateGSData.GetString("type"))));
+//                    }
+//                    else
+//                    {
+//                        newDic.Add(elem.Key, elem.Value);
+//                    }
+//                }
+//                newScene.states = newDic;
+//            }   
+//        }
+//        newScene.Print();
+//
+//        return newScene;
+//    }
 
     /// <summary>
     /// Sets the state of the scene.
@@ -797,9 +842,7 @@ public class GameSparksManager : MonoBehaviour
     public void SetSceneState(string character_id, string island_id, string scene_id, SceneState sceneState, onRequestSuccess onRequestSuccess, onRequestFailed onRequestFailed)
     {
         Debug.Log("GSM| Parsing SceneState to GSData...");
-
-        GSRequestData sceneData = new GSRequestData();
-        sceneData.AddObject("scene_state", ObjectToGSData(sceneState));
+        GSRequestData sceneData = GameSparksSerialiser.ObjectToGSData(sceneState);
         Debug.LogWarning(sceneData.JSON);
 
         Debug.Log("Attempting To Set Scene State ...");
@@ -1086,6 +1129,7 @@ public class GameSparksManager : MonoBehaviour
             .SetDurable(true)
             .Send((response) =>
             {
+                    Debug.LogWarning(response.JSONString);
                 if (!response.HasErrors)
                 {
                     Debug.Log("GSM| Character Created....");
@@ -1298,10 +1342,13 @@ public class GameSparksManager : MonoBehaviour
 
     #region System
 
+
+
+
     /// <summary>
     /// receives the server version for the current snapshot
     /// </summary>
-    public delegate void onGetServerVersion(string version, DateTime versionDate);
+    public delegate void onGetServerVersion(ServerVersionResponse serverVersion);
 
     /// <summary>
     /// Gets the server version.
@@ -1317,22 +1364,7 @@ public class GameSparksManager : MonoBehaviour
             {
                 if (!response.HasErrors)
                 {
-                    string version = null;
-                    DateTime versionDate = DateTime.MinValue; // since dates cannot be null, one way to check the version-date is valid is to use the min-date
-                    if(response.ScriptData.GetNumber("version").HasValue && response.ScriptData.GetString("created") != null)
-                    {
-                        version = response.ScriptData.GetNumber("version").Value.ToString();
-                        versionDate = DateTime.Parse(response.ScriptData.GetString("created"));
-                    }
-                    if (version != null && versionDate != DateTime.MinValue)
-                    {
-                        Debug.Log("GSM| Server v" + version);
-                        onGetServerVersion(version, versionDate);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("GSM| Server Error! [server version returned 'null']");
-                    }
+                    onGetServerVersion(new ServerVersionResponse(response.ScriptData));
                 }
                 else
                 {
@@ -2016,10 +2048,18 @@ public class GameSparksManager : MonoBehaviour
 
     #region QUEST
 
-
+    /// <summary>
+    /// recieves a QuestData object from the server response
+    /// </summary>
     public delegate void onLoadQuest(QuestData quest);
 
-
+    /// <summary>
+    /// Receives  GSData from the server and casts it to GSData
+    /// </summary>
+    /// <param name="character_id">Character identifier.</param>
+    /// <param name="quest_id">Quest identifier.</param>
+    /// <param name="onLoadQuest">On load quest.</param>
+    /// <param name="onRequestFailed">On request failed. Receives GameSparksError, contains enum & string errorString</</param>
     public void LoadQuest(string character_id, string quest_id,  onLoadQuest onLoadQuest, onRequestFailed onRequestFailed)
     {
         Debug.Log("GMS| Fetching Quest Info...");
@@ -2033,84 +2073,88 @@ public class GameSparksManager : MonoBehaviour
                     {
                         if(onLoadQuest != null && response.ScriptData.GetGSData("questProgress") != null)
                         {
-                            GSData questData = response.ScriptData.GetGSData("questProgress");
-                            QuestData newQuest = new QuestData();
-
-                            foreach(var questField in typeof(QuestData).GetFields())
-                            {
-                                if(questField.FieldType == typeof(string) && !questField.IsNotSerialized)
-                                {
-                                    questField.SetValue(newQuest, questData.GetString(questField.Name));
-                                }
-                                else if(questField.FieldType == typeof(bool) && !questField.IsNotSerialized)
-                                {
-                                    questField.SetValue(newQuest, questData.GetBoolean(questField.Name).GetValueOrDefault(false));
-                                }
-                                else if(questField.FieldType == typeof(int) && !questField.IsNotSerialized)
-                                {
-                                    questField.SetValue(newQuest, questData.GetNumber(questField.Name).GetValueOrDefault(0));
-                                }
-                                else
-                                {
-                                    if(questField.FieldType == typeof(List<string>) && !questField.IsNotSerialized)
-                                    {
-                                        questField.SetValue(newQuest, questData.GetStringList(questField.Name));
-                                    }
-                                    else if(questField.FieldType == typeof(List<StageData>) && !questField.IsNotSerialized)
-                                    {
-                                        List<GSData> respStageList = questData.GetGSDataList("stages");
-                                        List<StageData> stageList = new List<StageData>();
-                                        foreach(GSData gs_stage in respStageList)
-                                        {
-                                            StageData stage = new StageData();
-                                            foreach(var stageField in typeof(StageData).GetFields())
-                                            {
-                                                if(stageField.FieldType == typeof(string) && !stageField.IsNotSerialized)
-                                                {
-                                                    stageField.SetValue(stage, gs_stage.GetString(stageField.Name));
-                                                }
-                                                else if(stageField.FieldType == typeof(bool) && !stageField.IsNotSerialized)
-                                                {
-                                                    stageField.SetValue(stage, gs_stage.GetBoolean(stageField.Name).GetValueOrDefault(false));
-                                                }
-                                                else if(stageField.FieldType == typeof(int) && !stageField.IsNotSerialized)
-                                                {
-                                                    stageField.SetValue(stage, gs_stage.GetNumber(stageField.Name).GetValueOrDefault(0));
-                                                }
-                                                else
-                                                {
-                                                    if(stageField.FieldType == typeof(List<string>) && !stageField.IsNotSerialized)
-                                                    {
-                                                        stageField.SetValue(stage, gs_stage.GetStringList(stageField.Name));
-                                                    }
-                                                    else if(stageField.FieldType == typeof(List<QuestStep>)  && !stageField.IsNotSerialized)
-                                                    {
-                                                        List<GSData> respStepList = gs_stage.GetGSDataList("steps");
-                                                        List<QuestStep> stepList = new List<QuestStep>();
-                                                        foreach(GSData gs_step in respStepList)
-                                                        {
-                                                            QuestStep step = new QuestStep();
-                                                            foreach(var stepField in typeof(QuestStep).GetFields())
-                                                            {
-                                                                if(stepField.FieldType == typeof(string)  && !stepField.IsNotSerialized)
-                                                                {
-                                                                    stepField.SetValue(step, gs_step.GetString(stepField.Name));
-                                                                }
-                                                            }
-                                                            stepList.Add(step);
-                                                        }
-                                                        stage.SetSteps(stepList);
-                                                    }
-                                                }
-                                            }
-                                            stageList.Add(stage);
-                                        }
-                                        newQuest.SetStages(stageList);
-                                    }
-                                }
-                            }
-                            onLoadQuest(newQuest);
+                            onLoadQuest((QuestData)GameSparksSerialiser.GSDataToObject(response.ScriptData.GetGSData("questProgress")));
                         }
+//                        if(onLoadQuest != null && response.ScriptData.GetGSData("questProgress") != null)
+//                        {
+//                            GSData questData = response.ScriptData.GetGSData("questProgress");
+//                            QuestData newQuest = new QuestData();
+//
+//                            foreach(var questField in typeof(QuestData).GetFields())
+//                            {
+//                                if(questField.FieldType == typeof(string) && !questField.IsNotSerialized)
+//                                {
+//                                    questField.SetValue(newQuest, questData.GetString(questField.Name));
+//                                }
+//                                else if(questField.FieldType == typeof(bool) && !questField.IsNotSerialized)
+//                                {
+//                                    questField.SetValue(newQuest, questData.GetBoolean(questField.Name).GetValueOrDefault(false));
+//                                }
+//                                else if(questField.FieldType == typeof(int) && !questField.IsNotSerialized)
+//                                {
+//                                    questField.SetValue(newQuest, questData.GetNumber(questField.Name).GetValueOrDefault(0));
+//                                }
+//                                else
+//                                {
+//                                    if(questField.FieldType == typeof(List<string>) && !questField.IsNotSerialized)
+//                                    {
+//                                        questField.SetValue(newQuest, questData.GetStringList(questField.Name));
+//                                    }
+//                                    else if(questField.FieldType == typeof(List<StageData>) && !questField.IsNotSerialized)
+//                                    {
+//                                        List<GSData> respStageList = questData.GetGSDataList("stages");
+//                                        List<StageData> stageList = new List<StageData>();
+//                                        foreach(GSData gs_stage in respStageList)
+//                                        {
+//                                            StageData stage = new StageData();
+//                                            foreach(var stageField in typeof(StageData).GetFields())
+//                                            {
+//                                                if(stageField.FieldType == typeof(string) && !stageField.IsNotSerialized)
+//                                                {
+//                                                    stageField.SetValue(stage, gs_stage.GetString(stageField.Name));
+//                                                }
+//                                                else if(stageField.FieldType == typeof(bool) && !stageField.IsNotSerialized)
+//                                                {
+//                                                    stageField.SetValue(stage, gs_stage.GetBoolean(stageField.Name).GetValueOrDefault(false));
+//                                                }
+//                                                else if(stageField.FieldType == typeof(int) && !stageField.IsNotSerialized)
+//                                                {
+//                                                    stageField.SetValue(stage, gs_stage.GetNumber(stageField.Name).GetValueOrDefault(0));
+//                                                }
+//                                                else
+//                                                {
+//                                                    if(stageField.FieldType == typeof(List<string>) && !stageField.IsNotSerialized)
+//                                                    {
+//                                                        stageField.SetValue(stage, gs_stage.GetStringList(stageField.Name));
+//                                                    }
+//                                                    else if(stageField.FieldType == typeof(List<QuestStep>)  && !stageField.IsNotSerialized)
+//                                                    {
+//                                                        List<GSData> respStepList = gs_stage.GetGSDataList("steps");
+//                                                        List<QuestStep> stepList = new List<QuestStep>();
+//                                                        foreach(GSData gs_step in respStepList)
+//                                                        {
+//                                                            QuestStep step = new QuestStep();
+//                                                            foreach(var stepField in typeof(QuestStep).GetFields())
+//                                                            {
+//                                                                if(stepField.FieldType == typeof(string)  && !stepField.IsNotSerialized)
+//                                                                {
+//                                                                    stepField.SetValue(step, gs_step.GetString(stepField.Name));
+//                                                                }
+//                                                            }
+//                                                            stepList.Add(step);
+//                                                        }
+//                                                        stage.SetSteps(stepList);
+//                                                    }
+//                                                }
+//                                            }
+//                                            stageList.Add(stage);
+//                                        }
+//                                        newQuest.SetStages(stageList);
+//                                    }
+//                                }
+//                            }
+//                            onLoadQuest(newQuest);
+//                        }
                     }
                     else
                     {
@@ -2122,10 +2166,16 @@ public class GameSparksManager : MonoBehaviour
                 });
     }
 
-
+    /// <summary>
+    /// Saves the to the server as GSData
+    /// </summary>
+    /// <param name="character_id">Character identifier.</param>
+    /// <param name="quest">Quest.</param>
+    /// <param name="onRequestSuccess">On request success.</param>
+    /// <param name="onRequestFailed">On request failed.</param>
     public void SaveQuest(string character_id, QuestData quest,  onRequestSuccess onRequestSuccess, onRequestFailed onRequestFailed)
     {
-        GSRequestData gsQuestData = ObjectToGSData(quest) as GSRequestData;
+        GSRequestData gsQuestData = GameSparksSerialiser.ObjectToGSData(quest);// ObjectToGSData(quest) as GSRequestData;
         Debug.Log("GMS| Saving Quest Info...");
         new GameSparks.Api.Requests.LogEventRequest().SetEventKey("saveQuest")
             .SetEventAttribute("character_id", character_id)
@@ -2156,126 +2206,126 @@ public class GameSparksManager : MonoBehaviour
 
     #endregion
 
-    /// <summary>
-    /// Converts a given object to GSdata for sending to the server.
-    /// Converts string, bool, int, float, bool, QuestData, QuestStep, StageData, SceneState and list of these types.
-    /// It also serialises Dictionary<string, object> or these types
-    /// </summary>
-    /// <returns>The to GS data.</returns>
-    /// <param name="obj">Object.</param>
-    public GSData ObjectToGSData(object obj)
-    {
-        GSRequestData gsData = new GSRequestData();
-        gsData.AddString("type", obj.GetType().ToString());
-        foreach(var field in obj.GetType().GetFields())
-        {
-            if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(Dictionary<string, object>))
-            {
-                GSRequestData dictionaryData = new GSRequestData();
-                foreach(KeyValuePair<string, object> entry in  field.GetValue(obj) as Dictionary<string, object>)
-                {
-                    if(entry.Value.GetType() == typeof(string))
-                    {
-                        dictionaryData.AddString(entry.Key, entry.Value.ToString());
-                    }
-                    else if(entry.Value.GetType() == typeof(int) || entry.Value.GetType() == typeof(float))
-                    {
-                        dictionaryData.AddNumber(entry.Key, (entry.Value.GetType() == typeof(int)) ? Int32.Parse(entry.Value.ToString()) : Convert.ToDouble(entry.Value.ToString()) );
-                    }
-                    else 
-                    {
-                        dictionaryData.AddObject(entry.Key, ObjectToGSData(entry.Value));
-                    }
-                }
-                gsData.AddObject(field.Name, dictionaryData);
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.GetValue(obj).GetType() == typeof(bool))
-            {
-                gsData.AddBoolean(field.Name, bool.Parse(field.GetValue(obj).ToString()));
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(int) || field.GetValue(obj).GetType() == typeof(float)))
-            {
-                gsData.AddNumber(field.Name, (field.GetValue(obj).GetType() == typeof(int)) ? Convert.ToInt32(field.GetValue(obj)) : Convert.ToDouble(field.GetValue(obj)) );
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.GetValue(obj).GetType() == typeof(string))
-            {
-                gsData.AddString(field.Name, field.GetValue(obj).ToString());
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<string>) || field.GetValue(obj).GetType() == typeof(string[])))
-            {
-                gsData.AddStringList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<string>)) ? field.GetValue(obj) as List<string> : new List<string>(field.GetValue(obj) as string[]));
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<int>) || field.GetValue(obj).GetType() == typeof(int[])))
-            {
-                gsData.AddNumberList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<int>)) ? field.GetValue(obj) as List<int> : new List<int>(field.GetValue(obj) as int[]));
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<float>) || field.GetValue(obj).GetType() == typeof(float[])))
-            {
-                gsData.AddNumberList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<float>)) ? field.GetValue(obj) as List<float> : new List<float>(field.GetValue(obj) as float[]));
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<bool>)))
-            {
-                GSRequestData boolData = new GSRequestData();
-                List<bool> boolList = field.GetValue(obj) as List<bool>;
-                for(int i = 0; i < boolList.Count; i++)
-                {
-                    boolData.AddBoolean(i.ToString(), boolList[i]);
-                }
-                gsData.AddObject(field.Name, boolData);
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(bool[])))
-            {
-                GSRequestData boolData = new GSRequestData();
-                bool[] boolList = field.GetValue(obj) as bool[];
-                for(int i = 0; i < boolList.Length; i++)
-                {
-                    boolData.AddBoolean(i.ToString(), boolList[i]);
-                }
-                gsData.AddObject(field.Name, boolData);
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(QuestStep))
-            {
-                gsData.AddObject(field.Name, ObjectToGSData(field.GetValue(obj)));
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(List<QuestStep>))
-            {
-                List<GSData> questList = new List<GSData>();
-                foreach(QuestStep qs in field.GetValue(obj) as List<QuestStep>)
-                {
-                    questList.Add(ObjectToGSData(qs));
-                }
-                gsData.AddObjectList(field.Name, questList);
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(StageData))
-            {
-                gsData.AddObject(field.Name, ObjectToGSData(field.GetValue(obj)));
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(List<StageData>))
-            {
-                List<GSData> stageDataList = new List<GSData>();
-                foreach(StageData sd in field.GetValue(obj) as List<StageData>)
-                {
-                    stageDataList.Add(ObjectToGSData(sd));
-                }
-                gsData.AddObjectList(field.Name, stageDataList);
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(QuestData))
-            {
-                gsData.AddObject(field.Name, ObjectToGSData(field.GetValue(obj)));
-            }
-            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(List<QuestData>))
-            {
-                List<GSData> questDataList = new List<GSData>();
-                foreach(QuestData qd in field.GetValue(obj) as List<QuestData>)
-                {
-                    questDataList.Add(ObjectToGSData(qd));
-                }
-                gsData.AddObjectList(field.Name, questDataList);
-            }
-
-        }
-        return gsData;
-    }
+//    /// <summary>
+//    /// Converts a given object to GSdata for sending to the server.
+//    /// Converts string, bool, int, float, bool, QuestData, QuestStep, StageData, SceneState and list of these types.
+//    /// It also serialises Dictionary<string, object> or these types
+//    /// </summary>
+//    /// <returns>The to GS data.</returns>
+//    /// <param name="obj">Object.</param>
+//    public GSData ObjectToGSData(object obj)
+//    {
+//        GSRequestData gsData = new GSRequestData();
+//        gsData.AddString("type", obj.GetType().ToString());
+//        foreach(var field in obj.GetType().GetFields())
+//        {
+//            if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(Dictionary<string, object>))
+//            {
+//                GSRequestData dictionaryData = new GSRequestData();
+//                foreach(KeyValuePair<string, object> entry in  field.GetValue(obj) as Dictionary<string, object>)
+//                {
+//                    if(entry.Value.GetType() == typeof(string))
+//                    {
+//                        dictionaryData.AddString(entry.Key, entry.Value.ToString());
+//                    }
+//                    else if(entry.Value.GetType() == typeof(int) || entry.Value.GetType() == typeof(float))
+//                    {
+//                        dictionaryData.AddNumber(entry.Key, (entry.Value.GetType() == typeof(int)) ? Int32.Parse(entry.Value.ToString()) : Convert.ToDouble(entry.Value.ToString()) );
+//                    }
+//                    else 
+//                    {
+//                        dictionaryData.AddObject(entry.Key, ObjectToGSData(entry.Value));
+//                    }
+//                }
+//                gsData.AddObject(field.Name, dictionaryData);
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.GetValue(obj).GetType() == typeof(bool))
+//            {
+//                gsData.AddBoolean(field.Name, bool.Parse(field.GetValue(obj).ToString()));
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(int) || field.GetValue(obj).GetType() == typeof(float)))
+//            {
+//                gsData.AddNumber(field.Name, (field.GetValue(obj).GetType() == typeof(int)) ? Convert.ToInt32(field.GetValue(obj)) : Convert.ToDouble(field.GetValue(obj)) );
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.GetValue(obj).GetType() == typeof(string))
+//            {
+//                gsData.AddString(field.Name, field.GetValue(obj).ToString());
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<string>) || field.GetValue(obj).GetType() == typeof(string[])))
+//            {
+//                gsData.AddStringList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<string>)) ? field.GetValue(obj) as List<string> : new List<string>(field.GetValue(obj) as string[]));
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<int>) || field.GetValue(obj).GetType() == typeof(int[])))
+//            {
+//                gsData.AddNumberList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<int>)) ? field.GetValue(obj) as List<int> : new List<int>(field.GetValue(obj) as int[]));
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<float>) || field.GetValue(obj).GetType() == typeof(float[])))
+//            {
+//                gsData.AddNumberList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<float>)) ? field.GetValue(obj) as List<float> : new List<float>(field.GetValue(obj) as float[]));
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(List<bool>)))
+//            {
+//                GSRequestData boolData = new GSRequestData();
+//                List<bool> boolList = field.GetValue(obj) as List<bool>;
+//                for(int i = 0; i < boolList.Count; i++)
+//                {
+//                    boolData.AddBoolean(i.ToString(), boolList[i]);
+//                }
+//                gsData.AddObject(field.Name, boolData);
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && (field.GetValue(obj).GetType() == typeof(bool[])))
+//            {
+//                GSRequestData boolData = new GSRequestData();
+//                bool[] boolList = field.GetValue(obj) as bool[];
+//                for(int i = 0; i < boolList.Length; i++)
+//                {
+//                    boolData.AddBoolean(i.ToString(), boolList[i]);
+//                }
+//                gsData.AddObject(field.Name, boolData);
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(QuestStep))
+//            {
+//                gsData.AddObject(field.Name, ObjectToGSData(field.GetValue(obj)));
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(List<QuestStep>))
+//            {
+//                List<GSData> questList = new List<GSData>();
+//                foreach(QuestStep qs in field.GetValue(obj) as List<QuestStep>)
+//                {
+//                    questList.Add(ObjectToGSData(qs));
+//                }
+//                gsData.AddObjectList(field.Name, questList);
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(StageData))
+//            {
+//                gsData.AddObject(field.Name, ObjectToGSData(field.GetValue(obj)));
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(List<StageData>))
+//            {
+//                List<GSData> stageDataList = new List<GSData>();
+//                foreach(StageData sd in field.GetValue(obj) as List<StageData>)
+//                {
+//                    stageDataList.Add(ObjectToGSData(sd));
+//                }
+//                gsData.AddObjectList(field.Name, stageDataList);
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(QuestData))
+//            {
+//                gsData.AddObject(field.Name, ObjectToGSData(field.GetValue(obj)));
+//            }
+//            else if(!field.IsNotSerialized && field.GetValue(obj) != null && field.FieldType == typeof(List<QuestData>))
+//            {
+//                List<GSData> questDataList = new List<GSData>();
+//                foreach(QuestData qd in field.GetValue(obj) as List<QuestData>)
+//                {
+//                    questDataList.Add(ObjectToGSData(qd));
+//                }
+//                gsData.AddObjectList(field.Name, questDataList);
+//            }
+//
+//        }
+//        return gsData;
+//    }
 
     /// <summary>
     /// Processes all GameSparks error to get the correct error-string root and parse it to an int for checking
@@ -2284,7 +2334,7 @@ public class GameSparksManager : MonoBehaviour
     /// <param name="error">GSData Error response</param>
     public GameSparksErrorMessage ProcessGSErrors(GSData error)
     {
-        Debug.LogWarning("GSM| Error: " + error.JSON);
+//        Debug.LogWarning("GSM| Error: " + error.JSON);
         if (error.GetString("@authentication") != null)
         {
             return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), error.GetString("@authentication"));
@@ -2382,6 +2432,10 @@ public class GameSparksManager : MonoBehaviour
         {
             return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), error.GetString("@checkUsername"));
         }
+        else if (error.GetString("@registerTestAccount") != null)
+        {
+            return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), error.GetString("@registerTestAccount"));
+        }
         // INBOX SYSTEM
         else if (error.GetString("@getMessages") != null)
         {
@@ -2445,8 +2499,6 @@ public class GameSparksManager : MonoBehaviour
         {
             return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), "not_authorized");
         }
-        Debug.LogError(error.GetString("authentication"));
-
         return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), "request_failed");
     }
 
@@ -2729,4 +2781,508 @@ public class ParentEmailStatus
     {
         Debug.Log("Email:" + email + ", Status:" + status + ", Verified:" + verifiedDate + ", Added:" + dateAdded);
     }
+}
+
+public class CheckUsernameResponse
+{
+    public string[] suggestedNames;
+    public string availableName;
+    public bool isPop1Player;
+    public bool isPop2Player;
+
+    public CheckUsernameResponse(string[] suggestedNames, string availableName, bool isPop1Player, bool isPop2Player)
+    {
+        this.suggestedNames = suggestedNames;
+        this.availableName = availableName;
+        this.isPop1Player = isPop1Player;
+        this.isPop2Player = isPop2Player;
+    }
+
+    public void Print()
+    {
+        Debug.Log("isPop1 Player:"+isPop1Player+", isPop2 Player:"+isPop2Player);
+        for(int i = 0; i < suggestedNames.Length; i++)
+        {
+            Debug.Log("Suggestion ["+(i+1)+"] -> "+suggestedNames[i]);
+        }
+    }
+
+}
+
+public class ServerVersionResponse
+{
+    public int currentVersion;
+    public int minVersion;
+    public int maxVersion;
+    public DateTime published;
+    public DateTime created;
+
+    public ServerVersionResponse(GSData gsData)
+    {
+        if(gsData.GetDate("created") != null)
+        {
+            this.created = gsData.GetDate("created").Value;
+        }
+        if(gsData.GetDate("published") != null)
+        {
+            this.published = gsData.GetDate("published").Value;
+        }
+        if(gsData.GetNumber("current_version").HasValue)
+        {
+            this.currentVersion = (int)gsData.GetNumber("current_version").Value;
+        }
+        if(gsData.GetNumber("max_version").HasValue)
+        {
+            this.maxVersion = (int)gsData.GetNumber("max_version").Value;
+        }
+        if(gsData.GetNumber("min_version").HasValue)
+        {
+            this.minVersion = (int)gsData.GetNumber("min_version").Value;
+        }
+    }
+}
+
+/// <summary>
+/// Game sparks serialiser.
+/// Converts object to GSData and GSData from server response back to objects.
+/// Sean Durkan Sept 2016 for GameSparks Ltd.
+/// </summary>
+public class GameSparksSerialiser
+{
+
+    /// <summary>
+    /// casts GSData to primitive object types.
+    /// string, int, float, double, long, bool
+    /// </summary>
+    /// <returns>primitive data types</returns>
+    /// <param name="gsData">GSData</param>
+    public static object GSDataToPrimitive(GSData gsData)
+    {
+        if(gsData.GetString("type") != null) 
+        {
+            Type objType = Type.GetType(gsData.GetString("type"));
+            object obj = Activator.CreateInstance(objType);
+            if(objType.IsPrimitive || objType.IsValueType || (objType == typeof(string)) )
+            {
+                if(objType.IsSerializable &&  objType == typeof(int))
+                {
+                    obj = (int)gsData.GetNumber("value").Value;
+                }
+                else if(objType.IsSerializable &&  objType == typeof(long))
+                {
+                    obj = (long)gsData.GetNumber("value").Value;
+                }
+                else if(objType.IsSerializable &&  objType == typeof(float))
+                {
+                    obj = gsData.GetFloat("value").Value;
+                }
+                else if(objType.IsSerializable &&  objType == typeof(double))
+                {
+                    obj = (double)gsData.GetDouble("value").Value;
+                }
+                else if(objType.IsSerializable &&  objType == typeof(string))
+                {
+                    obj = (string)gsData.GetString("value");
+                }
+                else if(objType.IsSerializable &&  objType == typeof(bool))
+                {
+                    obj = (bool)gsData.GetBoolean("value");
+                }
+                else
+                {
+                    Debug.LogError("GS-Serializer| Cannot Serialize Type ["+objType.ToString()+"]");
+                }
+            }
+            return obj;
+        }
+        return null;
+    }
+
+
+    /// <summary>
+    /// Convert GSData returned from the server to an object.
+    /// This uses a field in the JSON data to return the correct object type.
+    /// </summary>
+    /// <returns>an object of the type sent to the server</returns>
+    /// <param name="gsData">GSData</param>
+    public static object GSDataToObject(GSData gsData)
+    {
+        // first check that we have a valid type we can convert to //
+        if(gsData.GetString("type") != null) 
+        {
+            Type objType = Type.GetType(gsData.GetString("type"));
+            object obj = Activator.CreateInstance(objType);
+            // check if the object-type is primitive. Primitives are parsed differntly, so this needs to be checked //
+            if(objType.IsPrimitive || objType.IsValueType || (objType == typeof(string)) )
+            {
+                object primitve = GSDataToPrimitive(gsData);
+                if(primitve != null)
+                {
+                    return primitve;
+                }
+            }
+            else
+            {
+                // go through all fields of this object-type and check if anything in our gs-data matches the names and types of those fields //
+                foreach(var typeField in objType.GetFields())
+                {
+                    
+                    // fist check if the field is serializable, otherwise ignore it //
+                    if(!typeField.IsNotSerialized)
+                    {
+                        // check if the JSON data is a dictionary
+                        if(typeField.FieldType.IsGenericType && typeField.FieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                        {
+                            if(gsData.GetGSData(typeField.Name) != null)
+                            {
+                                typeField.SetValue(obj, GSDataToDictionary(gsData.GetGSData(typeField.Name)));
+                            }
+                        }
+                        // the following types are easily deserialized using GSDataRequest //
+                        else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(string))
+                        {
+                            typeField.SetValue(obj, gsData.GetString(typeField.Name));
+                        }
+                        else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(int))
+                        {
+                            typeField.SetValue(obj, (int)gsData.GetNumber(typeField.Name).Value);    
+                        }
+                        else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(bool))
+                        {
+                            typeField.SetValue(obj, gsData.GetBoolean(typeField.Name));    
+                        }
+                        else if(!typeField.IsNotSerialized && gsData.GetStringList(typeField.Name) != null && ( typeField.FieldType == typeof(List<string>) || typeField.FieldType == typeof(string[]) ))
+                        {
+                            typeField.SetValue(obj, (typeField.FieldType == typeof(List<string>)) ? (object)gsData.GetStringList(typeField.Name) : gsData.GetStringList(typeField.Name).ToArray());  
+                        }
+                        else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<int>) || typeField.FieldType == typeof(int[])) )
+                        {
+                            typeField.SetValue(obj, (typeField.FieldType == typeof(List<int>)) ? (object)gsData.GetIntList(typeField.Name) : gsData.GetIntList(typeField.Name).ToArray());    
+                        }
+                        else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<float>) || typeField.FieldType == typeof(float[])) )
+                        {
+                            typeField.SetValue(obj, (typeField.FieldType == typeof(List<float>)) ? (object)gsData.GetFloatList(typeField.Name) : gsData.GetFloatList(typeField.Name).ToArray());    
+                        }
+                        else if(!typeField.IsNotSerialized && (typeField.FieldType == typeof(List<double>) || typeField.FieldType == typeof(double[])) )
+                        {
+                            typeField.SetValue(obj, (typeField.FieldType == typeof(List<double>)) ? (object)gsData.GetDoubleList(typeField.Name) : gsData.GetDoubleList(typeField.Name).ToArray());    
+                        }
+                        // if the type is a list of objects, then we use IList to deserialize //
+                        else if(!typeField.IsNotSerialized && gsData.GetGSDataList(typeField.Name) != null && typeof(IList).IsAssignableFrom(typeField.FieldType))
+                        {
+                            IList genericList = Activator.CreateInstance(typeField.FieldType) as IList;
+                            foreach(GSData gsDataElem in gsData.GetGSDataList(typeField.Name))
+                            {
+                                object elem = GSDataToObject(gsDataElem);
+                                genericList.Add(elem);
+                            }
+                            typeField.SetValue(obj, genericList);
+                        }
+                        else if(!typeField.IsNotSerialized && typeField.FieldType == typeof(DateTime))
+                        {
+                            typeField.SetValue(obj, gsData.GetDate(typeField.Name));    
+                        }
+                        else if(typeField.FieldType.IsArray)
+                        {
+                            List<GSData> gsArrayData = gsData.GetGSData(typeField.Name).GetGSDataList(typeField.Name);
+                            // create a new instance of the array. The Activator class cannot do this for arrays //
+                            // so this will create a new array of types inside the array, with the count of what is in the gsdata list //
+                            Array newArray = Array.CreateInstance(typeField.FieldType.GetElementType(), gsArrayData.Count);
+                            object[] objArray = new object[gsArrayData.Count]; // create a new array of objects where the serialised objects will be kept
+                            for(int i = 0; i < gsArrayData.Count; i++)
+                            {
+                                objArray[i] = GSDataToObject(gsArrayData[i]); // convert the JSON data inside the list to an object
+                            }
+                            Array.Copy(objArray, newArray, objArray.Length); //covert the object[] to the original type
+                            typeField.SetValue(obj, newArray); 
+                        }
+                    }
+                }
+            }
+            return obj;
+        }
+        else
+        {
+            Debug.LogError("GSM| Invalid GSData...\n No 'type' field found for object");
+        }
+        return null;
+    }
+
+
+
+
+    /// <summary>
+    /// Converts GSData to a dictionary<string, object> if the given GSData is of the approriate type //
+    /// </summary>
+    /// <returns>The data to dictionary.</returns>
+    /// <param name="gsData">GSData</param>
+    public static Dictionary<string, object> GSDataToDictionary(GSData gsData)
+    {
+        Dictionary<string, object> newDictionary = new Dictionary<string, object>();
+        foreach(var dictionaryElem in gsData.BaseData)
+        {
+            Type thisType = Type.GetType(gsData.GetGSData(dictionaryElem.Key).GetString("type")); // get the element object-type
+            // this is needed as there is no default constructor for strings //
+            if(thisType == typeof(string))
+            {
+                newDictionary.Add(dictionaryElem.Key, gsData.GetGSData(dictionaryElem.Key).GetString("value"));
+            }
+            // lists and arrays inside dictionary objects also need special treatment as they require to be grouped into objects with their type //
+            else if(gsData.GetGSData(dictionaryElem.Key).GetIntList("value") != null && thisType == typeof(List<int>) || thisType == typeof(int[]))
+            {
+                newDictionary.Add(dictionaryElem.Key, (thisType == typeof(List<int>)) ? (object)gsData.GetGSData(dictionaryElem.Key).GetIntList("value") : gsData.GetGSData(dictionaryElem.Key).GetIntList("value").ToArray()); 
+            }
+            else if(thisType == typeof(List<string>) || thisType == typeof(string[]))
+            {
+                newDictionary.Add(dictionaryElem.Key, (thisType == typeof(List<int>)) ? (object)gsData.GetGSData(dictionaryElem.Key).GetStringList("value") : gsData.GetGSData(dictionaryElem.Key).GetStringList("value").ToArray()); 
+            }
+            else if(thisType == typeof(List<float>) || thisType == typeof(float[]))
+            {
+                newDictionary.Add(dictionaryElem.Key, (thisType == typeof(List<int>)) ? (object)gsData.GetGSData(dictionaryElem.Key).GetFloatList("value") : gsData.GetGSData(dictionaryElem.Key).GetFloatList("value").ToArray()); 
+            }
+            else // the simplest to convert are objects of class-types. These can be parsed by passing them back into the GSDataToObject method
+            {
+                newDictionary.Add(dictionaryElem.Key, GSDataToObject(gsData.GetGSData(dictionaryElem.Key)));
+            }
+        }
+        return newDictionary;
+    }
+
+    /// <summary>
+    /// Dictionaries to GS data.
+    /// </summary>
+    /// <returns>The to GS data.</returns>
+    /// <param name="dictionary">Dictionary.</param>
+    public static GSRequestData DictionaryToGSData(IDictionary dictionary)
+    {
+        // first we check if the dictionary has some elements in it, otherwise we return null
+        if(dictionary.Count > 0) // make sure there is some data in the dictionary. We dont need to create empty objects
+        {
+            GSRequestData dictionaryData = new GSRequestData(); // the dictionary data will be serialized to this object
+            foreach(var dictionaryElement in dictionary)
+            {
+                DictionaryEntry entry = (DictionaryEntry)dictionaryElement; // create a dictionary element from the generic dictionary data
+                // we check if the first key is a string, as we cannot parse objects as keys atm //
+                // we are also going to make sure that the object is serialazable //
+                if(entry.Key.GetType() == typeof(string)) 
+                {
+                    // the data is stored along with the value and type, so we can get the data back as the correct object-type //
+                    GSRequestData gsEntryData = new GSRequestData();
+                    // check for string lists and arrays //
+                    if(entry.Value.GetType().IsSerializable && entry.Value.GetType() == typeof(List<string>) || entry.Value.GetType() == typeof(string[]))
+                    {
+                        gsEntryData.Add("type", entry.Value.GetType());
+                        gsEntryData.AddStringList("value",  (entry.Value.GetType() == typeof(List<string>)) ? entry.Value as List<string> : new List<string>(entry.Value as string[]));
+                        dictionaryData.AddObject(entry.Key.ToString(), gsEntryData);
+                    }
+                    // check for list or array of ints //
+                    else if(entry.Value.GetType().IsSerializable && entry.Value.GetType() == typeof(List<int>) || entry.Value.GetType() == typeof(int[]))
+                    {
+                        gsEntryData.Add("type", entry.Value.GetType());
+                        gsEntryData.AddNumberList("value",  (entry.Value.GetType() == typeof(List<int>)) ? entry.Value as List<int> : new List<int>(entry.Value as int[]));
+                        dictionaryData.AddObject(entry.Key.ToString(), gsEntryData);
+                    }
+                    // check for arry or list of floats //
+                    else if(entry.Value.GetType().IsSerializable && entry.Value.GetType() == typeof(List<float>) || entry.Value.GetType() == typeof(float[]))
+                    {
+                        gsEntryData.Add("type", entry.Value.GetType());
+                        gsEntryData.AddNumberList("value",  (entry.Value.GetType() == typeof(List<float>)) ? entry.Value as List<float> : new List<float>(entry.Value as float[]));
+                        dictionaryData.AddObject(entry.Key.ToString(), gsEntryData);
+                    }
+                    // check for arry or list of double //
+                    else if(entry.Value.GetType().IsSerializable && entry.Value.GetType() == typeof(List<double>) || entry.Value.GetType() == typeof(double[]))
+                    {
+                        gsEntryData.Add("type", entry.Value.GetType());
+                        gsEntryData.AddNumberList("value",  (entry.Value.GetType() == typeof(List<double>)) ? entry.Value as List<double> : new List<double>(entry.Value as double[]));
+                        dictionaryData.AddObject(entry.Key.ToString(), gsEntryData);
+                    }
+                    // otherwise this object is a class or a primitive, so we send it through the object-to-gsdata again //
+                    else
+                    {
+                        dictionaryData.AddObject(entry.Key.ToString(), ObjectToGSData(entry.Value));
+                    }
+                }
+                else
+                {
+                    // return the error //
+                    Debug.LogError("GS-Serializer|  Cannot Parse Object ["+entry.GetType().ToString()+"] As Key-Value. Key Must Be A String... \n Contact GameSparks if this functionality is required...");
+                    return null;
+                }
+            }
+            return dictionaryData;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Converts primitives to GameSparks JSON data in a form that can be parsed back from the server response.
+    /// </summary>
+    /// <param name="gsData">GSData</param>
+    /// <param name="obj">Object, must be string, int, float, double, bool</param>
+    public static void PrimitiveToGSData(ref GSRequestData gsData, object obj)
+    {
+        if(obj.GetType().IsSerializable && obj.GetType().IsPrimitive || obj.GetType().IsValueType || obj.GetType() == typeof(string))
+        {
+            if(obj.GetType() == typeof(int))
+            {
+                gsData.AddNumber("value", Convert.ToInt32(obj));
+            }
+            else if(obj.GetType() == typeof(long))
+            {
+                gsData.AddNumber("value", Convert.ToInt64(obj));
+            }
+            else if(obj.GetType() == typeof(float))
+            {
+                gsData.AddNumber("value", float.Parse(obj.ToString()));
+            }
+            else if(obj.GetType() == typeof(double))
+            {
+                gsData.AddNumber("value", Convert.ToDouble(obj));
+            }
+            else if(obj.GetType() == typeof(string))
+            {
+                gsData.AddString("value", obj.ToString());
+            }
+            else if(obj.GetType() == typeof(bool))
+            {
+                gsData.AddBoolean("value", bool.Parse(obj.ToString()));
+            }
+        }
+        else
+        {
+            Debug.LogError("GS-Serializer|  Object Is Not Primitive...\n Contact GameSparks If This Is Required...");
+        }
+    }
+
+    /// <summary>
+    /// This method takes an object and parses it to JSON using the GSDataRequest Class.
+    /// This method uses reflection to make sure that all fields of the object are valid and serializable.
+    /// v1.0
+    /// Can serialise the following..
+    /// bool, int, long, float, double, string, string
+    /// Any list or array of the above type.
+    /// Any class containing the above types, including inherited classes.
+    /// Dictionary<string, object> containing any of the above. 
+    /// </summary>
+    /// <returns>GSDataRequest, a JSON wrapper class used to send JSON data from C# to GameSparks</returns>
+    /// <param name="obj">Object.</param>
+    public static GSRequestData ObjectToGSData(object obj)
+    {
+
+
+        GSRequestData gsData = new GSRequestData();
+        // the key part of this serializer is the inclusion of the object-type in the JSON data //
+        // this allows each object being parsed to JSON to have a reference back to the type is was cast from so it can be cast back //
+        // to the original class or data-type //
+        gsData.AddString("type", obj.GetType().ToString());
+        // we need to first check for primitives such as float, int, string, etc, as it is possible to pass primitives in as objects //
+        // , the dictionary for example. We just check if the object is primitive, and in this case we store the primitive with the //
+        // key 'value', which we will use later //
+        if(obj.GetType().IsSerializable && obj.GetType().IsPrimitive || obj.GetType().IsValueType || obj.GetType() == typeof(string))
+        {
+            PrimitiveToGSData(ref gsData, obj);
+        }
+        else
+        {
+            // if the object is not primitive, then we go through all the fields of that object type //
+            // what we do here is check the field is serializable, and if the field related to the object is not null //
+            // if it passes checks, then we add a new field to the GSDataRequest representing the field name and the field-data //
+            foreach(var field in obj.GetType().GetFields())
+            {
+                // check if the field is serializable and is not null //
+                if(!field.IsNotSerialized && field.GetValue(obj) != null)
+                {
+                    // check if the field is a dictionary //
+                    if(field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                    {
+                        GSData dictionary = DictionaryToGSData(field.GetValue(obj) as IDictionary);
+                        if(dictionary != null) // make sure the dictionary was returned //
+                        {
+                            gsData.AddObject(field.Name, dictionary);
+                        }
+                    }
+                    else if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>) && typeof(IList).IsAssignableFrom(field.FieldType))
+                    {
+                        IListToGSDataList(ref gsData, field.Name, field.GetValue(obj) as IList);
+                    }
+                    // The following object-types are suitable for direct serialisation to GSData using GSDataRequest //
+                    else if(field.GetValue(obj).GetType() == typeof(bool))
+                    {
+                        gsData.AddBoolean(field.Name, bool.Parse(field.GetValue(obj).ToString()));
+                    }
+                    else if(field.GetValue(obj).GetType() == typeof(int))
+                    {
+                        gsData.AddNumber(field.Name, (int)Convert.ToInt32(field.GetValue(obj)));
+                    }
+                    else if(field.GetValue(obj).GetType() == typeof(float) || field.GetValue(obj).GetType() == typeof(double))
+                    {
+                        gsData.AddNumber(field.Name, Double.Parse(field.GetValue(obj).ToString()));
+                    }
+                    else if(field.GetValue(obj).GetType() == typeof(string))
+                    {
+                        gsData.AddString(field.Name, field.GetValue(obj).ToString());
+                    }
+                    else if(field.GetValue(obj).GetType() == typeof(List<string>) || field.GetValue(obj).GetType() == typeof(string[]))
+                    {
+                        gsData.AddStringList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<string>)) ? field.GetValue(obj) as List<string> : new List<string>(field.GetValue(obj) as string[]));
+                    }
+                    else if(field.GetValue(obj).GetType() == typeof(List<int>) || field.GetValue(obj).GetType() == typeof(int[]))
+                    {
+                        gsData.AddNumberList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<int>)) ? field.GetValue(obj) as List<int> : new List<int>(field.GetValue(obj) as int[]));
+                    }
+                    else if(field.GetValue(obj).GetType() == typeof(List<float>) || field.GetValue(obj).GetType() == typeof(float[]))
+                    {
+                        gsData.AddNumberList(field.Name,  (field.GetValue(obj).GetType() == typeof(List<float>)) ? field.GetValue(obj) as List<float> : new List<float>(field.GetValue(obj) as float[]));
+                    }
+                    else if(field.GetValue(obj).GetType() == typeof(DateTime))
+                    {
+                        gsData.AddDate(field.Name, (DateTime)field.GetValue(obj));
+                    }
+                    else if(field.FieldType.IsArray)
+                    {
+                        GSRequestData newData = new GSRequestData();
+//                        newData.AddString("array_type", field.FieldType.ToString());
+                        IListToGSDataList(ref newData, field.Name, field.GetValue(obj) as IList);
+                        gsData.AddObject(field.Name, newData);
+                    }
+                    // value-types are not classes (struct or enum) so we will specify this for serializing classes //
+                    else if(!field.FieldType.IsValueType)
+                    {
+                        gsData.AddObject(field.Name, ObjectToGSData(field.GetValue(obj)));
+                    }
+                    else 
+                    {
+                        Debug.LogError("GS-Serializer|  Cannot Parse Object ["+field.FieldType+"]... \n Contact GameSparks if this functionality is required...");
+                    }
+                }
+            }
+        }
+        return gsData;
+    }
+
+    public static void IListToGSDataList(ref GSRequestData gsData, string fieldName, IList list)
+    {
+        if(list.GetType() == typeof(List<string>) || list.GetType() == typeof(string[]))
+        {
+            gsData.AddStringList(fieldName,  (list.GetType() == typeof(List<string>)) ? list as List<string> : new List<string>(list as string[]));
+        }
+        else if(list.GetType() == typeof(List<int>) || list.GetType() == typeof(int[]))
+        {
+            gsData.AddNumberList(fieldName,  (list.GetType() == typeof(List<int>)) ? list as List<int> : new List<int>(list as int[]));
+        }
+        else if(list.GetType() == typeof(List<float>) || list.GetType() == typeof(float[]))
+        {
+            gsData.AddNumberList(fieldName,  (list.GetType() == typeof(List<float>)) ? list as List<float> : new List<float>(list as float[]));
+        }
+        else
+        {
+            List<GSData> gsDataList = new List<GSData>();
+            for(int i = 0; i < list.Count; i++)
+            {
+                gsDataList.Add(ObjectToGSData(list[i]));
+            }
+            gsData.AddObjectList(fieldName, gsDataList);
+        }
+    }
+
 }
