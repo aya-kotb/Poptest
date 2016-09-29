@@ -70,7 +70,7 @@ namespace Poptropica2.APIVersioningSystem
         /// </summary>
         /// <param name="version">Version string, server version.</param>
         /// <param name="versionDate">Version date and time.</param>
-        void HandleonGetServerVersion (string version, System.DateTime versionDate)
+        void HandleonGetServerVersion (ServerVersionResponse serverVersion)
         {
             InvokeAPIVersionCheck(longInterval);
         }
@@ -82,7 +82,6 @@ namespace Poptropica2.APIVersioningSystem
         /// <param name="error">GameSparksError, contain enum and string errorString.</param>
         void HandleonRequestFailed (GameSparksError error)
         {
-            Debug.Log(error);
             switch (error.errorMessage)
             {
                 case GameSparksErrorMessage.invalid_version:
