@@ -34,7 +34,7 @@ public class APIVersioningSystemTest : MonoBehaviour {
         int version = GameSparksManager.GSVersion;
         version--;
         GameSparksManager.SetGSVersion(version);
-        versionText.text = "API Vesrion: " + GameSparksManager.GSVersion.ToString();
+        versionText.text = "API Current Vesrion: " + GameSparksManager.GSVersion.ToString();
     }
 
     public void OnClickGetServerVersion ()

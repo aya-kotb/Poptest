@@ -72,6 +72,13 @@ namespace Poptropica2.APIVersioningSystem
         /// <param name="versionDate">Version date and time.</param>
         void HandleonGetServerVersion (ServerVersionResponse serverVersion)
         {
+            Debug.Log("created "+serverVersion.created);
+            Debug.Log("currentVersion "+serverVersion.currentVersion);
+            Debug.Log("maxVersion "+serverVersion.maxVersion);
+            Debug.Log("minVersion "+serverVersion.minVersion);
+            Debug.Log("published "+serverVersion.published);
+            Debug.Log("published "+serverVersion.status);
+            Debug.Log("published "+serverVersion.message);
             InvokeAPIVersionCheck(longInterval);
         }
 
@@ -82,6 +89,8 @@ namespace Poptropica2.APIVersioningSystem
         /// <param name="error">GameSparksError, contain enum and string errorString.</param>
         void HandleonRequestFailed (GameSparksError error)
         {
+            Debug.Log(error.errorMessage);
+            Debug.Log(error.errorString);
             switch (error.errorMessage)
             {
                 case GameSparksErrorMessage.invalid_version:
