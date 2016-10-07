@@ -9,24 +9,28 @@ namespace Poptropica2.APIVersioningSystem
     /// <summary>
     /// API Versioning Service
     /// To setup this class, add it to an empty gameobject.
+    /// And attach VersioningSystemPopup prefab to popupMessagePanel GameObject.
     /// 
     /// This class is use for checking the version of client and server,
     /// that both systems are running the same version of Poptropica.
     /// If the version is not same in both client and server then this class will
     /// restart web client to match the server, and On mobile platforms, it will prompt the user to update the app via their respective app store.
     /// </summary>
-    public class APIVersioningService : MonoBehaviour, IService
+    public class APIVersioningSystem : MonoBehaviour, IService
     {
 
-        #if UNITY_IPHONE || UNITY_IOS
-        private const string appStoreLink = "https://www.google.com";
-        #elif UNITY_ANDROID
-        private const string appStoreLink = "https://www.google.com";
-        #endif
+        public GameObject popupMessagePanel;
+        public string appStoreLinkiOS = "https://www.google.com";
+        public string appStoreLinkAndroid = "https://www.google.com";
+        public int sceneToLoad = 0;
+        public float shortInterval = 60f;   // 1 Minutes
+
+
         private const string UpdateMessage = "Please update your game to continue being able to buy items and save your game to our servers.";
         private const float longInterval = 3600f;   // 1 Hour
-        private const float shortInterval = 120f;   // 2 Minutes
+        private const string updateStatusPending = "pending";
 
+        private bool publishPendingChecked = false;
         private const string invokeMethod = "GetServerVersion";
         MDSManager mdsManager;
 
@@ -35,6 +39,7 @@ namespace Poptropica2.APIVersioningSystem
         /// </summary>
         void Awake()
         {
+            // Using MDSManager for UI Popup.
             SAMApplication.mainInstance.AddService("MDSManager", new Poptropica2.MDSModule.MDSManager());
             mdsManager = SAMApplication.mainInstance.GetService<MDSManager>();
 
@@ -79,7 +84,21 @@ namespace Poptropica2.APIVersioningSystem
             Debug.Log("published "+serverVersion.published);
             Debug.Log("published "+serverVersion.status);
             Debug.Log("published "+serverVersion.message);
-            InvokeAPIVersionCheck(longInterval);
+
+            if (serverVersion.status.Contains (updateStatusPending))
+            {
+                if (publishPendingChecked == false)
+                {
+                    publishPendingChecked = true;
+                    string message = serverVersion.published + "\n" + serverVersion.message;
+                    PopUpMessage(message, false);
+                }
+                InvokeAPIVersionCheck (shortInterval);
+            }
+            else
+            {
+                InvokeAPIVersionCheck(longInterval);
+            }
         }
 
         /// <summary>
@@ -91,23 +110,17 @@ namespace Poptropica2.APIVersioningSystem
         {
             Debug.Log(error.errorMessage);
             Debug.Log(error.errorString);
-            switch (error.errorMessage)
+
+            if (error.errorMessage == GameSparksErrorMessage.invalid_version)
             {
-                case GameSparksErrorMessage.invalid_version:
-                    // When version is different and need updation.
-                    // Which will restart the game or redirect to app store for update.
-                    PopUpMessage(UpdateMessage, true);
-                    break;
-                // TODO:: for expected updated.
-                /*case Update expected at 0415 GMT
-                    InvokeAPIVersionCheck (shortInterval); //Changing interval time to 2 minutes.
-                    break;*/
-
-                default:
-                    InvokeAPIVersionCheck (longInterval);
-                    break;
+                // When version is different and need updation.
+                // Which will restart the game or redirect to app store for update.
+                PopUpMessage(UpdateMessage, true);
             }
-
+            else
+            {
+                InvokeAPIVersionCheck(longInterval);
+            }
         }
 
         /// <summary>
@@ -116,7 +129,6 @@ namespace Poptropica2.APIVersioningSystem
         /// <param name="time">float Time in seconds.</param>
         public void InvokeAPIVersionCheck (float time)
         {
-            Debug.Log("InvokeAPIVersionCheck "+time);
             // Cancel previous invoke method
             if (IsInvoking(invokeMethod) == true)
             {
@@ -132,28 +144,25 @@ namespace Poptropica2.APIVersioningSystem
         /// </summary>
         /// <param name="msg">Message to be displayed.</param>
         /// <param name="addButton">If set to <c>true</c>Pop up message contain a Button.</param>
-        void PopUpMessage (string msg, bool addButton = false)
+        public void PopUpMessage (string msg, bool isUpdateMsg = false)
         {
-            if (mdsManager == null)
-            {
-                mdsManager = SAMApplication.mainInstance.GetService<MDSManager>();
-            }
+            string buttonText = "";
+            GameObject go = Instantiate(popupMessagePanel);
+            APIVersioningSytemPopup popup = go.GetComponent<APIVersioningSytemPopup>();
+            popup.HandleInstantiatedPrefab();
 
-            MDSWindow newWindow = mdsManager.CreateWindow();
-            newWindow.SetTitleText("Version Control");
-            newWindow.SetContentText(msg);
-            newWindow.SetTitleCloseButton (true);
-
-            if (addButton == true)
+            if (isUpdateMsg == true)
             {
                 #if UNITY_WEBGL
-                newWindow.AddButton ("Restart", UpdateGameCallback);
+                popup.DisplayPopup(msg, "Update Alert!", false, true, UpdateCallback);
                 #elif UNITY_IPHONE || UNITY_IOS || UNITY_ANDROID
-                newWindow.AddButton ("Update", HandleCallback);
+                popup.ShowPopup(msg, "Update Alert!", false, true, UpdateCallback);
                 #endif
             }
-
-            mdsManager.AddContentsToWindow(newWindow);
+            else
+            {
+                popup.DisplayPopup(msg, "New Version!", true, false, null);
+            }
         }
 
         /// <summary>
@@ -163,7 +172,7 @@ namespace Poptropica2.APIVersioningSystem
         /// <returns><c>true</c>, if there is no other object of same instance, <c>false</c> if there is other object of same instance..</returns>
         bool CheckInstance ()
         {
-            if (GameObject.FindObjectOfType<APIVersioningService>().gameObject.name == "~APIVersioningService")
+            if (GameObject.FindObjectOfType<APIVersioningSystem>().gameObject.name == "~APIVersioningService")
             {
                 DestroyImmediate(this.gameObject);
                 return false;
@@ -176,18 +185,17 @@ namespace Poptropica2.APIVersioningSystem
         /// <summary>
         /// Is a callback method which is called when update/restart button is pressed.
         /// </summary>
-        void UpdateGameCallback ()
+        void UpdateCallback ()
         {
             #if UNITY_WEBGL
             // RESTART APP
-            string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            UnityEngine.SceneManagement.SceneManager.LoadScene((sceneToLoad));
             #elif UNITY_IOS || UNITY_IPHONE
             // Open Apple App store url...
-            Application.OpenURL (appStoreLink);
+            Application.OpenURL (appStoreLinkiOS);
             #elif UNITY_ANDROID
             // Open Android App store...
-            Application.OpenURL (appStoreLink);
+            Application.OpenURL (appStoreLinkAndroid);
             #endif
         }
 
