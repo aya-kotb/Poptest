@@ -4,54 +4,43 @@ using System.Collections;
 using Poptropica2;
 using Poptropica2.APIVersioningSystem;
 
+/// <summary>
+/// Temporary class to test the API versioning system
+/// </summary>
 public class APIVersioningSystemTest : MonoBehaviour {
 
     public Text versionText;
     public float invokeTime = 5f;
 
-    public APIVersioningSystem apiVersioningService;
+    public APIVersioningService apiVersioningService;
 
-    // Use this for initialization
-	void Start () {
-        versionText.text = "API Current Version: " + GameSparksManager.GSVersion.ToString();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            apiVersioningService.PopUpMessage("Update Pending");
-        }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-            apiVersioningService.PopUpMessage("Please update your game to continue being able to buy items and save your game to our servers.", true);
-        }
+	void Start () 
+	{
+		apiVersioningService = SAMApplication.mainInstance.GetService<APIVersioningService>();
+		versionText.text = "Current API Version in client : " + GameSparksManager.GSVersion.ToString();
 	}
 
+	/// <summary>
+	/// On Button click Increments the GSVersion by 1
+	/// </summary>
     public void OnClickIncreaseVersion ()
     {
         int version = GameSparksManager.GSVersion;
         version++;
         GameSparksManager.SetGSVersion(version);
-        versionText.text = "API Current Version: " + GameSparksManager.GSVersion.ToString();
+		versionText.text = "Current API Version in client : " + GameSparksManager.GSVersion.ToString();
+		apiVersioningService.InvokeAPIVersionCheck(invokeTime);
     }
 
+	/// <summary>
+	/// On button click decrements the GSVersion by 1 
+	/// </summary>
     public void OnClickDecreaseVersion ()
     {
         int version = GameSparksManager.GSVersion;
         version--;
         GameSparksManager.SetGSVersion(version);
-        versionText.text = "API Current Version: " + GameSparksManager.GSVersion.ToString();
-    }
-
-    public void OnClickGetServerVersion ()
-    {
-        if (apiVersioningService == null)
-        {
-            apiVersioningService = GameObject.FindObjectOfType<APIVersioningSystem>();
-            
-        }
-
-        apiVersioningService.InvokeAPIVersionCheck(invokeTime);
+		versionText.text = "Current API Version in client : " + GameSparksManager.GSVersion.ToString();
+		apiVersioningService.InvokeAPIVersionCheck(invokeTime);
     }
 }

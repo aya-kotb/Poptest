@@ -7,24 +7,27 @@ using UnityEngine.EventSystems;
 namespace Poptropica2.APIVersioningSystem
 {
     /// <summary>
-    /// This class open the popup and display the messages.
+	/// This class handles the popup dialog to be displayed when an update is available.
     /// </summary>
-    public class APIVersioningSytemPopup : MonoBehaviour
+    public class APIVersioningSystemPopup : MonoBehaviour
     {
         public Text headerText;
         public Text messageText;
         public Text updateButtonText;
+
         public Button updateButton;
         public Button closeButton;
+
         public RectTransform overlayScreen;
         public RectTransform popUpScreen;
+
         public float tweenTime = 0.8f;
         public float alphaFade = 0.8f;
 
         private System.Action callbackAction;
 
         /// <summary>
-        /// This method set the gameobject to canvas parent.
+        /// This method sets the canvas as parent to this gameobject.
         /// </summary>
         public void HandleInstantiatedPrefab ()
         {
@@ -37,8 +40,8 @@ namespace Poptropica2.APIVersioningSystem
         }
 
         /// <summary>
-        /// Triggers the button event.
-        /// Close the popup screen.
+        /// Triggers the button event from close button and update button.
+		/// It hides the alert popup
         /// </summary>
         public void OnClickClose ()
         {
@@ -46,31 +49,26 @@ namespace Poptropica2.APIVersioningSystem
         }
 
         /// <summary>
-        /// This method will initialize the paremeter and display the popup message.
-        /// Can hide close button so that user will not close it without completing the process.
-        /// 
+        /// This method sets the information to be displayed in the popup
+		/// It will be called when there is an update occurs on server
         /// </summary>
-        /// <param name="message">string Message to display in popup screen.</param>
-        /// <param name="header">string Header to display at top of popup screen.</param>
-        /// <param name="setCloseButton">bool If set to <c>true</c>Dislpay close button in popup screen.</param>
-        /// <param name="setUpdateButton">bool If set to <c>true</c>Display update button in popup screen.</param>
+        /// <param name="message"> Message to display in popup .</param>
+        /// <param name="header"> Header to display at top of popup .</param>
+        /// <param name="setCloseButton"> If set to <c>true</c> Displays close button in popup screen.</param>
+        /// <param name="setUpdateButton"> If set to <c>true</c>Displays update button in popup screen.</param>
         /// <param name="onCallback">callback after completing the transition.</param>
-        public void DisplayPopup(
-            string message,
-            string header = "",
-            bool setCloseButton = true,
-            bool setUpdateButton = false,
-            System.Action onCallback = null)
-        {
+		public void DisplayPopup(string message, string header = "", bool setCloseButton = true, bool setUpdateButton = false, System.Action onCallback = null)
+       	{
             messageText.text = message;
             headerText.text = header;
-            #if UNITY_WEBGL
+            
+#if UNITY_WEBGL
             updateButtonText.text = "Restart";
-            #elif UNITY_IPHONE || UNITY_IOS || UNITY_ANDROID
+#elif UNITY_IPHONE || UNITY_IOS || UNITY_ANDROID
             updateButtonText.text = "Update";
-            #endif
+#endif
 
-            if (callbackAction != null)
+			if (onCallback != null)
             {
                 callbackAction = onCallback;
             }
@@ -82,16 +80,16 @@ namespace Poptropica2.APIVersioningSystem
         }
 
         /// <summary>
-        /// Giving a fade effects to the pop screen screen before Display in screen
+        /// Giving a fadein effects to the popup screen before displaying
         /// </summary>
-        void ShowPopup ()
+        public void ShowPopup ()
         {
             LeanTween.alpha(overlayScreen, alphaFade, tweenTime);
             LeanTween.scale(popUpScreen, Vector3.one, tweenTime);
         }
 
         /// <summary>
-        /// Giving a fade effects to the pop screen screen before hiding
+        /// Giving a fadeout effects to the popup screen before hiding
         /// </summary>
         public void HidePopup ()
         {
@@ -101,7 +99,7 @@ namespace Poptropica2.APIVersioningSystem
 
         /// <summary>
         /// Callback after completing UI transition effect.
-        /// Trigger a callback and destriy the gameobject.
+        /// Trigger a callback and destroys the gameobject.
         /// </summary>
         void OnCompleteHideTween ()
         {
@@ -113,20 +111,22 @@ namespace Poptropica2.APIVersioningSystem
         }
 
         /// <summary>
-        /// This method search for Canvas if the canvas is not present in hirerarcy it will create new Cnavas
+        /// This method will search for Canvas
+		/// if the canvas is not present in hierarchy then it will a create new canvas
         /// </summary>
         /// <returns>Transform which contain Canvas object.</returns>
-        static Transform GetCanvasTransform()
+        Transform GetCanvasTransform()
         {
             Canvas canvas = null;
-            // Attempt to find a canvas anywhere
+            // Attempt to find a canvas 
             canvas = FindObjectOfType<Canvas>();
-            if (canvas != null) return canvas.transform;                
+			if (canvas != null) {
 
-            // if we reach this point, we haven't been able to locate a canvas
-            // ...So we'd better create one
+				return canvas.transform;                
+			}
 
-            GameObject canvasGameObject = new GameObject("Canvas");
+            // Since the canvas not presents in hierarchy it'll create a new canvas on it's own.
+			GameObject canvasGameObject = new GameObject("Canvas");
             canvasGameObject.layer = LayerMask.NameToLayer("UI");
             canvas = canvasGameObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -140,13 +140,13 @@ namespace Poptropica2.APIVersioningSystem
                 eventSystem = eventSystemGameObject.AddComponent<EventSystem>();
                 eventSystemGameObject.AddComponent<StandaloneInputModule>();
 
-                #if UNITY_4_6 || UNITY_4_7 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2
+#if UNITY_4_6 || UNITY_4_7 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2
                 eventSystemGameObject.AddComponent<TouchInputModule>();
-                #endif
+#endif
 
-                #if UNITY_EDITOR
+#if UNITY_EDITOR
                 UnityEditor.Undo.RegisterCreatedObjectUndo(eventSystemGameObject, "Create EventSystem");
-                #endif
+#endif
             }
 
             return canvas.transform;
