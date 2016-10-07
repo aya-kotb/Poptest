@@ -123,7 +123,7 @@ public class PlayerCharacterTests {
 	[Test]
 	public void CharacterControllerReferencedTest() {
 		CharacterModel model = character.GetComponent<CharacterModel>();
-		Assert.NotNull(model.ControllerContainer.Result, "No controller is referenced by the character. \n" +
+		Assert.NotNull(model.controllerContainer.Result, "No controller is referenced by the character. \n" +
 			"Make sure that a controller object is present in the scene to capture user input,\nand that the Controller Container component of the CharacterModel refers to it.");
 	}
 

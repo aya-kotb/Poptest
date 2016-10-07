@@ -9,8 +9,12 @@ namespace Poptropica2.Characters {
 	/// Subclasses of this should inform the state machine of world and controller conditions only.
 	/// </summary>
 	public abstract class CharacterModel : MonoBehaviour {
+
+		public enum CharacterModelTypes{Standard,Alternate};
+		public CharacterModelTypes characterModelType;
+
 		[Tooltip("Gamepad, keyboard, etc.")]
-		public ICharacterControllerContainer ControllerContainer;
+		public ICharacterControllerContainer controllerContainer;
 		protected ICharacterController controller;
 
 		[Header("Speeds & Timings")]
@@ -21,6 +25,13 @@ namespace Poptropica2.Characters {
 		public float jumpDuration = 0.5f;
 		[Tooltip("Effect of holding down the jump button")]
 		public float jumpBoost = 12;
+
+        [Tooltip("Max velocity for targeted jumping(Only for mouse/touch)")]
+        public Vector2 maxTargetedJumpVelocity = new Vector2(10,10);
+
+        [HideInInspector]
+        public Vector2 jumpTarget;
+        public bool canJumpToTarget = false;
 
 		protected Animator stateMachine;
 		protected Vector2 hitPosition;
@@ -36,6 +47,7 @@ namespace Poptropica2.Characters {
 		public virtual Vector2 EyePosition { get { return eyePosition;  } }
 		public virtual float EyelidOpenness { get { return eyelidOpenness; } }
 		public virtual Animator StateMachine { get { return stateMachine; } }
+
 
 		[Header("Setup")]
 		public Transform[] groundRaycasters;
@@ -66,8 +78,9 @@ namespace Poptropica2.Characters {
 			skeletonAnimator = GetComponentInChildren<SkeletonAnimator>();
 			viewResetPos = skeletonAnimator.transform.localPosition;    //Store this for ResetView()
 			LinkToStateBehaviors();		
-			controller = ControllerContainer.Result;	//Make controller linkable in the editor, still accessible as an interface.
+			controller = controllerContainer.Result;//Make controller linkable in the editor, still accessible as an interface.
 		}
+
 
 
 		/// <summary>
@@ -90,7 +103,7 @@ namespace Poptropica2.Characters {
 			stateMachine.SetBool(animationParameterHash, val);
 		}
 
-		/// <summary>
+		/// <summary>stateMachine
 		/// Animates the return of the view (the SkeletonAnimator's GameObject) from an adjusted position/rotation back to the default (same as the model's).
 		/// Useful for the exit of State Behaviors that rotate or otherwise move the view away from the model.
 		/// </summary>

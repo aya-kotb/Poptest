@@ -19,7 +19,7 @@ namespace Poptropica2.Characters {
 
 		IEnumerator Start() {
 			CharacterModel model = GetComponentInParent<CharacterModel>();
-            controller = model.ControllerContainer.Result;
+            controller = model.controllerContainer.Result;
 			skeleton = model.GetComponentInChildren<SkeletonAnimator>().skeleton;
 			while (pupil == null) {
 				yield return null;

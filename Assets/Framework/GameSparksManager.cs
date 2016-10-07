@@ -10,6 +10,8 @@ using System;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 
 
 /// <summary>
@@ -44,7 +46,27 @@ public class GameSparksManager : MonoBehaviour
 
     #endregion
 
-    public static int GSVersion = 1;
+
+    /// <summary>
+    /// The user's public IP
+    /// </summary>
+    private static string userPublicIP;
+
+    /// <summary>
+    /// Gets the user's public ip.
+    /// </summary>
+    /// <returns>The user public ip.</returns>
+    public static string GetUserPublicIp()
+    {
+        return userPublicIP;
+    }
+
+    /// <summary>
+    /// The current server version according to the client
+    /// </summary>
+    public static int GSVersion = -1;
+
+
     /// <summary>
     /// Sets the client version
     /// </summary>
@@ -73,16 +95,33 @@ public class GameSparksManager : MonoBehaviour
             Debug.Log("GSM | Removed Duplicate...");
             Destroy(this.gameObject);
         }
+
+
     }
+
+    public IEnumerator GetLocalIPAddress()
+    {
+        WWW req = new WWW("http://checkip.dyndns.org");
+        yield return req;
+        string[] a = req.text.Split(':');
+        string a2 = a[1].Substring(1);
+        string[] a3 = a2.Split('<');
+        userPublicIP = a3[0];
+        Debug.Log("Public Ip:"+userPublicIP);
+    }
+
 
     // Use this for initialization
     void Start()
     {
+       
         // This is a callback which is triggered when gamesparks connects and disconnects //
         // Note: on disconnect, this needs a request to timeout before it will know that the socket has closed //
         // i.e. we cannot tell the SDK the socket is closed if it is closed (since there is no connection) //
         GS.GameSparksAvailable += ((bool _isAvail) =>
         {
+            // get the user's public IP for use later //
+            StartCoroutine(GetLocalIPAddress());
             if (OnGSAvailable != null)
             {
                 OnGSAvailable(_isAvail);
@@ -1359,7 +1398,85 @@ public class GameSparksManager : MonoBehaviour
 
     #region System
 
+    /// <summary>
+    /// receives an asset bundle details for the shortcode requested
+    /// </summary>
+    public delegate void onGetAssetBundle(AssetBundleDetails assetBundle);
 
+    /// <summary>
+    /// receives an asset bundle details for the shortcodes requested
+    /// </summary>
+    public delegate void onGetAssetBundles(AssetBundleDetails[] assetBundles);
+
+    /// <summary>
+    /// Gets the asset bundle.
+    /// </summary>
+    /// <param name="asset_bundle_id">Asset bundle identifier.</param>
+    /// <param name="onGetAssetBundle">Receives asset bundle setails</param>
+    /// <param name="onRequestFailed">On request failed. callback, Receives GameSparksError, contains enum & string errorString</param>
+    public void GetAssetBundle(string asset_bundle_id,  onGetAssetBundle onGetAssetBundle, onRequestFailed onRequestFailed)
+    {
+        Debug.Log("GSM| Fecthing Asset Bundle Details...");
+        GSRequestData requestData = new GSRequestData();
+        requestData.AddString("asset_bundle_id", asset_bundle_id);
+        new GameSparks.Api.Requests.LogEventRequest().SetEventKey("getAssetBundle")
+            .SetEventAttribute("asset_bundle_id", requestData)
+            .Send((response) => 
+            {
+                if (!response.HasErrors)
+                {
+                    if(onGetAssetBundle != null)
+                    {
+                        onGetAssetBundle(new AssetBundleDetails(response.ScriptData.GetGSData("@getAssetBundle")));
+                    }
+                }
+                else
+                {
+                    if(onRequestFailed != null)
+                    {
+                        onRequestFailed(new GameSparksError(ProcessGSErrors(response.Errors)));
+                    }
+                }
+            });
+    }
+
+    /// <summary>
+    /// Gets the asset bundles.
+    /// </summary>
+    /// <param name="asset_bundles">Aa list of asset bundle codes.</param>
+    /// <param name="onGetAssetBundles">Receives an array of asset bundles</param>
+    /// <param name="onRequestFailed">On request failed. callback, Receives GameSparksError, contains enum & string errorString</param>
+    public void GetAssetBundles(List<string> asset_bundles, onGetAssetBundles onGetAssetBundles, onRequestFailed onRequestFailed)
+    {
+        Debug.Log("GSM| Fecthing Asset Bundle Details...");
+        GSRequestData requestData = new GSRequestData();
+        requestData.AddStringList("asset_bundles", asset_bundles);
+        new GameSparks.Api.Requests.LogEventRequest().SetEventKey("getAssetBundle")
+            .SetEventAttribute("asset_bundle_id", requestData)
+            .Send((response) => 
+                {
+                    Debug.LogWarning(response.JSONString);
+                    if (!response.HasErrors)
+                    {
+                        if(onGetAssetBundles != null)
+                        {
+                            List<AssetBundleDetails> bundleList = new List<AssetBundleDetails>();
+                            foreach(var assetbundleDetails in response.ScriptData.GetGSDataList("@getAssetBundle"))
+                            {
+                                bundleList.Add(new AssetBundleDetails(assetbundleDetails));
+                            }
+                            onGetAssetBundles(bundleList.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        if(onRequestFailed != null)
+                        {
+                            onRequestFailed(new GameSparksError(ProcessGSErrors(response.Errors)));
+                        }
+                    }
+                });
+    }
 
 
     /// <summary>
@@ -1367,12 +1484,14 @@ public class GameSparksManager : MonoBehaviour
     /// </summary>
     public delegate void onGetServerVersion(ServerVersionResponse serverVersion);
 
+    public delegate void onIncorrectServerVersion(GameSparksError error, ServerVersionResponse serverVersion);
+
     /// <summary>
     /// Gets the server version.
     /// </summary>
     /// <param name="onGetServerVersion">On get server version. callback, string, server version</param>
     /// <param name="onRequestFailed">On request failed. callback, Receives GameSparksError, contains enum & string errorString</param>
-    public void GetServerVersion(onGetServerVersion onGetServerVersion, onRequestFailed onRequestFailed)
+    public void GetServerVersion(onGetServerVersion onGetServerVersion, onIncorrectServerVersion onIncorrectServerVersion)
     {
         Debug.Log("GSM| Fetching Server Version...");
         new GameSparks.Api.Requests.LogEventRequest().SetEventKey("getServerVersion")
@@ -1385,9 +1504,9 @@ public class GameSparksManager : MonoBehaviour
                 }
                 else
                 {
-                    if (onRequestFailed != null)
+                    if (onIncorrectServerVersion != null)
                     {
-                        onRequestFailed(new GameSparksError(ProcessGSErrors(response.Errors)));
+                        onIncorrectServerVersion(new GameSparksError(ProcessGSErrors(response.Errors)), new ServerVersionResponse(response.ScriptData.GetGSData("server_version")));
                     }
                 }
             });
@@ -2354,7 +2473,7 @@ public class GameSparksManager : MonoBehaviour
     /// </summary>
     /// <returns>GameSparksError, enum</returns>
     /// <param name="error">GSData Error response</param>
-    public GameSparksErrorMessage ProcessGSErrors(GSData error)
+    public static GameSparksErrorMessage ProcessGSErrors(GSData error)
     {
 //        Debug.LogWarning("GSM| Error: " + error.JSON);
         if (error.GetString("@authentication") != null)
@@ -2457,6 +2576,14 @@ public class GameSparksManager : MonoBehaviour
         else if (error.GetString("@registerTestAccount") != null)
         {
             return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), error.GetString("@registerTestAccount"));
+        }
+        else if (error.GetString("@addAssetBundle") != null)
+        {
+            return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), error.GetString("@addAssetBundle"));
+        }
+        else if (error.GetString("@getAssetBundle") != null)
+        {
+            return (GameSparksErrorMessage)Enum.Parse(typeof(GameSparksErrorMessage), error.GetString("@getAssetBundle"));
         }
         // INBOX SYSTEM
         else if (error.GetString("@getMessages") != null)
@@ -2695,7 +2822,9 @@ public enum GameSparksErrorMessage
     invalid_character_name,
     not_authorized,
     invalid_response, // used when the response details are invalid i.e. checkusername()
-    invalid_request // used when the request data is incorrect, i.e. checkusername()
+    invalid_request, // used when the request data is incorrect, i.e. checkusername()
+    submit_asset_bundle_failed,
+    invalid_bundle_code
 }
 
 
@@ -2994,6 +3123,8 @@ public class ServerVersionResponse
     public void Print()
     {
         Debug.Log("Curr:"+currentVersion+", Max:"+maxVersion+", Min:"+minVersion);
+        Debug.Log("Date Published:"+published);
+        Debug.Log("Status:"+status);
     }
 }
 
@@ -3438,5 +3569,125 @@ public class GameSparksSerialiser
             gsData.AddObjectList(fieldName, gsDataList);
         }
     }
+
+}
+
+public class AssetBundleDetails
+{
+    public string asset_bundle_id;
+    public string created_by;
+    public DateTime last_modified = DateTime.MinValue;
+    public int size;
+    public string url;
+
+
+    public AssetBundleDetails(GSData gsData)
+    {
+        asset_bundle_id = gsData.GetString("asset_bundle_id");
+        created_by = gsData.GetString("created_by");
+
+        if(gsData.GetNumber("last_modified").HasValue)
+        {
+            last_modified = UnixTimeStampToDateTime(gsData.GetNumber("last_modified").Value);
+        }
+        else if(gsData.GetGSData("last_modified").GetString("$date") != null)
+        {
+            last_modified = DateTime.Parse(gsData.GetGSData("last_modified").GetString("$date"));
+        }
+
+        size = (int)gsData.GetNumber("size").Value;
+        url = gsData.GetString("url");
+    }
+
+    private DateTime UnixTimeStampToDateTime(long unixDate)
+    {
+        DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        DateTime date = start.AddMilliseconds(unixDate).ToLocalTime();
+        return date;
+    }
+
+
+    public void Print()
+    {
+        Debug.Log("Bundle ID:"+asset_bundle_id+", Created By: "+created_by+", Last Modified:"+last_modified.ToString()+", Size:"+size);
+        Debug.LogWarning("URL: "+url);
+    }
+}
+
+public class GameSparksDownloadablesManager : MonoBehaviour
+{
+
+    /// <summary>
+    /// Submits the additional data.
+    /// </summary>
+    /// <returns>The additional data.</returns>
+    /// <param name="asset_bundle_id">Asset bundle identifier.</param>
+    /// <param name="created_by">Created by.</param>
+    /// <param name="OnAssetBundleSubmitted">On asset bundle submitted.</param>
+    /// <param name="OnAssetBundleFailed">On asset bundle failed.</param>
+    public static IEnumerator submitAdditionalData(string asset_bundle_id, string created_by, OnAssetBundleSubmitted OnAssetBundleSubmitted, OnAssetBundleFailed OnAssetBundleFailed)
+    {
+        WWW checkNameRequest = new WWW("https://preview.gamesparks.net/callback/E300018ZDdAx/addAssetBundle/Y4MhlMUWR8GnZw0a5Nhffj9LSGTDg4t3?asset_bundle_id="+asset_bundle_id+"&created_by="+created_by);
+        yield return checkNameRequest;
+        // check that the response has data, otherwise the request failed //
+        if(OnAssetBundleFailed != null && (checkNameRequest.text == null || checkNameRequest.text == string.Empty))
+        {
+            OnAssetBundleFailed(new GameSparksError(GameSparksErrorMessage.submit_asset_bundle_failed));
+        }
+        else 
+        {
+            // once we have the response we can parse it to an object from the JSON using gsdata //
+            GSRequestData respData = new GSRequestData(checkNameRequest.text);
+            if(OnAssetBundleFailed != null && respData.GetGSData("errors") != null) // check if we have an error
+            {
+                OnAssetBundleFailed(new GameSparksError(GameSparksManager.ProcessGSErrors(respData.GetGSData("errors"))));
+            }
+            else if(OnAssetBundleSubmitted != null && respData.GetGSData("resp") != null)
+            {
+                OnAssetBundleSubmitted(new AssetBundleDetails(respData.GetGSData("resp")));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Receives asset bundle details
+    /// </summary>
+    public delegate void OnAssetBundleSubmitted(AssetBundleDetails assetBundleDetails);
+
+    /// <summary>
+    /// Receives gamesparks error object
+    /// </summary>
+    public delegate void OnAssetBundleFailed(GameSparksError error);
+
+
+    /// <summary>
+    /// Submits an assetbundlke to the server.
+    /// Upon response from the server, we send a post of a callback where additional details are logged for this asset bundle
+    /// </summary>
+    /// <param name="asset_bundle_id">Asset bundle identifier.</param>
+    /// <param name="created_by">Created by.</param>
+    /// <param name="admin_username">Admin username.</param>
+    /// <param name="admin_password">Admin password.</param>
+    /// <param name="file_path">File path.</param>
+    /// <param name="OnAssetBundleSubmitted">callback, Receives AssetBundleDetails</param>
+    /// <param name="OnAssetBundleFailed">callback. Receives GameSparksError object: enum</param>
+    /*public static void SubmitAssetbundle(string asset_bundle_id, string created_by, string admin_username, string admin_password, string file_path, OnAssetBundleSubmitted OnAssetBundleSubmitted, OnAssetBundleFailed OnAssetBundleFailed)
+    {
+        Debug.Log("GSM| Submitting Asset Bundle...");
+        // this will submit the data to the server as a downloadable. The asset bundle id ill become the shortcode //
+        string response  = GameSparksRestApi.setDownloadable(GameSparksSettings.ApiKey, admin_username, admin_password, asset_bundle_id, file_path);
+        GSRequestData submissionRespData = new GSRequestData(response); // parse the response into JSON so we can check errors better
+        Debug.LogWarning("Asset Bundle Submission Response: "+submissionRespData.JSON);
+        if(submissionRespData.GetGSData("error") == null) // if there are no errors, then we send off a request to the callback to create a log //
+        {
+            // we need an object to send the coroutine off, to here i used the GameSparksManager singleton //
+            GameSparksManager.Instance().StartCoroutine(submitAdditionalData(asset_bundle_id, created_by, OnAssetBundleSubmitted, OnAssetBundleFailed));
+        }
+        else if(OnAssetBundleFailed != null)
+        {
+            OnAssetBundleFailed(new GameSparksError(GameSparksManager.ProcessGSErrors(submissionRespData)));
+        }
+    }*/
+
 
 }

@@ -77,6 +77,7 @@ namespace Poptropica2.Characters {
 
 						//Place it into the hierarchy
 						Transform pieceParent = boneFollowersParent.Find(lastPiece.boneName);
+
 						if (pieceParent != null) {
 							lastPiece.transform.SetParent(pieceParent);
 						} else {

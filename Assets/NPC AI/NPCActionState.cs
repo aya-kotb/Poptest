@@ -109,7 +109,7 @@ namespace PopTropica2.NPCAI
 				agent.stoppingDistance = 0;
 				dest = targetPosition;
 			}
-			((PathfindingCharacterController)agent.GetComponent<StandardCharacterModel> ().ControllerContainer.Result).SetMovePosition (dest);
+			((PathfindingCharacterController)agent.GetComponent<StandardCharacterModel> ().controllerContainer.Result).SetMovePosition (dest);
 			
 		}
 

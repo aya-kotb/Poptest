@@ -26,224 +26,264 @@ using DB = UnityEngine.Debug;
 using System.Text.RegularExpressions;
 using System;
 
-public class GendarmeRunner : ScriptableObject {
-	const string monoError = "You need mono 2.10 or higher installed on your system.";
+public class GendarmeRunner : ScriptableObject
+{
+    const string monoError = "You need mono 2.10 or higher installed on your system.";
 
-	[MenuItem("Assets/Generate Gendarme Report...")]
-	static void Init() {
+    [MenuItem("Assets/Generate Gendarme Report...")]
+    static void Init()
+    {
 
-		EditorWindow.FocusWindowIfItsOpen(typeof(GendarmeWindow));
+        EditorWindow.FocusWindowIfItsOpen(typeof(GendarmeWindow));
 
-		var window = EditorWindow.GetWindow(typeof(GendarmeWindow), true, "Gendarme");
-		window.Show();
-	}
+        var window = EditorWindow.GetWindow(typeof(GendarmeWindow), true, "Gendarme");
+        window.Show();
+    }
 
-	static string JoinPath(params string[] path) {
-		string output = path[0];
+    static string JoinPath(params string[] path)
+    {
+        string output = path[0];
 		
-		for (int i=1; i< path.Length; i++) {
-			output = Path.Combine(output, path[i]);
-		}
+        for (int i = 1; i < path.Length; i++)
+        {
+            output = Path.Combine(output, path[i]);
+        }
 		
-		return output;
-	}
+        return output;
+    }
 
-	static bool ValidateMono(string path) {
-		using (var process = new System.Diagnostics.Process()) {
-			var info = process.StartInfo;
+    static bool ValidateMono(string path)
+    {
+        using (var process = new System.Diagnostics.Process())
+        {
+            var info = process.StartInfo;
 
-			info.FileName = path;
-			info.Arguments = "-V";
+            info.FileName = path;
+            info.Arguments = "-V";
 
-			info.UseShellExecute = false;
-			info.RedirectStandardOutput = true;
+            info.UseShellExecute = false;
+            info.RedirectStandardOutput = true;
 
-			process.Start();
+            process.Start();
 
-			string stdOut = process.StandardOutput.ReadLine();
+            string stdOut = process.StandardOutput.ReadLine();
 
-			process.WaitForExit();
+            process.WaitForExit();
 
-			if (string.IsNullOrEmpty(stdOut)) {
-				Debug.LogError(monoError);
-				return false;
-			}
+            if (string.IsNullOrEmpty(stdOut))
+            {
+                Debug.LogError(monoError);
+                return false;
+            }
 
-			// version string looks like: "Mono JIT compiler version 2.10.8 (tarball Mon Dec 19 17:43:18 EST 2011)"
-			var m = new Regex(".* ([0-9]+)\\.([0-9]+)\\.[0-9]+ .*").Match(stdOut);
+            // version string looks like: "Mono JIT compiler version 2.10.8 (tarball Mon Dec 19 17:43:18 EST 2011)"
+            var m = new Regex(".* ([0-9]+)\\.([0-9]+)\\.[0-9]+ .*").Match(stdOut);
 
-			var grps = m.Groups;
+            var grps = m.Groups;
 
-			if (!m.Success) {
-				Debug.LogError(monoError);
+            if (!m.Success)
+            {
+                Debug.LogError(monoError);
 
-				return false;
-			}
+                return false;
+            }
 
-			int[] version = {0,0,0};
+            int[] version = { 0, 0, 0 };
 
-			for (int i=1; i < 3; i++) {
-				version[i] = Convert.ToInt32(grps[i].Value);
-			}
+            for (int i = 1; i < 3; i++)
+            {
+                version[i] = Convert.ToInt32(grps[i].Value);
+            }
 
-			if (version[1] < 2 || version[2] < 10) {
-				Debug.LogError(monoError);
+            if (version[1] < 2) {
+                Debug.Log("Major version too low");
+                Debug.LogError(monoError);
 
-				return false;
-			}
-		}
+                return false;
+            }
+            if (version[1] == 2) {
+                if (version[2] < 10) {
+                    Debug.Log("minor version too low");
+                    Debug.LogError(monoError);
+                    return false;
+                }
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	static string FindMono() {
-		string monoExe = null;
+    static string FindMono()
+    {
+        string monoExe = null;
 
-		using (var process = new System.Diagnostics.Process()) {
-			var info = process.StartInfo;
+        using (var process = new System.Diagnostics.Process())
+        {
+            var info = process.StartInfo;
 
-			info.FileName = "which";
-			info.Arguments = "mono";
+            info.FileName = "which";
+            info.Arguments = "mono";
 
-			info.UseShellExecute = false;
-			info.RedirectStandardOutput = true;
+            info.UseShellExecute = false;
+            info.RedirectStandardOutput = true;
 
-			process.Start();
+            if (PlatformID.Unix == System.Environment.OSVersion.Platform)
+            {
+                DB.Log("WE ARE MODIFYING PATH for Unix");
+                info.EnvironmentVariables["PATH"] = "/usr/local/bin:" + info.EnvironmentVariables["PATH"];
+            }
+            process.Start();
 
-			string stdOut = process.StandardOutput.ReadLine();
+            string stdOut = process.StandardOutput.ReadLine();
 
-			process.WaitForExit();
+            process.WaitForExit();
 
-			if (string.IsNullOrEmpty(stdOut)) {
-				Debug.LogError(monoError);
-				return null;
-			}
+            if (string.IsNullOrEmpty(stdOut))
+            {
+                Debug.LogError(monoError);
+                return null;
+            }
 
-			monoExe = stdOut;
-		}
+            monoExe = stdOut;
+        }
 
-		return monoExe;
-	}
+        return monoExe;
+    }
 
-	public static bool SetupDone() {
-		string pluginPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<GendarmeRunner>())));
+    public static bool SetupDone()
+    {
+        string pluginPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<GendarmeRunner>())));
 
-		string initialPath = JoinPath(pluginPath, "gendarme");
+        string initialPath = JoinPath(pluginPath, "gendarme");
 
-		if (!Directory.Exists(initialPath)) {
-			return true;
-		}
+        if (!Directory.Exists(initialPath))
+        {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public static void Setup() {
-		string projectPath = Path.GetDirectoryName(Application.dataPath);
+    public static void Setup()
+    {
+        string projectPath = Path.GetDirectoryName(Application.dataPath);
 
-		string pluginPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<GendarmeRunner>())));
-		pluginPath = JoinPath(projectPath, pluginPath);
+        string pluginPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<GendarmeRunner>())));
+        pluginPath = JoinPath(projectPath, pluginPath);
 
-		string source = JoinPath(pluginPath, "gendarme");
-		string dest = JoinPath(projectPath, "gendarme");
+        string source = JoinPath(pluginPath, "gendarme");
+        string dest = JoinPath(projectPath, "gendarme");
 
-		FileUtil.MoveFileOrDirectory(source, dest);
+        FileUtil.MoveFileOrDirectory(source, dest);
 
-		FileUtil.DeleteFileOrDirectory(source + ".meta");
+        FileUtil.DeleteFileOrDirectory(source + ".meta");
 
-		string[] dlls = Directory.GetFiles(dest, "*.xll", SearchOption.AllDirectories);
+        string[] dlls = Directory.GetFiles(dest, "*.xll", SearchOption.AllDirectories);
 
-		foreach (var f in dlls) {
-			var destName = f.Replace(".xll", ".dll");
+        foreach (var f in dlls)
+        {
+            var destName = f.Replace(".xll", ".dll");
 
-			File.Move(f, destName);
-		}
+            File.Move(f, destName);
+        }
 
 
-		AssetDatabase.Refresh();
-	}
+        AssetDatabase.Refresh();
+    }
 
-	static string Quote(string path) {
-		return string.Format("\"{0}\"", path);
-	}
-	
-	static List<string> GetArgs(string projectPath) {
-		string copPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<GendarmeRunner>())));
-		copPath = JoinPath(projectPath, copPath);
-		string rulesPath = JoinPath(copPath, "unity-rules.xml");
-		string ignorePath = JoinPath(copPath, "unity.ignore");
+    static string Quote(string path)
+    {
+        return string.Format("\"{0}\"", path);
+    }
+
+    static List<string> GetArgs(string projectPath)
+    {
+        string copPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<GendarmeRunner>())));
+        copPath = JoinPath(projectPath, copPath);
+        string rulesPath = JoinPath(copPath, "unity-rules.xml");
+        string ignorePath = JoinPath(copPath, "unity.ignore");
 		
-		return new List<string>(new string[] {"--quiet", "--config", Quote(rulesPath), "--ignore", Quote(ignorePath)});
-	}
-	
-	public static Dictionary<string,string> Run(string severity, string confidence) {
-		var windows = Application.platform == RuntimePlatform.WindowsEditor;
-		var result = new Dictionary<string, string>();
+        return new List<string>(new string[] { "--quiet", "--config", Quote(rulesPath), "--ignore", Quote(ignorePath) });
+    }
 
-		string monoExe = windows ? "" : FindMono();
+    public static Dictionary<string,string> Run(string severity, string confidence)
+    {
+        var windows = Application.platform == RuntimePlatform.WindowsEditor;
+        var result = new Dictionary<string, string>();
 
-		if (!windows && !ValidateMono(monoExe)) {
-			result["stderr"] = monoError;
+        string monoExe = windows ? "" : FindMono();
 
-			return result;
-		}
+        if (!windows && !ValidateMono(monoExe))
+        {
+            result["stderr"] = monoError;
 
-		string projectPath = Path.GetDirectoryName(Application.dataPath);
-		string gendarmeExe = JoinPath(projectPath, "gendarme", "gendarme.exe");
-		string reportPath = JoinPath(projectPath, "gendarme-report.html");
+            return result;
+        }
 
-		List<string> assemblies = new List<string>();
-		foreach (var dll in Directory.GetFiles(JoinPath(projectPath, "Library", "ScriptAssemblies"), "*.dll", SearchOption.AllDirectories)) {
-			assemblies.Add(Quote(dll));
-		}
+        string projectPath = Path.GetDirectoryName(Application.dataPath);
+        string gendarmeExe = JoinPath(projectPath, "gendarme", "gendarme.exe");
+        string reportPath = JoinPath(projectPath, "gendarme-report.html");
 
-		using (var process = new System.Diagnostics.Process()) {
+        List<string> assemblies = new List<string>();
+        foreach (var dll in Directory.GetFiles(JoinPath(projectPath, "Library", "ScriptAssemblies"), "*.dll", SearchOption.AllDirectories))
+        {
+            assemblies.Add(Quote(dll));
+        }
 
-			List<string> args = GetArgs(projectPath);
+        using (var process = new System.Diagnostics.Process())
+        {
+
+            List<string> args = GetArgs(projectPath);
 			
-			if (!windows) {
-				args.Insert(0, Quote(gendarmeExe));
-			}
+            if (!windows)
+            {
+                args.Insert(0, Quote(gendarmeExe));
+            }
 			
-			args.AddRange(new string[] {"--html", Quote(reportPath)});
+            args.AddRange(new string[] { "--html", Quote(reportPath) });
 						
-			if (!string.IsNullOrEmpty(severity)) {
-				args.AddRange(new string[] {"--severity", severity});
-			}
+            if (!string.IsNullOrEmpty(severity))
+            {
+                args.AddRange(new string[] { "--severity", severity });
+            }
 
-			if (!string.IsNullOrEmpty(confidence)) {
-				args.AddRange(new string[] {"--confidence", severity});
-			}
+            if (!string.IsNullOrEmpty(confidence))
+            {
+                args.AddRange(new string[] { "--confidence", confidence });
+            }
 						
-			args.AddRange(assemblies);
+            args.AddRange(assemblies);
 
-			var info = process.StartInfo;
+            var info = process.StartInfo;
 			
-			info.FileName = windows ? gendarmeExe : monoExe;
-			info.Arguments = string.Join(" ", args.ToArray()).Trim();
+            info.FileName = windows ? gendarmeExe : monoExe;
+            info.Arguments = string.Join(" ", args.ToArray()).Trim();
 
-			info.UseShellExecute = false;
-			info.RedirectStandardError = true;
-			info.RedirectStandardOutput = true;
+            info.UseShellExecute = false;
+            info.RedirectStandardError = true;
+            info.RedirectStandardOutput = true;
 			
-			process.Start();
+            process.Start();
 			
-			result["stdout"] = process.StandardOutput.ReadToEnd();
-			result["stderr"] = process.StandardError.ReadToEnd();
+            result["stdout"] = process.StandardOutput.ReadToEnd();
+            result["stderr"] = process.StandardError.ReadToEnd();
 
-			process.WaitForExit();
+            process.WaitForExit();
 			
-			if (!string.IsNullOrEmpty(result["stdout"])) {
-				Debug.Log(result["stdout"]);
-			}
+            if (!string.IsNullOrEmpty(result["stdout"]))
+            {
+                Debug.Log(result["stdout"]);
+            }
 
-			if (!string.IsNullOrEmpty(result["stderr"])) {
-				Debug.LogError(result["stderr"]);
-				return result;
-			}
+            if (!string.IsNullOrEmpty(result["stderr"]))
+            {
+                Debug.LogError(result["stderr"]);
+                return result;
+            }
 
-			result["report"] = reportPath;
+            result["report"] = reportPath;
 
-			return result;
-		}
-	}
+            return result;
+        }
+    }
 }

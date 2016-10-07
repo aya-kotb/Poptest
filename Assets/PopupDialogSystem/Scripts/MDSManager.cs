@@ -112,6 +112,19 @@ namespace Poptropica2.MDSModule
 
             }
         }
+
+		public void StartService(SAMApplication application)
+		{
+		}
+
+		public void StopService(SAMApplication application)
+		{
+		}
+
+		public void Configure(ServiceConfiguration config)
+		{
+
+		}
         #endregion
     }
 }

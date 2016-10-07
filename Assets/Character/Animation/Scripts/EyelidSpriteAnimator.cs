@@ -27,7 +27,7 @@ namespace Poptropica2.Characters {
 		void Start() {
 			display = GetComponent<SpriteRenderer>();
 			staticRearLash = transform.FindChild("RearLashesSprite").gameObject;	//This REQUIRED to exist regardless of whether it is visible.
-			controller = GetComponentInParent<CharacterModel>().ControllerContainer.Result;
+			controller = GetComponentInParent<CharacterModel>().controllerContainer.Result;
 			pupilOffsetter = GetComponentInParent<PupilOffsetter>();
 			if (!reactiveEyelids) {
 				display.enabled = false;

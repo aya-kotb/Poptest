@@ -203,6 +203,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 411062}
+  - 114: {fileID: 11447188}
   m_Layer: 0
   m_Name: BackdropDay
   m_TagString: Untagged
@@ -365,6 +366,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 426610}
+  - 114: {fileID: 11481276}
   m_Layer: 0
   m_Name: Backdrop
   m_TagString: Untagged
@@ -1404,7 +1406,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: d1a876161c08fb04c8907c5a4cf5f37b, type: 3}
+  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1840,6 +1842,18 @@ MonoBehaviour:
   destX: 0
   destY: 0
   doorSprite: 0
+--- !u!114 &11447188
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467151539d3544880b76c048c789675d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.75
 --- !u!114 &11451240
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1913,6 +1927,18 @@ MonoBehaviour:
   destX: 0
   destY: 0
   doorSprite: 0
+--- !u!114 &11481276
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467151539d3544880b76c048c789675d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.75
 --- !u!114 &11492686
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -71,7 +71,7 @@ namespace Poptropica2.NPCAI
         /// </summary>
         void SetMovePosition()
         {
-            ((PathfindingCharacterController)agent.GetComponent<StandardCharacterModel>().ControllerContainer.Result).SetMovePosition(destination);
+            ((PathfindingCharacterController)agent.GetComponent<StandardCharacterModel>().controllerContainer.Result).SetMovePosition(destination);
         }
     }
 }

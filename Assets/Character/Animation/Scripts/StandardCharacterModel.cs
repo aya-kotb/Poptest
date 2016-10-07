@@ -15,6 +15,10 @@ namespace Poptropica2.Characters {
 		int envAndPlatsMask;
 		int pushableMask;
 
+		[Header("Standard Jump")]
+		public float jumpSpeedLimitX;
+
+
 		GameObject view;
 		public GameObject View {
 			get {
@@ -25,6 +29,22 @@ namespace Poptropica2.Characters {
 			}
 		}
 
+		void OnEnable()
+		{
+			EventManager.GetInstance ().OnOverrideController += OnOverrideController;
+		}
+
+
+		void OnDisable()
+		{
+			EventManager.GetInstance ().OnOverrideController -= OnOverrideController;
+		}
+
+		void OnOverrideController(ICharacterController overridingController)
+		{
+			controller = overridingController;
+		}
+			
 		/**
 		Material skeletonMaterial;
 		public Material SkeletonMaterial {
@@ -35,9 +55,10 @@ namespace Poptropica2.Characters {
 				return skeletonMaterial;
 			}
 			set {
-				View.GetComponent<Renderer>().material = value;
+				View.GetComponent<ReyePositionenderer>().material = value;
             }
 		}/**/
+
 
 		bool facingRight;
 		override public bool FacingRight {
@@ -141,11 +162,15 @@ namespace Poptropica2.Characters {
 
 		float currentJumpTime;
 		bool Jumping(bool onGround, bool onRope, bool inWater) {
-			if (controller.Inputs.Contains(InputControl.Jump)) {
-				if ((onGround || onRope || inWater)) {
+			if (controller.Inputs.Contains(InputControl.Jump)) 
+			{
+				if ((onGround || onRope || inWater)) 
+				{
 					jumpStartTime = Time.time;
 					return true;
-				} else {
+				} 
+				else 
+				{
 					currentJumpTime = Time.time - jumpStartTime;
 					if (currentJumpTime < jumpDuration) {
 						//Debug.Log(currentJumpTime + " of " + jumpDuration);
@@ -153,9 +178,11 @@ namespace Poptropica2.Characters {
 					}
 				}
 			}
+            canJumpToTarget = false;
 			return false;
 		}
 	}
+
 
 
 	/// <summary>For communicating with Animator state machine without using strings. </summary>

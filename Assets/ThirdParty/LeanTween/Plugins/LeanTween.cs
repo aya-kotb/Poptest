@@ -313,12 +313,9 @@ public static void init(int maxSimultaneousTweens){
 }
 
 public static void reset(){
-	if(tweens!=null){
-		for (int i = 0; i <= tweenMaxSearch; i++){
-	        if(tweens[i]!=null)
-		        tweens[i].toggle = false;
-	    }
-	}
+	for (int i = 0; i <= tweenMaxSearch; i++){
+        tweens[i].toggle = false;
+    }
 	tweens = null;
 	Destroy(_tweenEmpty);
 }
@@ -645,16 +642,6 @@ public static void update() {
 							Mesh mesh = trans.GetComponent<MeshFilter>().mesh;
 							Vector3[] vertices = mesh.vertices;
 							Color32[] colors = new Color32[vertices.Length];
-							if (colors.Length == 0){ //MaxFW fix: add vertex colors if the mesh doesn't have any             
-						        Color32 transparentWhiteColor32 = new Color32(0xff, 0xff, 0xff, 0x00);
-						        colors = new Color32[mesh.vertices.Length];
-						        for (int k=0; k<colors.Length; k++)
-						        {
-						            colors[k] = transparentWhiteColor32;
-						        }
-						        mesh.colors32 = colors;
-						    }
-						    // fix end
 							Color32 c = mesh.colors32[0];
 							c = new Color( c.r, c.g, c.b, val);
 							for (int k= 0; k < vertices.Length; k++) {
@@ -3636,33 +3623,21 @@ public class LTSpline {
 	}
 
 	public void drawGizmo( Color color ) {
-		if (constantSpeed) {
-            if (this.ptsAdjLength >= 4) {
+		if( this.ptsAdjLength>=4){
+			
+			Vector3 prevPt = this.ptsAdj[0];
 
-                Vector3 prevPt = this.ptsAdj[0];
+			Color colorBefore = Gizmos.color;
+			Gizmos.color = color;
+			for (int i = 0; i < this.ptsAdjLength; i++) {
+				Vector3 currPt2 = this.ptsAdj[i];
+				// Debug.Log("currPt2:"+currPt2);
 
-                Color colorBefore = Gizmos.color;
-                Gizmos.color = color;
-                for (int i = 0; i < this.ptsAdjLength; i++) {
-                    Vector3 currPt2 = this.ptsAdj[i];
-                    // Debug.Log("currPt2:"+currPt2);
-
-                    Gizmos.DrawLine(prevPt, currPt2);
-                    prevPt = currPt2;
-                }
-                Gizmos.color = colorBefore;
-            }
-        }
-        else {
-            Vector3 prevPt = interp(0);
-
-            for (int i = 1; i <= 120; i++) {
-                float pm = (float)i / 120f;
-                Vector3 currPt2 = interp(pm);
-                Gizmos.DrawLine(currPt2, prevPt);
-                prevPt = currPt2;
-            }
-        }
+				Gizmos.DrawLine(prevPt, currPt2);
+				prevPt = currPt2;
+			}
+			Gizmos.color = colorBefore;
+		}
 	}
 
 	public static void drawGizmo(Transform[] arr, Color color) {

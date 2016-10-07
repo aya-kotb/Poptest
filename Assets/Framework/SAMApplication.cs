@@ -7,6 +7,8 @@ namespace Poptropica2
 {
     public class SAMApplication : MonoBehaviour
     {
+		public GameConfiguration configuration;
+
         public static SAMApplication mainInstance
         {
             get
@@ -32,9 +34,12 @@ namespace Poptropica2
             if (servicesByName == null) servicesByName = new Dictionary<string, IService>();
         }
 
-        
-        public TextAsset configFile;
+		void Start()
+		{
+			configuration.CreateServices(this);
+		}
 
+        
         private Dictionary<string, IService> servicesByName;
 
 #if UNITY_EDITOR
@@ -68,6 +73,7 @@ namespace Poptropica2
                 throw new System.Exception("cannot add a null service to the SAMApplication");
             }
             servicesByName.Add(name, service);
+			service.StartService(this);
         }
 
         public T GetService<T>(string name) where T : class, IService
@@ -106,6 +112,7 @@ namespace Poptropica2
             if (servicesByName == null) return;
             if (servicesByName.ContainsKey(serviceName))
             {
+				servicesByName[serviceName].StopService(this);
                 servicesByName.Remove(serviceName);
             }
         }
@@ -121,6 +128,7 @@ namespace Poptropica2
             T returningService = GetService<T>(serviceName);
             if (returningService != null)
             {
+				servicesByName[serviceName].StopService(this);
                 servicesByName.Remove(serviceName);
             }
             return returningService;
@@ -139,6 +147,7 @@ namespace Poptropica2
                 if (serviceKVP.Value is T)
                 {
                     T rtn = (T)serviceKVP.Value;
+					servicesByName[serviceKVP.Key].StopService(this);
                     servicesByName.Remove(serviceKVP.Key);
                     return rtn;
                 }
@@ -150,7 +159,23 @@ namespace Poptropica2
 
     public interface IService
     {
-        void ShowInspectorUI();
+		/// <summary>
+		/// Starts the service. Called when the service is added to the application.
+		/// </summary>
+		/// <param name="application">The SAM Application instance.</param>
+		void StartService(SAMApplication application);
+
+		/// <summary>
+		/// Stops the service. Called when the service is removed frmo the application.
+		/// </summary>
+		/// <param name="application">The SAM Application instance.</param>
+		void StopService(SAMApplication application);
+
+		/// <summary>
+		/// Configure the service with the specified config. This is called during game startup.
+		/// </summary>
+		/// <param name="config">The configuration for the service. Will be the specific type for the class.</param>
+		void Configure(ServiceConfiguration config);
     }
 
 
