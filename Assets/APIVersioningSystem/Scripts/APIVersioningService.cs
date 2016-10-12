@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using Poptropica2;
 
 namespace Poptropica2.APIVersioningSystem
@@ -13,9 +14,13 @@ namespace Poptropica2.APIVersioningSystem
     /// </summary>
 	public class APIVersioningService : MonoBehaviour, IService
     {
+        [DllImport("__Internal")]
+        private static extern void ReloadBrowser();
+
 		// Interval is in seconds
 		private float shortInterval = 60f;	
 		private float longInterval = 3600f;	
+        public const int timeoutValue = 20;
 
 		private const string updateMessage = "Please update your game to continue being able to buy items and save your game to our servers.";
 		private const string invokeMethod = "GetServerVersion";
@@ -23,7 +28,7 @@ namespace Poptropica2.APIVersioningSystem
         private bool publishPendingChecked = false;
 
 		private APIVersioningServiceConfig config;
-        
+
 		/// <summary>
         /// Initializes the services
         /// </summary>
@@ -70,6 +75,7 @@ namespace Poptropica2.APIVersioningSystem
 				CancelInvoke(invokeMethod);
 			}
 
+
 			// Invoke the method with method name
 			Invoke(invokeMethod, time);
 		}
@@ -79,7 +85,7 @@ namespace Poptropica2.APIVersioningSystem
         /// </summary>
         void GetServerVersion ()
         {
-            GameSparksManager.Instance().GetServerVersion(HandleOnGetServerVersion, HandleOnRequestFailed);
+            StartCoroutine(CheckInternetConnection());
         }
 
         /// <summary>
@@ -151,15 +157,54 @@ namespace Poptropica2.APIVersioningSystem
         }
 
         /// <summary>
+        /// Checks the internet connection before calling any server api.
+        /// </summary>
+        /// <returns>The internet connection is active or not.</returns>
+        IEnumerator CheckInternetConnection ()
+        {
+            WWW www = new WWW(config.checkConnectionUrl);
+            float elapsedTime = 0f;
+            bool internetTimeout = false;
+
+            while (!www.isDone)
+            {   
+                elapsedTime += Time.deltaTime;
+                yield return null;
+
+                if (elapsedTime > timeoutValue)
+                {
+                    internetTimeout = true;
+                    break;
+                }
+            }
+
+            if (internetTimeout == true ||
+                string.IsNullOrEmpty (www.error) ==  false ||
+                www.responseHeaders.Count == 0)
+            {
+                Debug.Log ("No Internet connection");
+                Invoke(invokeMethod, config.apiCallInterval);
+            }
+            else
+            {
+                Debug.Log ("Internet Connection OK ");
+                GameSparksManager.Instance().GetServerVersion(HandleOnGetServerVersion, HandleOnRequestFailed);
+            }
+        }
+
+        /// <summary>
         /// It is a callback method which is called when update/restart button is pressed.
 		/// If the app is running on WebGL platform then restart the app.
 		/// If its running on iOS/Android platform then redirect to appropriate app stores
         /// </summary>
         void UpdateCallback ()
         {
-#if UNITY_WEBGL
+#if UNITY_EDITOR
+            Debug.Log("Restart Scene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0,UnityEngine.SceneManagement.LoadSceneMode.Single);
+#elif UNITY_WEBGL
             // RESTART APP
-			UnityEngine.SceneManagement.SceneManager.LoadScene(config.sceneIndexToRestart,UnityEngine.SceneManagement.LoadSceneMode.Single);
+            ReloadBrowser();
 #elif UNITY_IOS || UNITY_IPHONE
             // Open Apple App store url...
 			Application.OpenURL (config.appStoreLink_iOS);

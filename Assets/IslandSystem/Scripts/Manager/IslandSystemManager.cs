@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Poptropica2;
 
 namespace Poptropica2.IslandSystem
 {
@@ -11,15 +12,10 @@ namespace Poptropica2.IslandSystem
 	{
 		public IslandSystemUIHandler islandSystemUI;
 		public MapHandler mapHandler;
-
+        private IslandSystemManager config;
         //For temporary using CharacterInfo class to fetch the character ID
         public CharacterInfo characterInfo;
 
-		void Awake ()
-		{
-            SAMApplication.mainInstance.AddService("IslandSystemManager", this);
-		}
-		
 		// Use this for initialization
 		void Start ()
         {
@@ -71,13 +67,20 @@ namespace Poptropica2.IslandSystem
             Debug.LogError("Handle on Request Failed: " + error.errorMessage);
         }
 
-        /// <summary>
-        /// ShowInspectorUI: This is the implemenation method for the IService interface
-        /// </summary>
-        public void ShowInspectorUI()
+        #region Service Interface implementation
+        public void StartService (SAMApplication application)
         {
-
         }
+
+        public void StopService(SAMApplication application)
+        {
+        }
+
+        public void Configure(ServiceConfiguration serviceConfig)
+        {
+//            config = serviceConfig as IslandSystemManager;
+        }
+        #endregion
 
 		string SceneName (string islandName)
 		{

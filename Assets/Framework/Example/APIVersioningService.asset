@@ -14,5 +14,6 @@ MonoBehaviour:
   popupMessagePanel: {fileID: 179436, guid: ba203b38645604c229720a53e54221a0, type: 2}
   appStoreLink_iOS: https://www.google.com
   appStoreLink_Android: https://www.yahoo.com
+  checkConnectionUrl: https://www.google.com
   updateStatus: pending
-  sceneIndexToRestart: 0
+  apiCallInterval: 10

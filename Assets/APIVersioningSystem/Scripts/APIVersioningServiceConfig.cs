@@ -13,13 +13,14 @@ namespace Poptropica2.APIVersioningSystem
 	/// </summary>
 	public class APIVersioningServiceConfig : ServiceConfiguration {
 
-		public GameObject popupMessagePanel;
+        public GameObject popupMessagePanel;
 
 		public string appStoreLink_iOS = "https://www.google.com";
 		public string appStoreLink_Android = "https://www.google.com";
+        public string checkConnectionUrl = "https://www.google.com";
 		public string updateStatus = "pending";
 
-		public int sceneIndexToRestart = 0;
+        public float apiCallInterval = 10f;
 
 		/// <summary>
 		/// Returns the API versioning system service object.
@@ -47,8 +48,8 @@ namespace Poptropica2.APIVersioningSystem
 			if(updateStatus == null) updateStatus = "";
 			updateStatus = GUILayout.TextField(updateStatus);
 
-			GUILayout.Label("Scene Index to restart the game :");
-			sceneIndexToRestart = Convert.ToInt32(GUILayout.TextField(sceneIndexToRestart.ToString()));
+			GUILayout.Label("Waiting time to call Server API :");
+            apiCallInterval = Convert.ToInt32(GUILayout.TextField(apiCallInterval.ToString()));
 
 #if UNITY_EDITOR
 			GUILayout.Label("Assign alert popup prefab here :");
